@@ -1,0 +1,69 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using webApi.DTOs;
+using webApi.Services;
+
+namespace webApi.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductController : ControllerBase
+    {
+        private readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var products = await _productService.GetAllProducts();
+            return Ok(products);
+        }
+
+        [HttpGet("getById")]
+        public async Task<IActionResult> GetProductById([FromBody] IdDto idDto)
+        {
+            var product = await _productService.GetProductById(idDto.Id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Vendor")]
+        public async Task<IActionResult> CreateProduct([FromBody] ProductDto productDto)
+        {
+            var product = await _productService.CreateProduct(productDto);
+            if (product == null)
+            {
+                return BadRequest("Product already exists");
+            }
+            return Ok(product);
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin,Vendor")]
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductDto productDto)
+        {
+            var updatedProduct = await _productService.UpdateProduct(productDto);
+            if (updatedProduct == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedProduct);
+        }
+
+        [HttpDelete("delete")]
+        [Authorize(Roles = "Admin,Vendor")]
+        public async Task<IActionResult> DeleteProduct([FromBody] IdDto idDto)
+        {
+            await _productService.DeleteProduct(idDto.Id);
+            return NoContent();
+        }
+    }
+}
