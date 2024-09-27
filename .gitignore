@@ -1,0 +1,172 @@
+# ----------------------
+# Global Ignore Patterns
+# ----------------------
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore Node.js module directory and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore environment variables file
+.env
+.env.*.local
+
+# Ignore build directories and artifacts
+build/
+dist/
+
+# Ignore lockfiles
+package-lock.json
+yarn.lock
+
+# Ignore logs
+*.log
+logs/
+*.tlog
+*.log.[0-9]*
+
+# ----------------------
+# Android Specific
+# ----------------------
+
+# Android/IntelliJ specific files
+*.iml
+.gradle/
+local.properties
+/.idea/*
+/.idea/caches/
+/.idea/libraries/
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/gradle.xml
+/.idea/vcs.xml
+*.hprof
+
+# Android build files
+/build/
+/app/build/
+captures/
+
+# Android Gradle specific
+.gradle/
+gradle-app.setting
+gradle-wrapper.jar
+gradle-wrapper.properties
+gradle.properties
+
+# Android NDK specific
+/ndk/
+/obj/
+/jni/
+
+# APK and asset packaging output
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Keystore files (security sensitive)
+*.jks
+*.keystore
+
+# ----------------------
+# .NET Web API Specific
+# ----------------------
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+*.Generated.cs
+*.Designer.cs
+*.g.cs
+*.g.i.cs
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# DotNet tools directory
+dotnet_tool.json
+
+# Visual Studio working files
+.vscode/
+.vscode-test/
+.vs/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# ASP.NET runtime-generated files
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.cache
+
+# Publish directory
+publish/
+
+# Configuration and secret files
+appsettings*.json
+app.config
+web.config
+
+# Entity Framework Migrations
+Migrations/
+
+# IIS Express working directory
+/.vs/
+
+# ----------------------
+# React Specific
+# ----------------------
+
+# React specific
+/build/
+/node_modules/
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+
+# Webpack specific
+/.cache/
+/dist/
+
+# Babel specific
+/.babelrc
+.cache-loader
+
+# ESLint, Prettier, and other linter configuration
+/.eslintcache
+
+# ----------------------
+# IDE Specific Ignorables
+# ----------------------
+
+# JetBrains IDEs (IntelliJ, WebStorm, Rider, Android Studio)
+.idea/
+*.iws
+*.ipr
+
+# Visual Studio Code
+.vscode/
+.vscode-test/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
