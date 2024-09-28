@@ -15,12 +15,19 @@ namespace webApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string VendorId { get; set; }
 
-        public string ProductName { get; set; }
+       [BsonRepresentation(BsonType.ObjectId)]
+        public string UserId { get; set; }
 
+
+
+        public string ProductName { get; set; }
         public int ProductQuantity { get; set; }
         public decimal Price { get; set; }
         public bool IsApproved { get; set; }
         public bool IsDispatched { get; set; }
+
+
+
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime PostedDate { get; set; } = DateTime.UtcNow;

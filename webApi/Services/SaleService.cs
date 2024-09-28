@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using System.Security.Claims;
 using webApi.DTOs;
 using webApi.Models;
 using webApi.Repositories;
@@ -21,12 +22,14 @@ namespace webApi.Services
         private readonly ISaleRepository _saleRepository;
         private readonly IProductService _productService;
         private readonly IVendorService _vendorService;
+        private readonly IAuthService _authService;
 
-        public SaleService(ISaleRepository saleRepository, IProductService productService, IVendorService vendorService)
+        public SaleService(ISaleRepository saleRepository, IProductService productService, IVendorService vendorService,IAuthService authService)
         {
             _saleRepository = saleRepository;
             _productService = productService;
             _vendorService = vendorService;
+            _authService = authService;
         }
 
         public async Task<List<Sale>> GetAllSales()
@@ -63,10 +66,14 @@ namespace webApi.Services
                 return (null, "Vendor does not exist.");
             }
 
+            //extract user from jwt
+            var User = await  _authService.GetUserFromJwt();
+
             var newSale = new Sale
             {
                 ProductId = saleDto.ProductId,
                 VendorId = existingVendor.Id,
+                UserId = User.Id,
                 ProductName = existingProduct.ProductName,
                 ProductQuantity = saleDto.ProductQuantity,
                 Price = existingProduct.ProductPrice,
@@ -132,5 +139,8 @@ namespace webApi.Services
             }
             return await _saleRepository.GetSalesByVendorId(vendorId);
         }
+
+
+
     }
 }

@@ -23,25 +23,13 @@ namespace webApi.Controllers
             return Ok(sales);
         }
 
-
-        [HttpGet("getById")]
-        public async Task<IActionResult> GetSaleById([FromBody] IdDto idDto)
-        {
-            var sale = await _saleService.GetSaleById(idDto.Id);
-            if (sale == null)
-            {
-                return NotFound($"Sale with id '{idDto.Id}' not found.");
-            }
-            return Ok(sale);
-        }
-
         [HttpPost]
         public async Task<IActionResult> CreateSale([FromBody] SaleDto saleDto)
         {
             var (sale, error) = await _saleService.CreateSale(saleDto);
             if (sale == null)
             {
-                return BadRequest(error);
+                return BadRequest(new { error });
             }
             return CreatedAtAction(nameof(GetSaleById), new { id = sale.Id }, sale);
         }
@@ -56,7 +44,7 @@ namespace webApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { error = ex.Message });
             }
         }
 
@@ -64,12 +52,34 @@ namespace webApi.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteSale([FromBody] IdDto idDto)
         {
-            var error = await _saleService.DeleteSale(idDto.Id);
-            if (error != null)
+            try
             {
-                return NotFound(error);
+                var error = await _saleService.DeleteSale(idDto.Id);
+                if (error != null)
+                {
+                    return BadRequest(new { error });
+                }
+                return NoContent();
             }
-            return NoContent();
+            catch (Exception ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+        }
+
+
+        [HttpGet("getById")]
+        public async Task<IActionResult> GetSaleById([FromBody] IdDto idDto)
+        {
+            try
+            {
+                var sale = await _saleService.GetSaleById(idDto.Id);
+                return Ok(sale);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
         }
 
         // GET: api/sale/getByProductId
@@ -84,7 +94,7 @@ namespace webApi.Controllers
             catch (Exception ex)
             {
 
-                return NotFound(ex.Message);
+                return NotFound(new { error = ex.Message });
             }
         }
 
@@ -100,7 +110,7 @@ namespace webApi.Controllers
             catch (Exception ex)
             {
 
-                return NotFound(ex.Message);
+                return NotFound(new { error = ex.Message });
             }
         }
     }
