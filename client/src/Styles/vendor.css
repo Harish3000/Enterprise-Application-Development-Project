@@ -1,0 +1,38 @@
+.vendorTable {
+
+    width: 90%;
+    margin: auto;
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.065);
+  
+  }
+  .vendorTable table {
+    width: 100%;
+    margin-top: 30px;
+  }
+  .vendorTable table thead th {
+    background-color:rgb(74, 75, 153);
+    color: white;
+  }
+  
+  .vendorTable table tbody td {
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .actionButtons button {
+    margin: 0 10px;
+  }
+  
+  .addBtn {
+    background-color: rgb(40, 150, 115);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
