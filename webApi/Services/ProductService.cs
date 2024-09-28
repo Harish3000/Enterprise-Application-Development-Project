@@ -56,11 +56,12 @@ namespace webApi.Services
             }
 
             // Check if the vendor exists
-            var vendorExists = await _vendorService.VendorExists(productDto.VendorName);
-            if (!vendorExists)
+            var vendorExists = await _vendorService.GetVendorByName(productDto.VendorName);
+            if (vendorExists==null)
             {
                 return (null, "Vendor does not exist");
             }
+
 
             // Create a new product if checks pass
             var newProduct = new Product
@@ -76,7 +77,11 @@ namespace webApi.Services
                 VendorName = productDto.VendorName
             };
 
+            
+
             await _productRepository.CreateProduct(newProduct);
+            //add products to vendor table
+            var AddProductsToVendor = await _vendorService.AddProductIdsToVendor(vendorExists.Id, [newProduct.Id]);
             return (newProduct, null);
         }
 

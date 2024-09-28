@@ -14,6 +14,7 @@ namespace webApi.Services
         Task<VendorDto> UpdateVendor(VendorDto vendorDto);
         Task DeleteVendor(string id);
         Task<bool> VendorExists(string name);
+        Task<bool> AddProductIdsToVendor(string vendorId, List<string> productIds);
     }
 
     public class VendorService : IVendorService
@@ -70,13 +71,13 @@ namespace webApi.Services
             var existingVendor = await _vendorRepository.GetVendorById(vendorDto.Id);
             if (existingVendor == null)
             {
-                return null; // Vendor not found
+                return null;
             }
 
             var updatedVendor = _mapper.Map<Vendor>(vendorDto);
             updatedVendor.Id = existingVendor.Id;
             await _vendorRepository.UpdateVendor(updatedVendor);
-            return _mapper.Map<VendorDto>(updatedVendor); // Return the updated vendor
+            return _mapper.Map<VendorDto>(updatedVendor); 
         }
 
         public async Task DeleteVendor(string id)
@@ -89,5 +90,19 @@ namespace webApi.Services
             var vendor = await _vendorRepository.GetVendorByVendorName(name);
             return vendor != null; // Return true if vendor exists, else false
         }
+
+
+        public async Task<bool> AddProductIdsToVendor(string vendorId, List<string> productIds)
+        {
+            var vendor = await _vendorRepository.GetVendorById(vendorId);
+            if (vendor == null)
+            {
+                return false; // Vendor not found
+            }
+
+            // Use the repository method to add product IDs
+            return await _vendorRepository.AddProductIdsToVendor(vendorId, productIds);
+        }
+
     }
 }
