@@ -82,6 +82,14 @@ namespace webApi.Services
                 throw new Exception($"Comment with id '{commentDto.Id}' not found.");
             }
 
+            var userVerify = existingComment.UserName == commentDto.UserName;
+            if (userVerify == false)
+            {
+                throw new Exception($"User Not autherized to edit '{commentDto.Id}'.");
+            }
+
+
+
             var updatedComment = new Comment
             {
                 Id = existingComment.Id,
