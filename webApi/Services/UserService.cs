@@ -9,6 +9,7 @@ namespace webApi.Services
     {
         Task<List<UserDto>> GetAllUsers();
         Task<UserDto> GetUserById(string id);
+        Task<UserDto> GetUserByUserName(string userName);
         Task<UserDto> UpdateUser(UserDto userDto);
         Task DeleteUser(string id);
         Task<bool> AssignRole(string userId, string role);
@@ -34,6 +35,13 @@ namespace webApi.Services
         public async Task<UserDto> GetUserById(string id)
         {
             var user = await _userRepository.GetUserById(id);
+            return _mapper.Map<UserDto>(user);
+        }
+
+
+        public async Task<UserDto> GetUserByUserName(string userName)
+        {
+            var user = await _userRepository.GetUserByUserName(userName);
             return _mapper.Map<UserDto>(user);
         }
 

@@ -51,8 +51,14 @@ namespace webApi.Services
 
         public async Task<User> Register(RegisterDto registerDto)
         {
-            var existingUser = await _userRepository.GetUserByEmail(registerDto.Email);
-            if (existingUser != null)
+            var existingEmail = await _userRepository.GetUserByEmail(registerDto.Email);
+            if (existingEmail != null)
+            {
+                return null;
+            }
+
+            var existingUserName = await _userRepository.GetUserByUserName(registerDto.UserName);
+            if (existingUserName != null)
             {
                 return null;
             }
@@ -105,7 +111,7 @@ namespace webApi.Services
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(100),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
