@@ -19,11 +19,13 @@ namespace webApi.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IVendorService _vendorService;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, IVendorService vendorService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _vendorService = vendorService;
         }
 
         public async Task<List<UserDto>> GetAllUsers()
@@ -83,6 +85,24 @@ namespace webApi.Services
             {
                 user.Role = role;
                 await _userRepository.UpdateUser(user);
+
+                if (role == "Vendor")
+                {
+                    var vendorDto = new VendorDto
+                    {
+                        VendorName = user.UserName,
+                        ProductIds = [],
+                        VendorRank = 0,
+                        IsActive = false
+                    };
+                    await _vendorService.CreateVendor(vendorDto);
+                    return true;
+                }
+
+
+
+
+
                 return true; // User found and updated
             }
 

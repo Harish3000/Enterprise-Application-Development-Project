@@ -10,6 +10,7 @@ namespace webApi.Services
         Task<List<ProductDto>> GetAllProducts();
         Task<ProductDto> GetProductById(string id);
         Task<Product> GetProductByName(string name);
+        Task<List<ProductDto>> GetProductsByVendorName(string vendorName);
         Task<(Product product, string error)> CreateProduct(ProductDto productDto);
         Task<ProductDto> UpdateProduct(ProductDto productDto);
         Task<string> DeleteProduct(string id);
@@ -44,6 +45,12 @@ namespace webApi.Services
         {
             var product = await _productRepository.GetProductByProductName(name);
             return product;
+        }
+
+        public async Task<List<ProductDto>> GetProductsByVendorName(string vendorName)
+        {
+            var products = await _productRepository.GetProductsByVendorName(vendorName);
+            return _mapper.Map<List<ProductDto>>(products);
         }
 
         public async Task<(Product product, string error)> CreateProduct(ProductDto productDto)
