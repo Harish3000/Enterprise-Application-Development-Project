@@ -79,7 +79,7 @@ namespace webApi.Services
                 Price = existingProduct.ProductPrice,
                 IsApproved = saleDto.IsApproved,
                 IsDispatched = saleDto.IsDispatched,
-                PostedDate = DateTime.UtcNow
+                SaleDate = DateTime.UtcNow
             };
 
             await _saleRepository.CreateSale(newSale);

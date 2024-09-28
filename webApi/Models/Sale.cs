@@ -30,7 +30,7 @@ namespace webApi.Models
 
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-        public DateTime PostedDate { get; set; } = DateTime.UtcNow;
+        public DateTime SaleDate { get; set; } = DateTime.UtcNow;
 
 
     }
