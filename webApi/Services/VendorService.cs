@@ -9,6 +9,7 @@ namespace webApi.Services
     {
         Task<List<VendorDto>> GetAllVendors();
         Task<VendorDto> GetVendorById(string id);
+        Task<Vendor> GetVendorByName(string id);
         Task<Vendor> CreateVendor(VendorDto vendorDto);
         Task<VendorDto> UpdateVendor(VendorDto vendorDto);
         Task DeleteVendor(string id);
@@ -30,6 +31,12 @@ namespace webApi.Services
         {
             var vendors = await _vendorRepository.GetAllVendors();
             return _mapper.Map<List<VendorDto>>(vendors);
+        }
+
+        public async Task<Vendor> GetVendorByName(string id)
+        {
+            var vendor = await _vendorRepository.GetVendorByVendorName(id);
+            return vendor;
         }
 
         public async Task<VendorDto> GetVendorById(string id)

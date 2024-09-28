@@ -15,6 +15,8 @@ namespace webApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string VendorId { get; set; }
 
+        public string ProductName { get; set; }
+
         public int ProductQuantity { get; set; }
         public decimal Price { get; set; }
         public bool IsApproved { get; set; }

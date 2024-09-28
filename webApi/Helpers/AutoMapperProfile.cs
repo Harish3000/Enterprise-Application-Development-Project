@@ -14,6 +14,7 @@ namespace webApi.Helpers
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Vendor, VendorDto>().ReverseMap();
             CreateMap<Comment, CommentDto>().ReverseMap();
+            CreateMap<Sale, SaleDto>().ReverseMap();
         }
     }
 }
