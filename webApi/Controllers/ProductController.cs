@@ -29,7 +29,7 @@ namespace webApi.Controllers
             var product = await _productService.GetProductById(idDto.Id);
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Product not found" }); 
             }
             return Ok(product);
         }
@@ -38,11 +38,13 @@ namespace webApi.Controllers
         [Authorize(Roles = "Admin,Vendor")]
         public async Task<IActionResult> CreateProduct([FromBody] ProductDto productDto)
         {
-            var product = await _productService.CreateProduct(productDto);
-            if (product == null)
+            var (product, error) = await _productService.CreateProduct(productDto);
+
+            if (error != null)
             {
-                return BadRequest("Product already exists");
+                return BadRequest(new { error }); 
             }
+
             return Ok(product);
         }
 
@@ -53,7 +55,7 @@ namespace webApi.Controllers
             var updatedProduct = await _productService.UpdateProduct(productDto);
             if (updatedProduct == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Product not found" }); 
             }
             return Ok(updatedProduct);
         }
@@ -62,8 +64,14 @@ namespace webApi.Controllers
         [Authorize(Roles = "Admin,Vendor")]
         public async Task<IActionResult> DeleteProduct([FromBody] IdDto idDto)
         {
-            await _productService.DeleteProduct(idDto.Id);
-            return NoContent();
+            var error = await _productService.DeleteProduct(idDto.Id);
+
+            if (error != null)
+            {
+                return BadRequest(new { error }); 
+            }
+
+            return NoContent(); 
         }
     }
 }

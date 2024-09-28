@@ -30,7 +30,7 @@ namespace webApi.Controllers
             var user = await _userService.GetUserById(idDto.Id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound(new { error = "User not found" }); // Error response
             }
             return Ok(user);
         }
@@ -41,7 +41,7 @@ namespace webApi.Controllers
             var updatedUser = await _userService.UpdateUser(userDto);
             if (updatedUser == null)
             {
-                return NotFound();
+                return NotFound(new { error = "User not found" }); // Error response
             }
             return Ok(updatedUser);
         }
@@ -49,15 +49,32 @@ namespace webApi.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteUser([FromBody] IdDto idDto)
         {
+            var user = await _userService.GetUserById(idDto.Id);
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found" }); // Error response
+            }
+
             await _userService.DeleteUser(idDto.Id);
-            return NoContent();
+            return NoContent(); // No Content response
         }
 
         [HttpPut("assign-role")]
         public async Task<IActionResult> AssignRole([FromBody] AssignRoleDto assignRoleDto)
         {
-            await _userService.AssignRole(assignRoleDto.UserId, assignRoleDto.Role);
-            return Ok();
+            try
+            {
+                var userExists = await _userService.AssignRole(assignRoleDto.UserId, assignRoleDto.Role);
+                if (!userExists)
+                {
+                    return NotFound(new { error = "User not found" }); // Error response
+                }
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.Message }); // Error response
+            }
         }
     }
 

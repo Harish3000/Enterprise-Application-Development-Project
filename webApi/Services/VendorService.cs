@@ -12,6 +12,7 @@ namespace webApi.Services
         Task<Vendor> CreateVendor(VendorDto vendorDto);
         Task<VendorDto> UpdateVendor(VendorDto vendorDto);
         Task DeleteVendor(string id);
+        Task<bool> VendorExists(string name);
     }
 
     public class VendorService : IVendorService
@@ -42,7 +43,7 @@ namespace webApi.Services
             var existingVendor = await _vendorRepository.GetVendorByVendorName(vendorDto.VendorName);
             if (existingVendor != null)
             {
-                return null;
+                return null; // Vendor already exists
             }
 
             var newVendor = new Vendor
@@ -54,32 +55,32 @@ namespace webApi.Services
             };
 
             await _vendorRepository.CreateVendor(newVendor);
-            return newVendor;
+            return newVendor; // Return the created vendor
         }
-
 
         public async Task<VendorDto> UpdateVendor(VendorDto vendorDto)
         {
             var existingVendor = await _vendorRepository.GetVendorById(vendorDto.Id);
             if (existingVendor == null)
             {
-                return null;
+                return null; // Vendor not found
             }
 
             var updatedVendor = _mapper.Map<Vendor>(vendorDto);
             updatedVendor.Id = existingVendor.Id;
             await _vendorRepository.UpdateVendor(updatedVendor);
-            return _mapper.Map<VendorDto>(updatedVendor);
+            return _mapper.Map<VendorDto>(updatedVendor); // Return the updated vendor
         }
 
         public async Task DeleteVendor(string id)
         {
-            await _vendorRepository.DeleteVendor(id);
+            await _vendorRepository.DeleteVendor(id); // Delete vendor without returning
         }
 
-        private string GenerateVendorId()
+        public async Task<bool> VendorExists(string name)
         {
-            return $"ID{DateTime.Now.Ticks.ToString().Substring(0, 3)}";
+            var vendor = await _vendorRepository.GetVendorByVendorName(name);
+            return vendor != null; // Return true if vendor exists, else false
         }
     }
 }

@@ -9,20 +9,22 @@ namespace webApi.Services
     {
         Task<List<ProductDto>> GetAllProducts();
         Task<ProductDto> GetProductById(string id);
-        Task<Product> CreateProduct(ProductDto productDto);
+        Task<(Product product, string error)> CreateProduct(ProductDto productDto);
         Task<ProductDto> UpdateProduct(ProductDto productDto);
-        Task DeleteProduct(string id);
+        Task<string> DeleteProduct(string id);
     }
 
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly IVendorService _vendorService;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IVendorService vendorService)
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _vendorService = vendorService;
         }
 
         public async Task<List<ProductDto>> GetAllProducts()
@@ -37,30 +39,38 @@ namespace webApi.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<Product> CreateProduct(ProductDto productDto)
+        public async Task<(Product product, string error)> CreateProduct(ProductDto productDto)
         {
-
+            // Check if the product already exists
             var existingProduct = await _productRepository.GetProductByProductName(productDto.ProductName);
             if (existingProduct != null)
             {
-                return null;
+                return (null, "Product already exists");
             }
 
+            // Check if the vendor exists
+            var vendorExists = await _vendorService.VendorExists(productDto.VendorName);
+            if (!vendorExists)
+            {
+                return (null, "Vendor does not exist");
+            }
+
+            // Create a new product if checks pass
             var newProduct = new Product
             {
-                ProductName=productDto.ProductName,
-                ProductImage=productDto.ProductImage,
-                ProductDescription=productDto.ProductDescription,
-                ProductPrice=productDto.ProductPrice,
-                ProductRating=productDto.ProductRating,
-                CategoryName=productDto.CategoryName,
-                ProductStock=productDto.ProductStock,
-                IsActive=productDto.IsActive,
-                VendorId=productDto.VendorId
-
+                ProductName = productDto.ProductName,
+                ProductImage = productDto.ProductImage,
+                ProductDescription = productDto.ProductDescription,
+                ProductPrice = productDto.ProductPrice,
+                ProductRating = productDto.ProductRating,
+                CategoryName = productDto.CategoryName,
+                ProductStock = productDto.ProductStock,
+                IsActive = productDto.IsActive,
+                VendorName = productDto.VendorName
             };
+
             await _productRepository.CreateProduct(newProduct);
-            return newProduct;
+            return (newProduct, null);
         }
 
         public async Task<ProductDto> UpdateProduct(ProductDto productDto)
@@ -77,14 +87,17 @@ namespace webApi.Services
             return _mapper.Map<ProductDto>(updatedProduct);
         }
 
-        public async Task DeleteProduct(string id)
+        public async Task<string> DeleteProduct(string id)
         {
-            await _productRepository.DeleteProduct(id);
-        }
+            // Check if the product exists
+            var existingProduct = await _productRepository.GetProductById(id);
+            if (existingProduct == null)
+            {
+                return "Product does not exist";
+            }
 
-        private string GenerateProductId()
-        {
-            return $"ID{DateTime.Now.Ticks.ToString().Substring(0, 3)}";
+            await _productRepository.DeleteProduct(id);
+            return null;
         }
     }
 }

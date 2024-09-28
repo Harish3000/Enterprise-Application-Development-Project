@@ -16,6 +16,6 @@ namespace webApi.Models
         public string CategoryName { get; set; }
         public int ProductStock { get; set; }
         public bool IsActive { get; set; }
-        public string VendorId { get; set; }
+        public string VendorName { get; set; }
     }
 }

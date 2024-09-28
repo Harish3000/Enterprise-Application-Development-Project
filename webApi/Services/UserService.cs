@@ -11,7 +11,7 @@ namespace webApi.Services
         Task<UserDto> GetUserById(string id);
         Task<UserDto> UpdateUser(UserDto userDto);
         Task DeleteUser(string id);
-        Task AssignRole(string userId, string role);
+        Task<bool> AssignRole(string userId, string role);
     }
 
     public class UserService : IUserService
@@ -39,19 +39,19 @@ namespace webApi.Services
 
         public async Task<UserDto> UpdateUser(UserDto userDto)
         {
-            //check user exists
+            // Check if user exists
             var existingUser = await _userRepository.GetUserById(userDto.Id);
             if (existingUser == null)
             {
                 return null;
             }
 
-            //maintain role assigned
+            // Maintain role assigned
             string assignedRole = existingUser.Role;
             _mapper.Map(userDto, existingUser);
             existingUser.Role = assignedRole;
 
-            //update user
+            // Update user
             await _userRepository.UpdateUser(existingUser);
             return _mapper.Map<UserDto>(existingUser);
         }
@@ -61,7 +61,7 @@ namespace webApi.Services
             await _userRepository.DeleteUser(id);
         }
 
-        public async Task AssignRole(string userId, string role)
+        public async Task<bool> AssignRole(string userId, string role)
         {
             var allowedRoles = new List<string> { "Admin", "Vendor", "Customer", "CSR" };
 
@@ -75,8 +75,10 @@ namespace webApi.Services
             {
                 user.Role = role;
                 await _userRepository.UpdateUser(user);
+                return true; // User found and updated
             }
-        }
 
+            return false; // User not found
+        }
     }
 }

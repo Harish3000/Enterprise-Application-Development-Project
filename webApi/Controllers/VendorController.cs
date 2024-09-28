@@ -30,7 +30,7 @@ namespace webApi.Controllers
             var vendor = await _vendorService.GetVendorById(idDto.Id);
             if (vendor == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Vendor not found" }); // Error response
             }
             return Ok(vendor);
         }
@@ -41,7 +41,7 @@ namespace webApi.Controllers
             var vendor = await _vendorService.CreateVendor(vendorDto);
             if (vendor == null)
             {
-                return BadRequest("Vendor already exists");
+                return BadRequest(new { error = "Vendor already exists" }); // Error response
             }
             return Ok(vendor);
         }
@@ -52,7 +52,7 @@ namespace webApi.Controllers
             var updatedVendor = await _vendorService.UpdateVendor(vendorDto);
             if (updatedVendor == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Vendor not found" }); // Error response
             }
             return Ok(updatedVendor);
         }
@@ -60,8 +60,14 @@ namespace webApi.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteVendor([FromBody] IdDto idDto)
         {
+            var vendor = await _vendorService.GetVendorById(idDto.Id);
+            if (vendor == null)
+            {
+                return NotFound(new { error = "Vendor not found" }); // Error response
+            }
+
             await _vendorService.DeleteVendor(idDto.Id);
-            return NoContent();
+            return NoContent(); // No Content response
         }
     }
 }
