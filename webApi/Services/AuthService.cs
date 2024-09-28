@@ -11,7 +11,7 @@ namespace webApi.Services
 {
     public interface IAuthService
     {
-        Task<string> Login(LoginDto loginDto);
+        Task<JwtResponseDto> Login(LoginDto loginDto);
         Task<User> Register(RegisterDto registerDto);
         Task CreateDefaultAdminAccount();
     }
@@ -27,7 +27,7 @@ namespace webApi.Services
             _configuration = configuration;
         }
 
-        public async Task<string> Login(LoginDto loginDto)
+        public async Task<JwtResponseDto> Login(LoginDto loginDto)
         {
             var user = await _userRepository.GetUserByEmail(loginDto.Email);
             if (user == null || !VerifyPassword(loginDto.Password, user.Password))
@@ -35,9 +35,19 @@ namespace webApi.Services
                 return null;
             }
 
+            // Generate JWT Token
             var token = GenerateJwtToken(user);
-            return token;
+
+            // Create and return the JwtResponseDto
+            var jwtResponse = new JwtResponseDto
+            {
+                Token = token,
+                Role = user.Role
+            };
+
+            return jwtResponse;
         }
+
 
         public async Task<User> Register(RegisterDto registerDto)
         {

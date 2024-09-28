@@ -18,13 +18,16 @@ namespace webApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var token = await _authService.Login(loginDto);
-            if (token == null)
+            var jwtResponse = await _authService.Login(loginDto); 
+
+            if (jwtResponse == null)
             {
                 return Unauthorized();
             }
-            return Ok(new { Token = token });
+
+            return Ok(jwtResponse);
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)

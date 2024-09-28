@@ -39,13 +39,19 @@ namespace webApi.Services
 
         public async Task<UserDto> UpdateUser(UserDto userDto)
         {
+            //check user exists
             var existingUser = await _userRepository.GetUserById(userDto.Id);
             if (existingUser == null)
             {
                 return null;
             }
 
+            //maintain role assigned
+            string assignedRole = existingUser.Role;
             _mapper.Map(userDto, existingUser);
+            existingUser.Role = assignedRole;
+
+            //update user
             await _userRepository.UpdateUser(existingUser);
             return _mapper.Map<UserDto>(existingUser);
         }
@@ -57,6 +63,13 @@ namespace webApi.Services
 
         public async Task AssignRole(string userId, string role)
         {
+            var allowedRoles = new List<string> { "Admin", "Vendor", "Customer", "CSR" };
+
+            if (!allowedRoles.Contains(role))
+            {
+                throw new ArgumentException("Invalid role. Allowed roles are: Admin, Vendor, Customer, CSR");
+            }
+
             var user = await _userRepository.GetUserById(userId);
             if (user != null)
             {
@@ -64,5 +77,6 @@ namespace webApi.Services
                 await _userRepository.UpdateUser(user);
             }
         }
+
     }
 }

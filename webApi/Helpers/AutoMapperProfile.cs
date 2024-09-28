@@ -11,7 +11,8 @@ namespace webApi.Helpers
             // Configure bidirectional mapping with ReverseMap
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<RegisterDto, User>().ReverseMap();
-            CreateMap<Product, ProductDto>().ReverseMap();  
+            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Vendor, VendorDto>().ReverseMap();
         }
     }
 }
