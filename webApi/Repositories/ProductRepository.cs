@@ -10,6 +10,7 @@ namespace webApi.Repositories
 
         Task<Product> GetProductByProductName(string productName);
         Task<List<Product>> GetProductsByVendorName(string vendorName);
+        Task<List<Product>> GetProductsByVendorId(string vendorId);
         Task CreateProduct(Product product);
         Task UpdateProduct(Product product);
         Task DeleteProduct(string id);
@@ -84,6 +85,11 @@ namespace webApi.Repositories
             var result = await _products.UpdateOneAsync(p => p.Id == productId, updateDefinition);
 
             return result.ModifiedCount > 0;
+        }
+
+        public async Task<List<Product>> GetProductsByVendorId(string vendorId)
+        {
+            return await _products.Find(p => p.VendorId == vendorId).ToListAsync();
         }
     }
 }

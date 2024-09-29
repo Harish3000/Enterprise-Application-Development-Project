@@ -15,6 +15,7 @@ namespace webApi.Services
         Task<ProductDto> UpdateProduct(ProductDto productDto);
         Task<string> DeleteProduct(string id);
         Task<string> ReduceProductStock(string productId, int quantity);
+        Task<List<ProductDto>> GetProductsByVendorId(string vendorId);
 
     }
 
@@ -83,6 +84,7 @@ namespace webApi.Services
                 CategoryName = productDto.CategoryName,
                 ProductStock = productDto.ProductStock,
                 IsActive = productDto.IsActive,
+                VendorId = vendorExists.Id,
                 VendorName = productDto.VendorName
             };
 
@@ -133,6 +135,13 @@ namespace webApi.Services
             }
 
             return null; // Stock reduced successfully
+        }
+
+
+        public async Task<List<ProductDto>> GetProductsByVendorId(string vendorId)
+        {
+            var products = await _productRepository.GetProductsByVendorId(vendorId);
+            return _mapper.Map<List<ProductDto>>(products);
         }
     }
 }

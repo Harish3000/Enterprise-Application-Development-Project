@@ -16,6 +16,10 @@ namespace webApi.Models
         public string CategoryName { get; set; }
         public int ProductStock { get; set; }
         public bool IsActive { get; set; }
+
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string VendorId { get; set; }
         public string VendorName { get; set; }
     }
 }
