@@ -7,6 +7,7 @@ namespace webApi.Repositories
     {
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserById(string id);
+        Task<User> GetUserByUserName(string userName);
         Task<List<User>> GetAllUsers();
         Task CreateUser(User user);
         Task UpdateUser(User user);
@@ -25,6 +26,11 @@ namespace webApi.Repositories
         public async Task<User> GetUserByEmail(string email)
         {
             return await _users.Find(u => u.Email == email).FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByUserName(string userName)
+        {
+            return await _users.Find(u => u.UserName == userName).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserById(string id)

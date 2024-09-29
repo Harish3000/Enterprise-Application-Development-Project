@@ -9,9 +9,13 @@ namespace webApi.Services
     {
         Task<List<ProductDto>> GetAllProducts();
         Task<ProductDto> GetProductById(string id);
+        Task<Product> GetProductByName(string name);
+        Task<List<ProductDto>> GetProductsByVendorName(string vendorName);
         Task<(Product product, string error)> CreateProduct(ProductDto productDto);
         Task<ProductDto> UpdateProduct(ProductDto productDto);
         Task<string> DeleteProduct(string id);
+        Task<string> ReduceProductStock(string productId, int quantity);
+
     }
 
     public class ProductService : IProductService
@@ -39,6 +43,18 @@ namespace webApi.Services
             return _mapper.Map<ProductDto>(product);
         }
 
+        public async Task<Product> GetProductByName(string name)
+        {
+            var product = await _productRepository.GetProductByProductName(name);
+            return product;
+        }
+
+        public async Task<List<ProductDto>> GetProductsByVendorName(string vendorName)
+        {
+            var products = await _productRepository.GetProductsByVendorName(vendorName);
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
         public async Task<(Product product, string error)> CreateProduct(ProductDto productDto)
         {
             // Check if the product already exists
@@ -49,11 +65,12 @@ namespace webApi.Services
             }
 
             // Check if the vendor exists
-            var vendorExists = await _vendorService.VendorExists(productDto.VendorName);
-            if (!vendorExists)
+            var vendorExists = await _vendorService.GetVendorByName(productDto.VendorName);
+            if (vendorExists==null)
             {
                 return (null, "Vendor does not exist");
             }
+
 
             // Create a new product if checks pass
             var newProduct = new Product
@@ -69,7 +86,11 @@ namespace webApi.Services
                 VendorName = productDto.VendorName
             };
 
+            
+
             await _productRepository.CreateProduct(newProduct);
+            //add products to vendor table
+            var AddProductsToVendor = await _vendorService.AddProductIdsToVendor(vendorExists.Id, [newProduct.Id]);
             return (newProduct, null);
         }
 
@@ -98,6 +119,20 @@ namespace webApi.Services
 
             await _productRepository.DeleteProduct(id);
             return null;
+        }
+
+
+        public async Task<string> ReduceProductStock(string productId, int quantity)
+        {
+            // Check if the product exists and if the stock can be reduced
+            var isSuccess = await _productRepository.ReduceProductStock(productId, quantity);
+
+            if (!isSuccess)
+            {
+                return "Failed to reduce product stock. Either the product does not exist or there is insufficient stock.";
+            }
+
+            return null; // Stock reduced successfully
         }
     }
 }

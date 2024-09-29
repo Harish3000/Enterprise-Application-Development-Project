@@ -35,7 +35,7 @@ namespace webApi.Controllers
             var user = await _authService.Register(registerDto);
             if (user == null)
             {
-                return BadRequest("User already exists");
+                return BadRequest("User with Username/ Email already exists");
             }
             return Ok(user);
         }

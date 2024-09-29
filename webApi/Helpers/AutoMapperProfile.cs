@@ -13,6 +13,8 @@ namespace webApi.Helpers
             CreateMap<RegisterDto, User>().ReverseMap();
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Vendor, VendorDto>().ReverseMap();
+            CreateMap<Comment, CommentDto>().ReverseMap();
+            CreateMap<Sale, SaleDto>().ReverseMap();
         }
     }
 }

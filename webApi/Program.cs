@@ -30,12 +30,20 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+builder.Services.AddHttpContextAccessor();
 
 
 // Configure JWT Authentication

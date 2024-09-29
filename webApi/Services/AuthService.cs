@@ -14,17 +14,23 @@ namespace webApi.Services
         Task<JwtResponseDto> Login(LoginDto loginDto);
         Task<User> Register(RegisterDto registerDto);
         Task CreateDefaultAdminAccount();
+
+        Task<User> GetUserFromJwt();
     }
 
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration)
+        public AuthService(IUserRepository userRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
+    
         }
 
         public async Task<JwtResponseDto> Login(LoginDto loginDto)
@@ -51,8 +57,14 @@ namespace webApi.Services
 
         public async Task<User> Register(RegisterDto registerDto)
         {
-            var existingUser = await _userRepository.GetUserByEmail(registerDto.Email);
-            if (existingUser != null)
+            var existingEmail = await _userRepository.GetUserByEmail(registerDto.Email);
+            if (existingEmail != null)
+            {
+                return null;
+            }
+
+            var existingUserName = await _userRepository.GetUserByUserName(registerDto.UserName);
+            if (existingUserName != null)
             {
                 return null;
             }
@@ -105,7 +117,7 @@ namespace webApi.Services
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(100),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -119,6 +131,36 @@ namespace webApi.Services
         private bool VerifyPassword(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        }
+
+
+        public async Task<User> GetUserFromJwt()
+        {
+            var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(token))
+                throw new ArgumentException("Token is null or empty", nameof(token));
+
+            // Remove "Bearer " prefix if present
+            if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                token = token.Substring("Bearer ".Length).Trim();
+            }
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
+
+            // Check if the token is valid and contains the email claim
+            if (jwtToken == null || !jwtToken.Claims.Any())
+                throw new SecurityTokenException("Invalid token");
+
+            var emailClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            var email = emailClaim?.Value;
+
+            // Fetch the user by email
+            var user = await _userRepository.GetUserByEmail(email);
+
+            return user; // Return the user or null if not found
         }
 
 

@@ -12,6 +12,8 @@ namespace webApi.Repositories
         Task CreateVendor(Vendor vendor);
         Task UpdateVendor(Vendor vendor);
         Task DeleteVendor(string id);
+        Task<bool> AddProductIdsToVendor(string vendorId, List<string> productIds);
+
     }
 
     public class VendorRepository : IVendorRepository
@@ -52,5 +54,29 @@ namespace webApi.Repositories
         {
             await _vendors.DeleteOneAsync(p => p.Id == id);
         }
+
+
+        public async Task<bool> AddProductIdsToVendor(string vendorId, List<string> productIds)
+        {
+            var vendor = await GetVendorById(vendorId);
+            if (vendor == null)
+            {
+                return false; // Vendor not found
+            }
+
+            // Check for duplicates before adding
+            foreach (var productId in productIds)
+            {
+                if (!vendor.ProductIds.Contains(productId))
+                {
+                    vendor.ProductIds.Add(productId);
+                }
+            }
+
+            // Update the vendor with the new product IDs
+            var result = await _vendors.ReplaceOneAsync(p => p.Id == vendorId, vendor);
+            return result.IsAcknowledged; // Return true if the operation was acknowledged
+        }
+
     }
 }
