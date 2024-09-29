@@ -21,11 +21,13 @@ namespace webApi.Services
     {
         private readonly IVendorRepository _vendorRepository;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public VendorService(IVendorRepository vendorRepository, IMapper mapper)
+        public VendorService(IVendorRepository vendorRepository, IMapper mapper, IUserRepository userRepository)
         {
             _vendorRepository = vendorRepository;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         public async Task<List<VendorDto>> GetAllVendors()
@@ -62,6 +64,18 @@ namespace webApi.Services
                 IsActive = vendorDto.IsActive
             };
 
+            var newUserVendor = new User
+            {
+                UserName = vendorDto.VendorName,
+                Email = vendorDto.VendorName+"@pixelcart.com",
+                Password = vendorDto.VendorName,
+                Address = "pending...",
+                Role = "Vendor"
+
+            };
+
+
+            await _userRepository.CreateUser(newUserVendor);
             await _vendorRepository.CreateVendor(newVendor);
             return newVendor; // Return the created vendor
         }
