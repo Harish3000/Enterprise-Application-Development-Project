@@ -23,6 +23,7 @@ namespace webApi.Models
         public string ProductName { get; set; }
         public int ProductQuantity { get; set; }
         public decimal Price { get; set; }
+        public bool IsPaid { get; set; }
         public bool IsApproved { get; set; }
         public bool IsDispatched { get; set; }
 

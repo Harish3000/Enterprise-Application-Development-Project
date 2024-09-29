@@ -15,6 +15,8 @@ namespace webApi.Services
         Task<string> DeleteSale(string id);
         Task<List<Sale>> GetSalesByProductId(string productId);
         Task<List<Sale>> GetSalesByVendorId(string vendorId);
+
+        Task ToggleIsPaidStatusForUser(string userId, bool isPaid);
     }
 
     public class SaleService : ISaleService
@@ -23,13 +25,15 @@ namespace webApi.Services
         private readonly IProductService _productService;
         private readonly IVendorService _vendorService;
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public SaleService(ISaleRepository saleRepository, IProductService productService, IVendorService vendorService,IAuthService authService)
+        public SaleService(ISaleRepository saleRepository, IProductService productService, IVendorService vendorService,IAuthService authService, IUserService userService)
         {
             _saleRepository = saleRepository;
             _productService = productService;
             _vendorService = vendorService;
             _authService = authService;
+            _userService = userService;
         }
 
         public async Task<List<Sale>> GetAllSales()
@@ -77,6 +81,7 @@ namespace webApi.Services
                 ProductName = existingProduct.ProductName,
                 ProductQuantity = saleDto.ProductQuantity,
                 Price = existingProduct.ProductPrice,
+                IsPaid = saleDto.IsPaid,
                 IsApproved = saleDto.IsApproved,
                 IsDispatched = saleDto.IsDispatched,
                 SaleDate = DateTime.UtcNow
@@ -101,6 +106,7 @@ namespace webApi.Services
 
             
             existingSale.ProductQuantity = saleDto.ProductQuantity;
+            existingSale.IsPaid = saleDto.IsPaid;
             existingSale.IsApproved = saleDto.IsApproved;
             existingSale.IsDispatched = saleDto.IsDispatched;
 
@@ -138,6 +144,19 @@ namespace webApi.Services
                 throw new Exception($"Vendor with id '{vendorId}' not found.");
             }
             return await _saleRepository.GetSalesByVendorId(vendorId);
+        }
+
+
+        // toggle payment status
+        public async Task ToggleIsPaidStatusForUser(string userId, bool isPaid)
+        {
+            var user = await _userService.GetUserById(userId);
+            if (user == null)
+            {
+                throw new Exception($"User with id '{userId}' not found.");
+            }
+
+            await _saleRepository.ToggleIsPaidByUserId(userId, isPaid);
         }
 
 

@@ -14,6 +14,10 @@ namespace webApi.Repositories
         Task CreateSale(Sale sale);
         Task UpdateSale(Sale sale);
         Task DeleteSale(string id);
+
+        Task<List<Sale>> GetUnpaidSalesByUserId(string userId);
+
+        Task ToggleIsPaidByUserId(string userId, bool isPaid);
     }
 
     public class SaleRepository : ISaleRepository
@@ -65,6 +69,19 @@ namespace webApi.Repositories
         public async Task DeleteSale(string id)
         {
             await _sales.DeleteOneAsync(s => s.Id == id);
+        }
+
+        public async Task<List<Sale>> GetUnpaidSalesByUserId(string userId)
+        {
+            return await _sales.Find(s => s.UserId == userId && !s.IsPaid).ToListAsync();
+        }
+
+        public async Task ToggleIsPaidByUserId(string userId, bool isPaid)
+        {
+            var filter = Builders<Sale>.Filter.Eq(s => s.UserId, userId);
+            var update = Builders<Sale>.Update.Set(s => s.IsPaid, isPaid);
+
+            await _sales.UpdateManyAsync(filter, update);
         }
     }
 }
