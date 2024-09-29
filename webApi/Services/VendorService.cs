@@ -63,6 +63,7 @@ namespace webApi.Services
                 VendorRank = vendorDto.VendorRank,
                 IsActive = vendorDto.IsActive
             };
+            await _vendorRepository.CreateVendor(newVendor);
 
 
             var existingUser = await _userRepository.GetUserByUserName(vendorDto.VendorName);
@@ -72,6 +73,7 @@ namespace webApi.Services
             {
                 var newUserVendor = new User
                 {
+                    Id = newVendor.Id,
                     UserName = vendorDto.VendorName,
                     Email = vendorDto.VendorName + "@pixelcart.com",
                     Password = vendorDto.VendorName,
@@ -85,7 +87,7 @@ namespace webApi.Services
 
   
             
-            await _vendorRepository.CreateVendor(newVendor);
+           
             return newVendor; // Return the created vendor
         }
 
