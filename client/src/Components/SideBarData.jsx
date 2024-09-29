@@ -7,28 +7,28 @@ export const SideBarData = [
   {
     title: "Inventory",
     icon: <i className="bi bi-house-door-fill"></i>,
-    link: "/inventory",
+    link: "/dashboard/inventory",
   },
   {
     title: "Vendors",
     icon: <i className="bi bi-person-vcard"></i>,
-    link: "/vendor",
+    link: "/dashboard/vendor",
   },
   {
     title: "Products",
     icon: <i className="bi bi-box-seam-fill"></i>,
-    link: "/product",
+    link: "/dashboard/product",
   },
 
   {
     title: "Orders",
     icon: <i className="bi bi-cart4"></i>,
-    link: "/order",
+    link: "/dashboard/order",
   },
 
   {
     title: "Users",
     icon: <i className="bi bi-person-circle"></i>,
-    link: "/user",
+    link: "/dashboard/user",
   },
 ];

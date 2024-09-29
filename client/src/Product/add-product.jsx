@@ -5,17 +5,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 
+
 const AddProduct = () => {
   const products = {
-    productId: "",
-    productName: "",
-    // productImage: null,
-    productDescription: "",
-    productPrice: "",
-    productRating: "",
-    categoryName: "",
-    productStock: "",
-    // isActive: "",
+    Id: "",
+    ProductName: "",
+    ProductImage: "",
+    ProductDescription: "",
+    ProductPrice: "",
+    ProductRating: "",
+    CategoryName: "",
+    ProductStock: "",
+    IsActive: "",
+    VendorName:""
   };
 
   const [product, setProduct] = useState(products);
@@ -28,29 +30,11 @@ const AddProduct = () => {
     setProduct({ ...product, [productId]: value });
   };
 
-  // // Handling file input
-  // const fileHandler = (e) => {
-  //   const file = e.target.files[0];
-  //   setProduct({ ...product, productImage: file });
-  // };
-
   const submitForm = async (e) => {
     e.preventDefault();
 
-    // // Using FormData to handle file upload along with other inputs
-    // const formData = new FormData();
-    // formData.append("productId", product.productId);
-    // formData.append("productName", product.productName);
-    // formData.append("productImage", product.productImage); // File
-    // formData.append("productDescription", product.productDescription);
-    // formData.append("productPrice", product.productPrice);
-    // formData.append("productRating", product.productRating);
-    // formData.append("categoryName", product.categoryName);
-    // formData.append("productStock", product.productStock);
-    // formData.append("isActive", product.isActive);
-
     await axios
-      .post("http://localhost:8000/api/product", product, {
+      .post("http://localhost:8000/api/Product", product, {
         // headers: {
         //   "Content-Type": "multipart/form-data",
         // },

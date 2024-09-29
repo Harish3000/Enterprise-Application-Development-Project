@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Styles/sideBarMenu.css";
 import { SideBarData } from "./SideBarData";
-import logo from "../assets/App.png";
+import logo from "../Assets/App.png";
 
 function SideBarMenu() {
   return (

@@ -4,13 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const UpdateUser = () => {
-  const users = {
+const UpdateProduct = () => {
+  const products = {
     name: "",
     email: "",
     address: "",
   };
-  const [user, setUser] = useState(users);
+  const [product, setProduct] = useState(products);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -18,14 +18,14 @@ const UpdateUser = () => {
     const { name, value } = e.target;
     console.log(name, value);
 
-    setUser({ ...user, [name]: value });
+    setProduct({ ...product, [name]: value });
   };
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/user/${id}`)
+      .get(`http://localhost:8000/api/product/${id}`)
       .then((response) => {
-        setUser(response.data);
+        setProduct(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -35,10 +35,10 @@ const UpdateUser = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     await axios
-      .put(`http://localhost:8000/api/update/user/${id}`, user)
+      .put(`http://localhost:8000/api/update/product/${id}`, product)
       .then((response) => {
         toast.success(response.data.message, { position: "top-right" });
-        navigate("/users");
+        navigate("/products");
       })
       .catch((error) => {
         console.log(error);
@@ -46,19 +46,19 @@ const UpdateUser = () => {
   };
 
   return (
-    <div className="addUser">
-      <Link to="/users" type="button" class="btn btn-secondary">
+    <div className="addProduct">
+      <Link to="/products" type="button" class="btn btn-secondary">
         <i class="bi bi-skip-backward-fill"></i>
       </Link>
 
-      <h3>Update User</h3>
-      <form className="addUserForm" onSubmit={submitForm}>
+      <h3>Update Product</h3>
+      <form className="addProductForm" onSubmit={submitForm}>
         <div className="inputGroup">
           <label htmlFor="name">Name:</label>
           <input
             type="text"
             id="name"
-            value={user.name}
+            value={product.name}
             onChange={inputHandler}
             name="name"
             autoComplete="off"
@@ -70,7 +70,7 @@ const UpdateUser = () => {
           <input
             type="email"
             id="email"
-            value={user.email}
+            value={product.email}
             onChange={inputHandler}
             name="email"
             autoComplete="off"
@@ -82,7 +82,7 @@ const UpdateUser = () => {
           <input
             type="text"
             id="address"
-            value={user.address}
+            value={product.address}
             onChange={inputHandler}
             name="address"
             autoComplete="off"
@@ -99,4 +99,4 @@ const UpdateUser = () => {
   );
 };
 
-export default UpdateUser;
+export default UpdateProduct;
