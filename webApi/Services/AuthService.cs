@@ -48,7 +48,8 @@ namespace webApi.Services
             var jwtResponse = new JwtResponseDto
             {
                 Token = token,
-                Role = user.Role
+                Role = user.Role,
+                UserId = user.Id,
             };
 
             return jwtResponse;
