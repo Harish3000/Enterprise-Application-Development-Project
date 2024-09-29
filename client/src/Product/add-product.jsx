@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import ObjectId from "bson-objectid"; // Import the ObjectId library
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const AddProduct = () => {
   const initialProductState = {
-    Id: "",
+    Id: ObjectId().toString(), // Generate a new MongoDB ObjectId
     ProductName: "",
-    ProductImage: "",
     ProductDescription: "",
     ProductPrice: "",
     ProductRating: "",
@@ -17,10 +18,11 @@ const AddProduct = () => {
     ProductStock: "",
     IsActive: false,
     VendorName: "",
+    ProductImage: ""
   };
 
   const [product, setProduct] = useState(initialProductState);
-  const navigate = useNavigate();
+
 
   // Handling text inputs
   const inputHandler = e => {
@@ -30,14 +32,20 @@ const AddProduct = () => {
 
   const submitForm = async e => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:5164/api/Product", product);
-      toast.success("Product added successfully!", { position: "top-right" });
-      navigate("/product"); // Navigate to product list after success
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to add product. Please try again.", { position: "top-right" });
-    }
+    // try {
+    //   await axios.post("http://localhost:5164/api/Product", product);
+    //   toast.success("Product added successfully!", { position: "top-right" });
+    //   navigate("/product");
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error("Failed to add product. Please try again.", {
+    //     position: "top-right"
+    //   });
+    // }
+    createAPIEndpoint(ENDPOINTS.PRODUCT)
+      .post(product)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
 
   return (
@@ -51,12 +59,12 @@ const AddProduct = () => {
         <h3>Add New Product</h3>
         <form className="addProductForm" onSubmit={submitForm}>
           <div className="inputGroup">
-            <label htmlFor="ProdutName">Product Name :</label>
+            <label htmlFor="ProductName">Product Name :</label>
             <input
               type="text"
-              id="name"
+              id="ProductName"
               onChange={inputHandler}
-              name="name"
+              name="ProductName"
               autoComplete="off"
               placeholder="Enter Product Name"
             />
@@ -65,9 +73,9 @@ const AddProduct = () => {
             <label htmlFor="ProductDescription">Description :</label>
             <input
               type="text"
-              id="description"
+              id="ProductDescription"
               onChange={inputHandler}
-              name="description"
+              name="ProductDescription"
               autoComplete="off"
               placeholder="Enter a description"
             />
@@ -77,9 +85,9 @@ const AddProduct = () => {
             <input
               min={0}
               type="number"
-              id="price"
+              id="ProductPrice"
               onChange={inputHandler}
-              name="price"
+              name="ProductPrice"
               autoComplete="off"
               placeholder="Enter product price"
             />
@@ -89,9 +97,9 @@ const AddProduct = () => {
             <input
               min={0}
               type="number"
-              id="rating"
+              id="ProductRating"
               onChange={inputHandler}
-              name="rating"
+              name="ProductRating"
               autoComplete="off"
               placeholder="Enter product rating"
             />
@@ -100,9 +108,9 @@ const AddProduct = () => {
             <label htmlFor="CategoryName">Category :</label>
             <input
               type="text"
-              id="category"
+              id="CategoryName"
               onChange={inputHandler}
-              name="category"
+              name="CategoryName"
               autoComplete="off"
               placeholder="Enter product category"
             />
@@ -112,9 +120,9 @@ const AddProduct = () => {
             <input
               min={0}
               type="number"
-              id="stock"
+              id="ProductStock"
               onChange={inputHandler}
-              name="stock"
+              name="ProductStock"
               autoComplete="off"
               placeholder="Enter product stock"
             />
@@ -124,9 +132,21 @@ const AddProduct = () => {
             <input
               type="text"
               id="VendorName"
+              name="VendorName"
               onChange={inputHandler}
               autoComplete="off"
               placeholder="Enter vendor name"
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="ProductImage">Product Image :</label>
+            <input
+              type="text"
+              id="ProductImage"
+              onChange={inputHandler}
+              name="ProductImage"
+              autoComplete="off"
+              placeholder="Enter Product Image Url"
             />
           </div>
           <div className="inputGroup">

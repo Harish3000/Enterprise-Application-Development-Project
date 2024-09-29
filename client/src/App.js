@@ -2,7 +2,6 @@ import "./App.css";
 import {
   BrowserRouter,
   createBrowserRouter,
-  // Navigate,
   RouterProvider
 } from "react-router-dom";
 import User from "./User/user-list";
