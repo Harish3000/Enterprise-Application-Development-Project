@@ -14,6 +14,8 @@ namespace webApi.Services
         Task<(Product product, string error)> CreateProduct(ProductDto productDto);
         Task<ProductDto> UpdateProduct(ProductDto productDto);
         Task<string> DeleteProduct(string id);
+        Task<string> ReduceProductStock(string productId, int quantity);
+
     }
 
     public class ProductService : IProductService
@@ -117,6 +119,20 @@ namespace webApi.Services
 
             await _productRepository.DeleteProduct(id);
             return null;
+        }
+
+
+        public async Task<string> ReduceProductStock(string productId, int quantity)
+        {
+            // Check if the product exists and if the stock can be reduced
+            var isSuccess = await _productRepository.ReduceProductStock(productId, quantity);
+
+            if (!isSuccess)
+            {
+                return "Failed to reduce product stock. Either the product does not exist or there is insufficient stock.";
+            }
+
+            return null; // Stock reduced successfully
         }
     }
 }

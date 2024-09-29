@@ -20,11 +20,13 @@ namespace webApi.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ISaleRepository _saleRepository;
+        private readonly IProductService _productService;
 
-        public OrderService(IOrderRepository orderRepository, ISaleRepository saleRepository)
+        public OrderService(IOrderRepository orderRepository, ISaleRepository saleRepository, IProductService productService)
         {
             _orderRepository = orderRepository;
             _saleRepository = saleRepository;
+            _productService = productService;
         }
 
         //View all orders by all users
@@ -72,10 +74,10 @@ namespace webApi.Services
         }
 
         //Make the purchase
-        public async Task<(Order order, string error)> CreateOrder(string id)
+        public async Task<(Order order, string error)> CreateOrder(string userId)
         {
             // Get all unpaid sales for the user
-            var unpaidSales = await _saleRepository.GetUnpaidSalesByUserId(id);
+            var unpaidSales = await _saleRepository.GetUnpaidSalesByUserId(userId);
             if (unpaidSales == null || unpaidSales.Count == 0)
             {
                 return (null, "No unpaid sales found for the user.");
@@ -84,6 +86,19 @@ namespace webApi.Services
             // Calculate total price from sales
             var totalPrice = unpaidSales.Sum(s => s.Price * s.ProductQuantity);
 
+            // Reduce product stock for each product in the unpaid sales list
+            foreach (var sale in unpaidSales)
+            {
+                var reduceStockError = await _productService.ReduceProductStock(sale.ProductId, sale.ProductQuantity);
+
+                // If reducing stock fails, return the error message and abort the order creation
+                if (reduceStockError != null)
+                {
+                    return (null, $"Failed to reduce stock for product ID {sale.ProductId}: {reduceStockError}");
+                }
+            }
+
+            // Create the new order if all stock reductions succeeded
             var newOrder = new Order
             {
                 SaleList = unpaidSales,
@@ -96,10 +111,12 @@ namespace webApi.Services
 
             await _orderRepository.CreateOrder(newOrder);
 
-            //Change isPaid True.
-            await _saleRepository.ToggleIsPaidByUserId(id, true);
+            // Mark all sales as paid
+            await _saleRepository.ToggleIsPaidByUserId(userId, true);
+
             return (newOrder, null);
         }
+
 
         public async Task<Order> UpdateOrder(OrderDto orderDto)
         {

@@ -13,6 +13,8 @@ namespace webApi.Repositories
         Task CreateProduct(Product product);
         Task UpdateProduct(Product product);
         Task DeleteProduct(string id);
+
+        Task<bool> ReduceProductStock(string productId, int quantity);
     }
 
     public class ProductRepository : IProductRepository
@@ -57,6 +59,31 @@ namespace webApi.Repositories
         public async Task DeleteProduct(string id)
         {
             await _products.DeleteOneAsync(p => p.Id == id);
+        }
+
+
+        public async Task<bool> ReduceProductStock(string productId, int quantity)
+        {
+            var product = await _products.Find(p => p.Id == productId).FirstOrDefaultAsync();
+            if (product == null)
+            {
+                // Product not found
+                return false;
+            }
+
+            if (product.ProductStock < quantity)
+            {
+                // Not enough stock
+                return false;
+            }
+
+            // Reduce stock and update product
+            var updatedStock = product.ProductStock - quantity;
+            var updateDefinition = Builders<Product>.Update.Set(p => p.ProductStock, updatedStock);
+
+            var result = await _products.UpdateOneAsync(p => p.Id == productId, updateDefinition);
+
+            return result.ModifiedCount > 0;
         }
     }
 }

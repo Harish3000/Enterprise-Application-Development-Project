@@ -64,18 +64,27 @@ namespace webApi.Services
                 IsActive = vendorDto.IsActive
             };
 
-            var newUserVendor = new User
+
+            var existingUser = await _userRepository.GetUserByUserName(vendorDto.VendorName);
+
+            //check vendor exists in user table
+            if (existingUser == null)
             {
-                UserName = vendorDto.VendorName,
-                Email = vendorDto.VendorName+"@pixelcart.com",
-                Password = vendorDto.VendorName,
-                Address = "pending...",
-                Role = "Vendor"
+                var newUserVendor = new User
+                {
+                    UserName = vendorDto.VendorName,
+                    Email = vendorDto.VendorName + "@pixelcart.com",
+                    Password = vendorDto.VendorName,
+                    Address = "pending...",
+                    Role = "Vendor"
 
-            };
+                };
+                await _userRepository.CreateUser(newUserVendor);
 
+            }
 
-            await _userRepository.CreateUser(newUserVendor);
+  
+            
             await _vendorRepository.CreateVendor(newVendor);
             return newVendor; // Return the created vendor
         }
