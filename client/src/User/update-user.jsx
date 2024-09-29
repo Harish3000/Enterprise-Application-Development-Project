@@ -3,6 +3,7 @@ import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import SideBarMenu from "../Components/SideBarMenu";
 
 const UpdateUser = () => {
   const users = {
@@ -23,7 +24,7 @@ const UpdateUser = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/user/${id}`)
+      .get(`http://localhost:5164/api/user/${id}`)
       .then((response) => {
         setUser(response.data);
       })
@@ -35,7 +36,7 @@ const UpdateUser = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     await axios
-      .put(`http://localhost:8000/api/update/user/${id}`, user)
+      .put(`http://localhost:5164/api/update/user/${id}`, user)
       .then((response) => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/user");
@@ -46,6 +47,8 @@ const UpdateUser = () => {
   };
 
   return (
+    <div>
+       <SideBarMenu />
     <div className="addUser">
       <Link to="/user" type="button" class="btn btn-secondary">
         <i class="bi bi-skip-backward-fill"></i>
@@ -95,6 +98,7 @@ const UpdateUser = () => {
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 };

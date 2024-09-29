@@ -20,91 +20,53 @@ import AddOrder from "./Order/add-order";
 import UpdateOrder from "./Order/update-order";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
+import AppHome from "./Home/home";
 
 function App() {
   const routes = createBrowserRouter([
-    // {
-    //   path: '/',
-    //   element:<AppHome/>
-    // },
-
-    //Login and Register
+    {
+      path: '/',
+      element: <AppHome />,
+    },
+    {
+      path: '/login',
+      element: <Login />,
+    },
     {
       path: '/register',
-      element:<Register/>
+      element: <Register />,
     },
     {
-      path: "/login",
-      element: <Login />
+      path: '/dashboard',
+      element: <SideBarMenu />,
     },
+  
+        // users
+        { path: '/user', element: <User /> },
+        { path: '/add', element: <AddUser /> },
+        { path: '/update/:id', element: <Update /> },
+        
+        // vendors
+        { path: '/vendor', element: <Vendor /> },
+        { path: '/add-vendor', element: <AddVendor /> },
+        { path: '/update-vendor/:id', element: <UpdateVendor /> },
 
+        // orders
+        { path: '/order', element: <Order /> },
+        { path: '/add-order', element: <AddOrder /> },
+        { path: '/update-order/:id', element: <UpdateOrder /> },
 
-    {
-      path: "/sidebar",
-      element: <SideBarMenu />
-      // children: [
-      //   { element: <Navigate to="/sidebar" />, index: true },
-    },
-
-    //users
-    { path: "/user", element: <User /> },
-    {
-      path: "/add",
-      element: <AddUser />
-    },
-    {
-      path: "/update/:id",
-      element: <Update />
-    },
-
-    //vendors
-    {
-      path: "/vendor",
-      element: <Vendor />
-    },
-    {
-      path: "/add-vendor",
-      element: <AddVendor />
-    },
-    {
-      path: "/update-vendor/:id",
-      element: <UpdateVendor />
-    },
-
-    //orders
-    {
-      path: "/order",
-      element: <Order />
-    },
-    {
-      path: "/add-order",
-      element: <AddOrder />
-    },
-    {
-      path: "/update-order/:id",
-      element: <UpdateOrder />
-    },
-
-    //products
-    { path: "/product", element: <ProductList /> },
-    {
-      path: "/add-product",
-      element: <AddProduct />
-    },
-    {
-      path: "/update-product/:id",
-      element: <UpdateProduct />
-    }
-    //     ]
-    //   }
+        // products
+        { path: '/product', element: <ProductList /> },
+        { path: '/add-product', element: <AddProduct /> },
+        { path: '/update-product/:id', element: <UpdateProduct /> },
+ 
   ]);
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <SideBarMenu />
-      </BrowserRouter>
-      <div className="main-content">
+      <BrowserRouter />
+      <div>
         <RouterProvider router={routes} />
       </div>
     </div>

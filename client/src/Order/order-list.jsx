@@ -9,7 +9,7 @@ const Order = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/order");
+        const response = await axios.get("http://localhost:5164/api/order");
         setOrders(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -20,7 +20,7 @@ const Order = () => {
 
   const deleteOrder = async (orderId) => {
     await axios
-      .delete(`http://localhost:8000/api/order/delete/${orderId}`)
+      .delete(`http://localhost:5164/api/order/delete/${orderId}`)
       .then((response) => {
         setOrders((prevOrder) =>
           prevOrder.filter((order) => order._id !== orderId)

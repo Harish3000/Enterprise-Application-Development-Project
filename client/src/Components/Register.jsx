@@ -1,10 +1,20 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
+import "../Styles/login.css";
 
 function Register() {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    // Add any validation or form submission logic here
+    navigate('/login'); // Navigate to the login page after registration
+  };
   return (
+    <div className="loginContainer">
     <div className="loginForm">
       <div className="loginTitle">Register</div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div class="row g-3 mb-2 mt-2">
           <div class="col">
             <label for="exampleInputUsername" className="form-label">
@@ -45,10 +55,12 @@ function Register() {
           />
         </div>
         <button type="submit" className="btn">
+        
           Register
         </button>
       </form>
-    </div>
+      </div>
+      </div>
   );
 }
 

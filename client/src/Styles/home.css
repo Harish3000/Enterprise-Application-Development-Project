@@ -1,0 +1,62 @@
+/* .homePage {
+    background-color: #eef67d;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+} */
+
+.homePage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Style the video to cover the entire background */
+.backgroundVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Send video behind everything */
+    filter: blur(1px); /* Apply the blur effect */
+    opacity: 0.7; /* Add some transparency */
+}
+
+/* The overlay to ensure text and buttons are emphasized */
+.overlay {
+    position: relative;
+    z-index: 1;
+    color: white;
+    backdrop-filter: blur(6px); /* Adds slight blur to the content */
+}
+
+.homePage .homeTitle {
+    font-size: 50px;
+    color: #2f4050;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.homePage .homeTitle span {
+    color: #86a0ad;
+}
+
+.homePage .btn {
+    background-color: #2f4050;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+
+    border-radius: 10px;
+    cursor: pointer;
+}
