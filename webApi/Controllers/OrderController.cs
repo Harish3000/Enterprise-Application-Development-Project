@@ -16,28 +16,14 @@ namespace webApi.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet]
+        [HttpGet("ordersCompleted")]
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _orderService.GetAllOrders();
             return Ok(orders);
         }
 
-        [HttpGet("getById")]
-        public async Task<IActionResult> GetOrderById(IdDto idDto)
-        {
-            try
-            {
-                var order = await _orderService.GetOrderById(idDto.Id);
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new { error = ex.Message });
-            }
-        }
-
-        [HttpGet("getByUserId")]
+        [HttpGet("getCartByUserId")]
         public async Task<IActionResult> GetOrderByUserId(IdDto idDto)
         {
             try
@@ -51,7 +37,7 @@ namespace webApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("makePayment")]
         public async Task<IActionResult> CreateOrder([FromBody] IdDto idDto)
         {
             var (order, error) = await _orderService.CreateOrder(idDto.Id);
@@ -63,7 +49,21 @@ namespace webApi.Controllers
             return Ok(order);
         }
 
-        [HttpPut]
+        [HttpGet("getByOrderId")]
+        public async Task<IActionResult> GetOrderById(IdDto idDto)
+        {
+            try
+            {
+                var order = await _orderService.GetOrderById(idDto.Id);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+        }
+
+        [HttpPut("updateOrderDetails")]
         public async Task<IActionResult> UpdateOrder([FromBody] OrderDto orderDto)
         {
             try
@@ -77,7 +77,7 @@ namespace webApi.Controllers
             }
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("deleteOrder")]
         public async Task<IActionResult> DeleteOrder([FromBody] IdDto idDto)
         {
             var result = await _orderService.DeleteOrder(idDto.Id);

@@ -23,7 +23,7 @@ namespace webApi.Controllers
             return Ok(sales);
         }
 
-        [HttpPost]
+        [HttpPost("addToCart")]
         public async Task<IActionResult> CreateSale([FromBody] SaleDto saleDto)
         {
             var (sale, error) = await _saleService.CreateSale(saleDto);
