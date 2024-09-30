@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../Styles/addProduct.css";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import ObjectId from "bson-objectid"; // Import the ObjectId library
@@ -23,7 +22,6 @@ const AddProduct = () => {
 
   const [product, setProduct] = useState(initialProductState);
 
-
   // Handling text inputs
   const inputHandler = e => {
     const { id, value } = e.target;
@@ -32,20 +30,28 @@ const AddProduct = () => {
 
   const submitForm = async e => {
     e.preventDefault();
-    // try {
-    //   await axios.post("http://localhost:5164/api/Product", product);
-    //   toast.success("Product added successfully!", { position: "top-right" });
-    //   navigate("/product");
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error("Failed to add product. Please try again.", {
-    //     position: "top-right"
-    //   });
-    // }
-    createAPIEndpoint(ENDPOINTS.PRODUCT)
-      .post(product)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    try {
+      // Show a loading toast while the request is in progress
+      toast.loading("Adding product...", { position: "top-right" });
+
+      const res = await createAPIEndpoint(ENDPOINTS.PRODUCT).post(product);
+
+      // If successful, show a success message
+      toast.dismiss(); // Dismiss the loading toast
+      toast.success("Product added successfully!", { position: "top-right" });
+
+      console.log(res); // Optional: Log the response
+    } catch (err) {
+      // Dismiss the loading toast on error
+      toast.dismiss();
+
+      // If an error occurs, show an error message
+      toast.error("Failed to add product. Please try again.", {
+        position: "top-right"
+      });
+
+      console.error(err); // Log the error for debugging
+    }
   };
 
   return (

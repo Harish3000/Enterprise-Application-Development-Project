@@ -20,46 +20,134 @@ import UpdateOrder from "./Order/update-order";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import AppHome from "./Home/home";
+import ProtectedRoute from "./Routes/protected-route";
 
 function App() {
   const routes = createBrowserRouter([
     {
-      path: '/',
-      element: <AppHome />,
+      path: "/",
+      element: <AppHome />
     },
     {
-      path: '/login',
-      element: <Login />,
+      path: "/login",
+      element: <Login />
     },
     {
-      path: '/register',
-      element: <Register />,
+      path: "/register",
+      element: <Register />
     },
     {
-      path: '/dashboard',
-      element: <SideBarMenu />,
+      path: "/dashboard",
+      element: (
+        <ProtectedRoute>
+          <SideBarMenu />
+        </ProtectedRoute>
+      )
     },
-  
-        // users
-        { path: '/user', element: <User /> },
-        { path: '/add', element: <AddUser /> },
-        { path: '/update/:id', element: <Update /> },
-        
-        // vendors
-        { path: '/vendor', element: <Vendor /> },
-        { path: '/add-vendor', element: <AddVendor /> },
-        { path: '/update-vendor/:id', element: <UpdateVendor /> },
 
-        // orders
-        { path: '/order', element: <Order /> },
-        { path: '/add-order', element: <AddOrder /> },
-        { path: '/update-order/:id', element: <UpdateOrder /> },
+    // users
+    {
+      path: "/user",
+      element: (
+        <ProtectedRoute>
+          <User />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/add",
+      element: (
+        <ProtectedRoute>
+          <AddUser />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/update/:id",
+      element: (
+        <ProtectedRoute>
+          <Update />
+        </ProtectedRoute>
+      )
+    },
 
-        // products
-        { path: '/product', element: <ProductList /> },
-        { path: '/add-product', element: <AddProduct /> },
-        { path: '/update-product/:id', element: <UpdateProduct /> },
- 
+    // vendors
+    {
+      path: "/vendor",
+      element: (
+        <ProtectedRoute>
+          <Vendor />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/add-vendor",
+      element: (
+        <ProtectedRoute>
+          <AddVendor />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/update-vendor/:id",
+      element: (
+        <ProtectedRoute>
+          <UpdateVendor />
+        </ProtectedRoute>
+      )
+    },
+
+    // orders
+    {
+      path: "/order",
+      element: (
+        <ProtectedRoute>
+          <Order />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/add-order",
+      element: (
+        <ProtectedRoute>
+          <AddOrder />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/update-order/:id",
+      element: (
+        <ProtectedRoute>
+          <UpdateOrder />
+        </ProtectedRoute>
+      )
+    },
+
+    // products
+    {
+      path: "/product",
+      element: (
+        <ProtectedRoute>
+          <ProductList />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/add-product",
+      element: (
+        <ProtectedRoute>
+          <AddProduct />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: "/update-product/:id",
+      element: (
+        <ProtectedRoute>
+          <UpdateProduct />
+        </ProtectedRoute>
+      )
+    }
   ]);
 
   return (
