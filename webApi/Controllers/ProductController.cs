@@ -36,6 +36,19 @@ namespace webApi.Controllers
 
 
         [HttpGet("getByVendorId")]
+        public async Task<IActionResult> GetProductsByVendorId(IdDto idDto)
+        {
+            var products = await _productService.GetProductsByVendorId(idDto.Id);
+            if (products == null || !products.Any())
+            {
+                return NotFound(new { error = "No products found for the specified vendor." });
+            }
+            return Ok(products);
+        }
+
+
+
+        [HttpGet("getByVendorName")]
         public async Task<IActionResult> GetProductsByVendorName(VendorNameDto vendorNameDto)
         {
             var products = await _productService.GetProductsByVendorName(vendorNameDto.VendorName);

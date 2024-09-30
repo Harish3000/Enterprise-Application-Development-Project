@@ -98,6 +98,12 @@ namespace webApi.Services
                 }
             }
 
+            // Ensure all sales have IsPaid set to true
+            foreach (var sale in unpaidSales)
+            {
+                sale.IsPaid = true;
+            }
+
             // Create the new order if all stock reductions succeeded
             var newOrder = new Order
             {
@@ -111,11 +117,12 @@ namespace webApi.Services
 
             await _orderRepository.CreateOrder(newOrder);
 
-            // Mark all sales as paid
+            // Mark all sales as paid in the database
             await _saleRepository.ToggleIsPaidByUserId(userId, true);
 
             return (newOrder, null);
         }
+
 
 
         public async Task<Order> UpdateOrder(OrderDto orderDto)

@@ -19,13 +19,14 @@ namespace webApi.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly IVendorService _vendorService;
+        private readonly IVendorRepository _vendorRepository;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IVendorService vendorService)
+        public UserService(IUserRepository userRepository, IMapper mapper,IVendorRepository vendorRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _vendorService = vendorService;
+            _vendorRepository = vendorRepository;
+
         }
 
         public async Task<List<UserDto>> GetAllUsers()
@@ -88,14 +89,15 @@ namespace webApi.Services
 
                 if (role == "Vendor")
                 {
-                    var vendorDto = new VendorDto
+                    var vendor = new Vendor
                     {
+                        Id = userId,
                         VendorName = user.UserName,
                         ProductIds = [],
                         VendorRank = 0,
                         IsActive = false
                     };
-                    await _vendorService.CreateVendor(vendorDto);
+                    await _vendorRepository.CreateVendor(vendor);
                     return true;
                 }
 
