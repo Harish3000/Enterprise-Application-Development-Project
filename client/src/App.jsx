@@ -1,6 +1,6 @@
 import "./App.css";
 import {
-  BrowserRouter,
+  // BrowserRouter,
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
@@ -109,10 +109,7 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter />
-      <div>
-        <RouterProvider router={routes} />
-      </div>
+      <RouterProvider router={routes} />
     </div>
   );
 }
