@@ -3,6 +3,7 @@ import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import SideBarMenu from "../Components/SideBarMenu";
 
 const UpdateOrder = () => {
   const orders = {
@@ -14,41 +15,46 @@ const UpdateOrder = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const inputHandler = (e) => {
+  const inputHandler = e => {
     const { name, value } = e.target;
     console.log(name, value);
 
     setOrder({ ...order, [name]: value });
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5164/api/order/${id}`)
-      .then((response) => {
-        setOrder(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [id]);
+  useEffect(
+    () => {
+      axios
+        .get(`http://localhost:5164/api/order/${id}`)
+        .then(response => {
+          setOrder(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    [id]
+  );
 
-  const submitForm = async (e) => {
+  const submitForm = async e => {
     e.preventDefault();
     await axios
       .put(`http://localhost:5164/api/update/order/${id}`, order)
-      .then((response) => {
+      .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/order");
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
 
   return (
+    <div>
+      <SideBarMenu />
     <div className="addOrder">
       <Link to="/order" type="button" class="btn btn-secondary">
-        <i class="bi bi-skip-backward-fill"></i>
+        <i class="bi bi-skip-backward-fill" />
       </Link>
 
       <h3>Update Order</h3>
@@ -93,6 +99,7 @@ const UpdateOrder = () => {
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 };

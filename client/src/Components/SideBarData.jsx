@@ -31,4 +31,14 @@ export const SideBarData = [
     icon: <i className="bi bi-person-circle"></i>,
     link: "/user",
   },
+  {
+    title: "Profile",
+    icon: <i className="bi bi-person"></i>,
+    link: "/profile",
+  },
+  {
+    title: "Logout",
+    icon: <i className="bi bi-box-arrow-right"></i>,
+    link: "/",
+  }
 ];

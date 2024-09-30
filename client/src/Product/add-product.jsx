@@ -3,24 +3,26 @@ import "../Styles/addProduct.css";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
-import ObjectId from "bson-objectid"; // Import the ObjectId library
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const AddProduct = () => {
+  const userId = localStorage.getItem("userId");
+
   const initialProductState = {
-    Id: ObjectId().toString(), // Generate a new MongoDB ObjectId
-    ProductName: "",
-    ProductDescription: "",
-    ProductPrice: "",
-    ProductRating: "",
-    CategoryName: "",
-    ProductStock: "",
-    IsActive: false,
-    VendorName: "",
-    ProductImage: ""
+    Id: userId,
+    productName: "",
+    productDescription: "",
+    productPrice: "",
+    productRating: "",
+    categoryName: "",
+    productStock: "",
+    isActive: false,
+    vendorName: "",
+    productImage: "",
   };
 
   const [product, setProduct] = useState(initialProductState);
+  const [loading, setLoading] = useState(false);
 
   // Handling text inputs
   const inputHandler = e => {
@@ -28,8 +30,25 @@ const AddProduct = () => {
     setProduct({ ...product, [id]: value });
   };
 
+  // Validation logic
+  const validateForm = () => {
+    const { productName, productPrice, productStock } = product;
+    if (!productName || !productPrice || !productStock) {
+      toast.error("Please fill in all the required fields.");
+      return false;
+    }
+    if (productPrice <= 0 || productStock < 0) {
+      toast.error("Please enter valid values for price and stock.");
+      return false;
+    }
+    return true;
+  };
+
   const submitForm = async e => {
     e.preventDefault();
+
+    if (!validateForm()) return;
+
     try {
       // Show a loading toast while the request is in progress
       toast.loading("Adding product...", { position: "top-right" });
@@ -41,6 +60,9 @@ const AddProduct = () => {
       toast.success("Product added successfully!", { position: "top-right" });
 
       console.log(res); // Optional: Log the response
+
+      // Reset form after successful submission
+      setProduct(initialProductState);
     } catch (err) {
       // Dismiss the loading toast on error
       toast.dismiss();
@@ -51,6 +73,8 @@ const AddProduct = () => {
       });
 
       console.error(err); // Log the error for debugging
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -65,49 +89,55 @@ const AddProduct = () => {
         <h3>Add New Product</h3>
         <form className="addProductForm" onSubmit={submitForm}>
           <div className="inputGroup">
-            <label htmlFor="ProductName">Product Name :</label>
+            <label htmlFor="productName">Product Name :</label>
             <input
               type="text"
-              id="ProductName"
+              id="productName"
               onChange={inputHandler}
-              name="ProductName"
+              name="productName"
               autoComplete="off"
               placeholder="Enter Product Name"
+              value={product.productName}
+              required
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="ProductDescription">Description :</label>
+            <label htmlFor="productDescription">Description :</label>
             <input
               type="text"
-              id="ProductDescription"
+              id="productDescription"
               onChange={inputHandler}
-              name="ProductDescription"
+              name="productDescription"
               autoComplete="off"
               placeholder="Enter a description"
+              value={product.productDescription}
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="ProductPrice">Price :</label>
+            <label htmlFor="productPrice">Price :</label>
             <input
               min={0}
               type="number"
-              id="ProductPrice"
+              id="productPrice"
               onChange={inputHandler}
-              name="ProductPrice"
+              name="productPrice"
               autoComplete="off"
               placeholder="Enter product price"
+              value={product.productPrice}
+              required
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="ProductRating">Rating :</label>
+            <label htmlFor="productRating">Rating :</label>
             <input
               min={0}
               type="number"
-              id="ProductRating"
+              id="productRating"
               onChange={inputHandler}
-              name="ProductRating"
+              name="productRating"
               autoComplete="off"
               placeholder="Enter product rating"
+              value={product.productRating}
             />
           </div>
           <div className="inputGroup">
@@ -119,18 +149,21 @@ const AddProduct = () => {
               name="CategoryName"
               autoComplete="off"
               placeholder="Enter product category"
+              value={product.CategoryName}
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="ProductStock">Stock :</label>
+            <label htmlFor="productStock">Stock :</label>
             <input
               min={0}
               type="number"
-              id="ProductStock"
+              id="productStock"
               onChange={inputHandler}
-              name="ProductStock"
+              name="productStock"
               autoComplete="off"
               placeholder="Enter product stock"
+              value={product.productStock}
+              required
             />
           </div>
           <div className="inputGroup">
@@ -142,22 +175,24 @@ const AddProduct = () => {
               onChange={inputHandler}
               autoComplete="off"
               placeholder="Enter vendor name"
+              value={product.VendorName}
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="ProductImage">Product Image :</label>
+            <label htmlFor="productImage">Product Image :</label>
             <input
               type="text"
-              id="ProductImage"
+              id="productImage"
               onChange={inputHandler}
-              name="ProductImage"
+              name="productImage"
               autoComplete="off"
-              placeholder="Enter Product Image Url"
+              placeholder="Enter product Image Url"
+              value={product.productImage}
             />
           </div>
           <div className="inputGroup">
-            <button type="submit" class="btn">
-              Submit
+            <button type="submit" class="btn" disabled={loading}>
+              {loading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </form>

@@ -17,6 +17,7 @@ function Login() {
     try {
       const response = await axios.post(
         "https://ecomm.free.beeceptor.com/api/login",
+        // "http://localhost:5164/api/Auth/login",
         {
           email,
           password
@@ -30,7 +31,7 @@ function Login() {
       localStorage.setItem("userId", userId);
 
       // Redirect to success page on successful login
-      navigate("/dashboard");
+      navigate("/profile");
       toast.success("Login successful");
     } catch (error) {
       setError("Login failed. Please check your credentials.");

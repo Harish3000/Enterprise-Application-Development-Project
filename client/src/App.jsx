@@ -20,7 +20,7 @@ import UpdateOrder from "./Order/update-order";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import AppHome from "./Home/home";
-import ProtectedRoute from "./Routes/protected-route";
+import Profile from "./Home/profile";
 
 function App() {
   const routes = createBrowserRouter([
@@ -38,115 +38,72 @@ function App() {
     },
     {
       path: "/dashboard",
-      element: (
-        <ProtectedRoute>
-          <SideBarMenu />
-        </ProtectedRoute>
-      )
+      element: <SideBarMenu />
     },
 
+    {
+      path: "/profile",
+      element: <Profile />
+    },
+    // inventory
+    {
+      path: "/inventory",
+      element: <SideBarMenu />
+    },
     // users
     {
       path: "/user",
-      element: (
-        <ProtectedRoute>
-          <User />
-        </ProtectedRoute>
-      )
+      element: <User />
     },
     {
       path: "/add",
-      element: (
-        <ProtectedRoute>
-          <AddUser />
-        </ProtectedRoute>
-      )
+      element: <AddUser />
     },
     {
       path: "/update/:id",
-      element: (
-        <ProtectedRoute>
-          <Update />
-        </ProtectedRoute>
-      )
+      element: <Update />
     },
 
     // vendors
     {
       path: "/vendor",
-      element: (
-        <ProtectedRoute>
-          <Vendor />
-        </ProtectedRoute>
-      )
+      element: <Vendor />
     },
     {
       path: "/add-vendor",
-      element: (
-        <ProtectedRoute>
-          <AddVendor />
-        </ProtectedRoute>
-      )
+      element: <AddVendor />
     },
     {
       path: "/update-vendor/:id",
-      element: (
-        <ProtectedRoute>
-          <UpdateVendor />
-        </ProtectedRoute>
-      )
+      element: <UpdateVendor />
     },
 
     // orders
     {
       path: "/order",
-      element: (
-        <ProtectedRoute>
-          <Order />
-        </ProtectedRoute>
-      )
+      element: <Order />
     },
     {
       path: "/add-order",
-      element: (
-        <ProtectedRoute>
-          <AddOrder />
-        </ProtectedRoute>
-      )
+      element: <AddOrder />
     },
     {
       path: "/update-order/:id",
-      element: (
-        <ProtectedRoute>
-          <UpdateOrder />
-        </ProtectedRoute>
-      )
+      element: <UpdateOrder />
     },
 
     // products
     {
       path: "/product",
-      element: (
-        <ProtectedRoute>
-          <ProductList />
-        </ProtectedRoute>
-      )
+      element: <ProductList />
     },
     {
       path: "/add-product",
-      element: (
-        <ProtectedRoute>
-          <AddProduct />
-        </ProtectedRoute>
-      )
+      element: <AddProduct />
     },
     {
       path: "/update-product/:id",
-      element: (
-        <ProtectedRoute>
-          <UpdateProduct />
-        </ProtectedRoute>
-      )
+      element: <UpdateProduct />
     }
   ]);
 
