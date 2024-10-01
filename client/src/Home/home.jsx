@@ -2,10 +2,10 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Styles/home.css";
 import { useNavigate } from "react-router-dom";
-import homeVideo from "../Assets/homeVideo.mp4";
+import homeVideo from "../assets/homeVideo.mp4";
 
 // Rename the component to start with an uppercase letter
-function Home() { 
+function Home() {
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
   return (

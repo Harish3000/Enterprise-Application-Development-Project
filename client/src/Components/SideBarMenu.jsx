@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Styles/sideBarMenu.css";
 import { SideBarData } from "./SideBarData";
-import logo from "../Assets/App.png";
+import logo from "../assets/App.png";
 import { Link } from "react-router-dom";
 
 function SideBarMenu() {
@@ -23,12 +23,8 @@ function SideBarMenu() {
                 window.location.pathname = val.link;
               }}
             >
-              <div id="icon">
-                {val.icon}
-              </div>
-              <div id="title">
-                {val.title}
-              </div>
+              <div id="icon">{val.icon}</div>
+              <div id="title">{val.title}</div>
             </li>
           );
         })}

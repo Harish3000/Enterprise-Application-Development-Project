@@ -7,51 +7,48 @@ import SideBarMenu from "../Components/SideBarMenu";
 
 const UpdateProduct = () => {
   const products = {
-    Id: "",
-    ProductName: "",
-    ProductImage: "",
-    ProductDescription: "",
-    ProductPrice: "",
-    ProductRating: "",
-    CategoryName: "",
-    ProductStock: "",
-    IsActive: "",
-    VendorName:""
+    id: "",
+    productName: "",
+    productImage: "",
+    productDescription: "",
+    productPrice: "",
+    productRating: "",
+    categoryName: "",
+    productStock: "",
+    isActive: "",
+    vendorName: "",
   };
   const [product, setProduct] = useState(products);
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const inputHandler = e => {
+  const inputHandler = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
 
     setProduct({ ...product, [name]: value });
   };
 
-  useEffect(
-    () => {
-      axios
-        .get(`http://localhost:5164/api/Product`)
-        .then(response => {
-          setProduct(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    [id]
-  );
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5164/api/Product`)
+      .then((response) => {
+        setProduct(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
-  const submitForm = async e => {
+  const submitForm = async (e) => {
     e.preventDefault();
     await axios
       .put(`http://localhost:5164/api/Product`, product)
-      .then(response => {
+      .then((response) => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/product");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };

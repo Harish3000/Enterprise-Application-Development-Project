@@ -22,36 +22,36 @@ import axios from "axios";
 export const ENDPOINTS = {
   PRODUCT: "Product",
   VENDOR: "Vendor",
-  ORDER: "Order"
+  ORDER: "Order",
 };
 
 // Get token from localStorage or wherever it's stored
-const token = localStorage.getItem("jwt");
+const token = localStorage.getItem("token");
 
-export const createAPIEndpoint = endpoint => {
+export const createAPIEndpoint = (endpoint) => {
   let url = "api/" + endpoint + "/";
 
   const axiosInstance = axios.create({
     baseURL: url,
     headers: {
       Authorization: `Bearer ${token}`, // Include the JWT token in the header
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   });
 
   return {
     fetchAll: () => axiosInstance.get("/").catch(handleError),
-    fetchById: id => axiosInstance.get(`/getById`).catch(handleError),
-    post: newProduct =>
+    fetchById: (id) => axiosInstance.get(`/getById`).catch(handleError),
+    post: (newProduct) =>
       axiosInstance.post("/", newProduct).catch(handleError),
-    put: updatedProduct =>
+    put: (updatedProduct) =>
       axiosInstance.put(`/`, updatedProduct).catch(handleError),
-    delete: id => axiosInstance.delete(`/delete`).catch(handleError)
+    delete: (id) => axiosInstance.delete(`/delete`).catch(handleError),
   };
 };
 
 // Global error handler for axios
-const handleError = error => {
+const handleError = (error) => {
   if (error.response) {
     // Client received an error response (5xx, 4xx)
     console.error("Error Response:", error.response);

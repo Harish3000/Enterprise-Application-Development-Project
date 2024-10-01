@@ -10,7 +10,7 @@ const Product = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5164/api/Product");
+        const response = await axios.get("api/Product");
         setProducts(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -19,16 +19,16 @@ const Product = () => {
     fetchData();
   }, []);
 
-  const deleteProduct = async Id => {
+  const deleteProduct = async (Id) => {
     await axios
-      .delete(`http://localhost:5164/api/Product`)
-      .then(response => {
-        setProducts(prevProduct =>
-          prevProduct.filter(product => product._id !== Id)
+      .delete(`api/Product/delete`)
+      .then((response) => {
+        setProducts((prevProduct) =>
+          prevProduct.filter((product) => product._id !== Id)
         );
         toast.success(response.data.message, { position: "top-right" });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -61,33 +61,15 @@ const Product = () => {
             {products.map((product, index) => {
               return (
                 <tr>
-                  <td>
-                    {index + 1}
-                  </td>
-                  <td>
-                    {product.ProductName}
-                  </td>
-                  <td>
-                    {product.ProductDescription}
-                  </td>
-                  <td>
-                    {product.ProductPrice}
-                  </td>
-                  <td>
-                    {product.ProductRating}
-                  </td>
-                  <td>
-                    {product.CategoryName}
-                  </td>
-                  <td>
-                    {product.ProductStock}
-                  </td>
-                  <td>
-                    {product.ProductImage}
-                  </td>
-                  <td>
-                    {product.isActive ? "Active" : "Inactive"}
-                  </td>
+                  <td>{index + 1}</td>
+                  <td>{product.productName}</td>
+                  <td>{product.productDescription}</td>
+                  <td>{product.productPrice}</td>
+                  <td>{product.productRating}</td>
+                  <td>{product.categoryName}</td>
+                  <td>{product.productStock}</td>
+                  <td>{product.productImage}</td>
+                  <td>{product.isActive ? "Active" : "Inactive"}</td>
                   <td className="actionButtons">
                     <Link
                       to={`/update/` + product._id}
