@@ -25,7 +25,7 @@ const UpdateOrder = () => {
   useEffect(
     () => {
       axios
-        .get(`http://localhost:5164/api/order/${id}`)
+        .get(`api/order/${id}`)
         .then(response => {
           setOrder(response.data);
         })
@@ -39,7 +39,7 @@ const UpdateOrder = () => {
   const submitForm = async e => {
     e.preventDefault();
     await axios
-      .put(`http://localhost:5164/api/update/order/${id}`, order)
+      .put(`api/update/order/${id}`, order)
       .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/order");

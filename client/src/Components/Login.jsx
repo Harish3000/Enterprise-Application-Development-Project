@@ -16,8 +16,8 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        // "https://ecomm.free.beeceptor.com/api/login",
-        "/api/Auth/login",
+        "https://ecomm.free.beeceptor.com/api/login",
+        // "/api/Auth/login",
         {
           email,
           password

@@ -1,22 +1,3 @@
-// import axios from "axios";
-
-// export const ENDPOINTS = {
-//   PRODUCT: "Product",
-//   VENDOR: "Vendor",
-//   ORDER: "Order"
-// };
-
-// export const createAPIEndpoint = endpoint => {
-//   let url = "api/" + endpoint + "/";
-//   return {
-//     fetchAll: () => axios.get(url),
-//     fetchById: id => axios.get(url + id),
-//     post: newProduct => axios.post(url, newProduct),
-//     put: (id, updatedProduct) => axios.put(url + id, updatedProduct),
-//     delete: id => axios.delete(url + id)
-//   };
-// };
-
 import axios from "axios";
 
 export const ENDPOINTS = {
@@ -29,7 +10,7 @@ export const ENDPOINTS = {
 const token = localStorage.getItem("jwt");
 
 export const createAPIEndpoint = endpoint => {
-  let url = "api/" + endpoint + "/";
+  let url = "api/" + endpoint + "/"; // No localhost or port here
 
   const axiosInstance = axios.create({
     baseURL: url,
@@ -41,12 +22,12 @@ export const createAPIEndpoint = endpoint => {
 
   return {
     fetchAll: () => axiosInstance.get("/").catch(handleError),
-    fetchById: id => axiosInstance.get(`/getById`).catch(handleError),
+    fetchById: () => axiosInstance.get(`/getById`).catch(handleError),
     post: newProduct =>
       axiosInstance.post("/", newProduct).catch(handleError),
     put: updatedProduct =>
       axiosInstance.put(`/`, updatedProduct).catch(handleError),
-    delete: id => axiosInstance.delete(`/delete`).catch(handleError)
+    delete: ()=> axiosInstance.delete(`/delete`).catch(handleError)
   };
 };
 

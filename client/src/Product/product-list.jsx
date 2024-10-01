@@ -10,7 +10,7 @@ const Product = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5164/api/Product");
+        const response = await axios.get("api/Product");
         setProducts(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -21,7 +21,7 @@ const Product = () => {
 
   const deleteProduct = async Id => {
     await axios
-      .delete(`http://localhost:5164/api/Product`)
+      .delete(`api/Product`)
       .then(response => {
         setProducts(prevProduct =>
           prevProduct.filter(product => product._id !== Id)

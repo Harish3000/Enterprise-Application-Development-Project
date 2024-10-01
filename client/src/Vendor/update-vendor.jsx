@@ -25,7 +25,7 @@ const UpdateVendor = () => {
   useEffect(
     () => {
       axios
-        .get(`http://localhost:5164/api/vendor/${id}`)
+        .get(`api/vendor/${id}`)
         .then(response => {
           setVendor(response.data);
         })
@@ -39,7 +39,7 @@ const UpdateVendor = () => {
   const submitForm = async e => {
     e.preventDefault();
     await axios
-      .put(`http://localhost:5164/api/update/vendor/${id}`, vendor)
+      .put(`api/update/vendor/${id}`, vendor)
       .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/vendor");
