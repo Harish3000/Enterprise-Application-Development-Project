@@ -6,10 +6,8 @@ import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const AddProduct = () => {
-  const userId = localStorage.getItem("userId");
-
   const initialProductState = {
-    Id: userId,
+    id: "",
     productName: "",
     productDescription: "",
     productPrice: "",
@@ -25,7 +23,7 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
 
   // Handling text inputs
-  const inputHandler = e => {
+  const inputHandler = (e) => {
     const { id, value } = e.target;
     setProduct({ ...product, [id]: value });
   };
@@ -44,7 +42,7 @@ const AddProduct = () => {
     return true;
   };
 
-  const submitForm = async e => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -69,10 +67,11 @@ const AddProduct = () => {
 
       // If an error occurs, show an error message
       toast.error("Failed to add product. Please try again.", {
-        position: "top-right"
+        position: "top-right",
       });
 
       console.error(err); // Log the error for debugging
+      console.log(product);
     } finally {
       setLoading(false); // Stop loading
     }
@@ -141,15 +140,15 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="CategoryName">Category :</label>
+            <label htmlFor="categoryName">Category :</label>
             <input
               type="text"
-              id="CategoryName"
+              id="categoryName"
               onChange={inputHandler}
-              name="CategoryName"
+              name="categoryName"
               autoComplete="off"
               placeholder="Enter product category"
-              value={product.CategoryName}
+              value={product.categoryName}
             />
           </div>
           <div className="inputGroup">
@@ -167,15 +166,15 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="VendorName">Vendor :</label>
+            <label htmlFor="vendorName">Vendor :</label>
             <input
               type="text"
-              id="VendorName"
-              name="VendorName"
+              id="vendorName"
+              name="vendorName"
               onChange={inputHandler}
               autoComplete="off"
               placeholder="Enter vendor name"
-              value={product.VendorName}
+              value={product.vendorName}
             />
           </div>
           <div className="inputGroup">

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import homeVideo from "../Assets/homeVideo.mp4";
 
 // Rename the component to start with an uppercase letter
-function Home() { 
+function Home() {
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
   return (

@@ -12,21 +12,17 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://ecomm.free.beeceptor.com/api/login",
-        // "/api/Auth/login",
-        {
-          email,
-          password
-        }
-      );
-      const { jwt, role, userId } = response.data;
+      const response = await axios.post("/api/Auth/login", {
+        email,
+        password,
+      });
+      const { token, role, userId } = response.data;
 
       // Save login data to localStorage
-      localStorage.setItem("token", jwt);
+      localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userId", userId);
 
@@ -41,10 +37,7 @@ function Login() {
     <div className="loginContainer">
       <div className="loginForm">
         <div className="loginTitle">Login</div>
-        {error &&
-          <div className="alert alert-danger">
-            {error}
-          </div>}
+        {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div class="mb-3">
             <label for="exampleInputEmail1" className="form-label">
@@ -56,7 +49,7 @@ function Login() {
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -69,7 +62,7 @@ function Login() {
               className="form-control"
               id="exampleInputPassword1"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>

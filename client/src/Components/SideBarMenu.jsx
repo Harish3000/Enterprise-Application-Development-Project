@@ -23,12 +23,8 @@ function SideBarMenu() {
                 window.location.pathname = val.link;
               }}
             >
-              <div id="icon">
-                {val.icon}
-              </div>
-              <div id="title">
-                {val.title}
-              </div>
+              <div id="icon">{val.icon}</div>
+              <div id="title">{val.title}</div>
             </li>
           );
         })}
