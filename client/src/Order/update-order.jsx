@@ -39,7 +39,7 @@ const UpdateOrder = () => {
   const submitForm = async e => {
     e.preventDefault();
     await axios
-      .put(`api/update/order/${id}`, order)
+      .put(`api/Order`, order)
       .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/order");

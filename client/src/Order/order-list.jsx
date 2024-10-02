@@ -10,7 +10,7 @@ const Order = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("api/order");
+        const response = await axios.get("api/Order");
         setOrders(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -21,7 +21,7 @@ const Order = () => {
 
   const deleteOrder = async orderId => {
     await axios
-      .delete(`api/order/delete/${orderId}`)
+      .delete(`api/Order`)
       .then(response => {
         setOrders(prevOrder =>
           prevOrder.filter(order => order._id !== orderId)

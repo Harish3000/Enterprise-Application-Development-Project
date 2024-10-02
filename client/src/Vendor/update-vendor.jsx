@@ -25,7 +25,7 @@ const UpdateVendor = () => {
   useEffect(
     () => {
       axios
-        .get(`api/vendor/${id}`)
+        .get(`api/Vendor`)
         .then(response => {
           setVendor(response.data);
         })
@@ -39,7 +39,7 @@ const UpdateVendor = () => {
   const submitForm = async e => {
     e.preventDefault();
     await axios
-      .put(`api/update/vendor/${id}`, vendor)
+      .put(`api/Vendor`, vendor)
       .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/vendor");

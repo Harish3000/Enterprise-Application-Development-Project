@@ -21,7 +21,7 @@ const Product = () => {
 
   const deleteProduct = async (Id) => {
     await axios
-      .delete(`api/Product/delete`)
+      .delete(`api/Product`)
       .then((response) => {
         setProducts((prevProduct) =>
           prevProduct.filter((product) => product._id !== Id)

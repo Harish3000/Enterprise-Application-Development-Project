@@ -10,7 +10,7 @@ const Vendor = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("api/vendor");
+        const response = await axios.get("api/Vendor");
         setVendors(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -21,7 +21,7 @@ const Vendor = () => {
 
   const deleteVendor = async vendorId => {
     await axios
-      .delete(`api/vendor/delete/${vendorId}`)
+      .delete(`api/Vendor`)
       .then(response => {
         setVendors(prevVendor =>
           prevVendor.filter(vendor => vendor._id !== vendorId)

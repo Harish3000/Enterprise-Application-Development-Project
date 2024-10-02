@@ -31,7 +31,7 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5164/api/Product`)
+      .get(`api/Product`)
       .then((response) => {
         setProduct(response.data);
       })
@@ -43,7 +43,7 @@ const UpdateProduct = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     await axios
-      .put(`http://localhost:5164/api/Product`, product)
+      .put(`api/Product`, product)
       .then((response) => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/product");

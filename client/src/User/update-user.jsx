@@ -24,7 +24,7 @@ const UpdateUser = () => {
 
   useEffect(() => {
     axios
-      .get(`api/user/${id}`)
+      .get(`api/User`)
       .then((response) => {
         setUser(response.data);
       })
@@ -36,7 +36,7 @@ const UpdateUser = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     await axios
-      .put(`api/update/user/${id}`, user)
+      .put(`api/User`, user)
       .then((response) => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/user");

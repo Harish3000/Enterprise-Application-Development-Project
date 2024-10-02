@@ -25,7 +25,7 @@ const AddOrder = () => {
   const submitForm = async e => {
     e.preventDefault();
     await axios
-      .post("api/order", order)
+      .post("api/Order", order)
       .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/order");

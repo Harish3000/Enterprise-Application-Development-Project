@@ -25,7 +25,7 @@ const AddVendor = () => {
   const submitForm = async e => {
     e.preventDefault();
     await axios
-      .post("api/vendor", vendor)
+      .post("api/Vendor", vendor)
       .then(response => {
         toast.success(response.data.message, { position: "top-right" });
         navigate("/vendor");
