@@ -22,12 +22,12 @@ export const createAPIEndpoint = (endpoint) => {
 
   return {
     fetchAll: () => axiosInstance.get("/").catch(handleError),
-    fetchById: (id) => axiosInstance.get(`/getById`).catch(handleError),
+    fetchById: () => axiosInstance.get(`/getById`).catch(handleError),
     post: (newProduct) =>
       axiosInstance.post("/", newProduct).catch(handleError),
     put: (updatedProduct) =>
       axiosInstance.put(`/`, updatedProduct).catch(handleError),
-    delete: (id) => axiosInstance.delete(`/delete`).catch(handleError),
+    delete: () => axiosInstance.delete(`/`).catch(handleError),
   };
 };
 
