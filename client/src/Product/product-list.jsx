@@ -4,13 +4,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("api/Product");
+        const response = await createAPIEndpoint(ENDPOINTS.PRODUCT).fetchAll(); 
         setProducts(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -19,16 +20,16 @@ const Product = () => {
     fetchData();
   }, []);
 
-  const deleteProduct = async (Id) => {
+  const deleteProduct = async Id => {
     await axios
       .delete(`api/Product`)
-      .then((response) => {
-        setProducts((prevProduct) =>
-          prevProduct.filter((product) => product._id !== Id)
+      .then(response => {
+        setProducts(prevProduct =>
+          prevProduct.filter(product => product._id !== Id)
         );
         toast.success(response.data.message, { position: "top-right" });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -61,18 +62,39 @@ const Product = () => {
             {products.map((product, index) => {
               return (
                 <tr>
-                  <td>{index + 1}</td>
-                  <td>{product.productName}</td>
-                  <td>{product.productDescription}</td>
-                  <td>{product.productPrice}</td>
-                  <td>{product.productRating}</td>
-                  <td>{product.categoryName}</td>
-                  <td>{product.productStock}</td>
-                  <td>{product.productImage}</td>
-                  <td>{product.isActive ? "Active" : "Inactive"}</td>
+                  <td>
+                    {index + 1}
+                  </td>
+                  <td>
+                    {product.productName}
+                  </td>
+                  <td>
+                    {product.productDescription}
+                  </td>
+                  <td>
+                    {product.productPrice}
+                  </td>
+                  <td>
+                    {product.productRating}
+                  </td>
+                  <td>
+                    {product.categoryName}
+                  </td>
+                  <td>
+                    {product.productStock}
+                  </td>
+                  <td>
+                    {product.vendorName}
+                  </td>
+                  <td>
+                    {product.isActive ? "Active" : "Inactive"}
+                  </td>
+                  <td>
+                    {product.productImage}
+                  </td>
                   <td className="actionButtons">
                     <Link
-                      to={`/update/` + product._id}
+                      to={`/update-product/` + product._id}
                       type="button"
                       class="btn btn-info"
                     >

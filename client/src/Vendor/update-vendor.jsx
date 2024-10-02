@@ -71,12 +71,12 @@ const UpdateVendor = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productId">Product Id:</label>
+            <label htmlFor="productIds">Product Id:</label>
             <input
               type="text"
-              id="productId"
+              id="productIds"
               onChange={inputHandler}
-              name="productId"
+              name="productIds"
               autoComplete="off"
               placeholder="Enter product List"
             />

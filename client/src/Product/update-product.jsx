@@ -57,7 +57,7 @@ const UpdateProduct = () => {
     <div>
       <SideBarMenu />
       <div className="addProduct">
-        <Link to="/products" type="button" class="btn btn-secondary">
+        <Link to="/product" type="button" class="btn btn-secondary">
           <i class="bi bi-skip-backward-fill" />
         </Link>
 

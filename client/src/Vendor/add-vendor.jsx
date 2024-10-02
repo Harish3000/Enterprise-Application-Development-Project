@@ -1,38 +1,60 @@
 import React, { useState } from "react";
 import "../Styles/addvendor.css";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const AddVendor = () => {
-  const vendors = {
+  const initialVendors = {
+    id: "",
     vendorName: "",
-    productId: "",
-    vendorRank: "",
+    productIds: [],
+    vendorRank: 0.0,
     isActive: true
   };
-  const [vendor, setVendor] = useState(vendors);
-  const navigate = useNavigate();
+  const [vendor, setVendor] = useState(initialVendors);
+  const [loading, setLoading] = useState(false);
 
   const inputHandler = e => {
-    const { name, value } = e.target;
-    console.log(name, value);
+    const { id, value } = e.target;
+    console.log(id, value);
+    setVendor({ ...vendor, [id]: value });
+  };
 
-    setVendor({ ...vendor, [name]: value });
+  // Validation logic
+  const validateForm = () => {
+    const { vendorName, vendorRank } = vendor;
+    if (!vendorName || !vendorRank) {
+      toast.error("Please fill in all the required fields.");
+      return false;
+    }
+    return true;
   };
 
   const submitForm = async e => {
     e.preventDefault();
-    await axios
-      .post("api/Vendor", vendor)
-      .then(response => {
-        toast.success(response.data.message, { position: "top-right" });
-        navigate("/vendor");
-      })
-      .catch(error => {
-        console.log(error);
+    if (!validateForm()) return;
+
+    try {
+      toast.loading("Adding Vendor...", { position: "top-right" });
+
+      const res = await createAPIEndpoint(ENDPOINTS.VENDOR).post(vendor);
+      toast.dismiss();
+      toast.success("Vendor added successfully!", { position: "top-right" });
+      console.log(res);
+      setVendor(initialVendors);
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Failed to add vendor. Please try again.", {
+        position: "top-right"
       });
+
+      console.error(error); // Log the error for debugging
+      console.log(vendor);
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   return (
@@ -49,38 +71,43 @@ const AddVendor = () => {
             <label htmlFor="name">Vendor Name:</label>
             <input
               type="text"
-              id="name"
+              id="vendorName"
               onChange={inputHandler}
-              name="name"
+              name="vendorName"
               autoComplete="off"
               placeholder="Enter Vendor Name"
+              value={vendor.vendorName}
+              required
             />
           </div>
-          <div className="inputGroup">
-            <label htmlFor="productId">Product Id:</label>
+          {/* <div className="inputGroup">
+            <label htmlFor="productIds">Product Id:</label>
             <input
               type="text"
-              id="productId"
+              id="productIds"
               onChange={inputHandler}
-              name="productId"
-              autoComplete="off"
+              name="productIds"
+              autoComplete="on"
               placeholder="Enter product List"
+              value={vendor.productIds}
             />
-          </div>
+          </div> */}
           <div className="inputGroup">
             <label htmlFor="rank">Vendor Rank:</label>
             <input
               type="text"
-              id="rank"
+              id="vendorRank"
               onChange={inputHandler}
-              name="rank"
+              name="vendorRank"
               autoComplete="off"
               placeholder="Enter Vendor Rank"
+              value={vendor.vendorRank}
+              required
             />
           </div>
           <div className="inputGroup">
-            <button type="submit" class="btn">
-              Submit
+            <button type="submit" class="btn" disabled={loading}>
+              {loading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </form>
