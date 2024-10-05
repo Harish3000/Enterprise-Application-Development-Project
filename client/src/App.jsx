@@ -21,6 +21,7 @@ import Login from "./Components/Login";
 import Register from "./Components/Register";
 import AppHome from "./Home/home";
 import Profile from "./Home/profile";
+import Welcome from "./Home/welcome";
 
 function App() {
   const routes = createBrowserRouter([
@@ -31,6 +32,10 @@ function App() {
     {
       path: "/login",
       element: <Login />
+    },
+    {
+      path: "/welcome",
+      element: <Welcome />
     },
     {
       path: "/register",
@@ -45,6 +50,7 @@ function App() {
       path: "/profile",
       element: <Profile />
     },
+    
     // inventory
     {
       path: "/inventory",

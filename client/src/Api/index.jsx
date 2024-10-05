@@ -16,7 +16,7 @@ export const createAPIEndpoint = (endpoint) => {
   const axiosInstance = axios.create({
     baseURL: url,
     headers: {
-      Authorization: `Bearer ${token}`, // Include the JWT token in the header
+      Authorization: `Bearer ${token}`, 
       "Content-Type": "application/json",
     },
   });

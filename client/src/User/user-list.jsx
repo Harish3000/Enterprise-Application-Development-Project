@@ -46,6 +46,8 @@ const User = () => {
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Address</th>
+              <th scope="col">Role</th>
+              <th scope="col">Password</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -53,18 +55,12 @@ const User = () => {
             {users.map((user, index) => {
               return (
                 <tr>
-                  <td>
-                    {index + 1}
-                  </td>
-                  <td>
-                    {user.name}
-                  </td>
-                  <td>
-                    {user.email}{" "}
-                  </td>
-                  <td>
-                    {user.address}
-                  </td>
+                  <td>{index + 1}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email} </td>
+                  <td>{user.address}</td>
+                  <td>{user.role}</td>
+                  <td />{user.password}
                   <td className="actionButtons">
                     <Link
                       to={`/update/` + user._id}

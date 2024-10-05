@@ -4,25 +4,53 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const AddUser = () => {
-  const users = {
+  const initialUserState = {
     name: "",
     email: "",
-    address: ""
+    address: "",
+    password: "",
+    role: ""
   };
-  const [user, setUser] = useState(users);
+  const [user, setUser] = useState(initialUserState);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const inputHandler = e => {
-    const { name, value } = e.target;
-    console.log(name, value);
+    const { id, value } = e.target;
+    console.log(id, value);
 
-    setUser({ ...user, [name]: value });
+    setUser({ ...user, [id]: value });
   };
 
   const submitForm = async e => {
     e.preventDefault();
+
+    // if (!validateForm()) return;
+
+    try {
+      toast.loading("Adding user...", { position: "top-right" });
+
+      const res = await createAPIEndpoint(ENDPOINTS.PRODUCT).post(user);
+      toast.dismiss();
+      toast.success("User added successfully!", { position: "top-right" });
+      console.log(res);
+      setUser(initialUserState);
+    } catch (err) {
+      toast.dismiss();
+
+      toast.error("Failed to add user. Please try again.", {
+        position: "top-right"
+      });
+
+      console.error(err);
+      console.log(user);
+    } finally {
+      setLoading(false);
+    }
+
     await axios
       .post("api/User", user)
       .then(response => {
@@ -53,6 +81,7 @@ const AddUser = () => {
               name="name"
               autoComplete="off"
               placeholder="Enter your Name"
+              value={user.name}
             />
           </div>
           <div className="inputGroup">
@@ -64,6 +93,7 @@ const AddUser = () => {
               name="email"
               autoComplete="off"
               placeholder="Enter your Email"
+              value={user.email}
             />
           </div>
           <div className="inputGroup">
@@ -75,7 +105,34 @@ const AddUser = () => {
               name="address"
               autoComplete="off"
               placeholder="Enter your Address"
+              value={user.address}
             />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="password">Password</label>
+            <input
+              type="text"
+              id="password"
+              onChange={inputHandler}
+              name="password"
+              autoComplete="off"
+              placeholder="Enter the password"
+              value={user.password}
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="role">Role:</label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              value={user.role}
+            >
+              <option selected>Select the role</option>
+              <option value="1">Admin</option>
+              <option value="2">Vendor</option>
+              <option value="3">CSR</option>
+              <option value="4">Customer</option>
+            </select>
           </div>
           <div className="inputGroup">
             <button type="submit" class="btn">

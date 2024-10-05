@@ -27,7 +27,7 @@ function Login() {
       localStorage.setItem("userId", userId);
 
       // Redirect to success page on successful login
-      navigate("/profile");
+      navigate("/welcome");
       toast.success("Login successful");
     } catch (error) {
       setError("Login failed. Please check your credentials.");
