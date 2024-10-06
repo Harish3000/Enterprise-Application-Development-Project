@@ -4,13 +4,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("api/Order");
+        const response = await createAPIEndpoint(ENDPOINTS.ORDER).fetchAll();
         setOrders(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);

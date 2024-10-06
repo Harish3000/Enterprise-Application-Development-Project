@@ -6,19 +6,18 @@ import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 
 const AddOrder = () => {
-  const orders = {
+  const initialOrderState = {
     orderName: "",
     productId: "",
     orderRank: "",
     isActive: true
   };
-  const [order, setOrder] = useState(orders);
+  const [order, setOrder] = useState(initialOrderState);
   const navigate = useNavigate();
 
   const inputHandler = e => {
     const { name, value } = e.target;
     console.log(name, value);
-
     setOrder({ ...order, [name]: value });
   };
 

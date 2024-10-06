@@ -3,7 +3,7 @@ import "../Styles/vendor.css";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
-import { createAPIEndpoint, ENDPOINTS } from "../Api";
+import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
 
 const Vendor = () => {
   const [vendors, setVendors] = useState([]);

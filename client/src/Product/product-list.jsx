@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
-import { createAPIEndpoint, ENDPOINTS } from "../Api";
+import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
