@@ -11,7 +11,7 @@ const Order = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await createAPIEndpoint(ENDPOINTS.ORDER).fetchAll();
+        const response = await createAPIEndpoint(ENDPOINTS.ORDER).fetchById();
         setOrders(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -46,10 +46,13 @@ const Order = () => {
           <thead>
             <tr>
               <th scope="col">Order Id</th>
-              <th scope="col">Name</th>
-              <th scope="col">Products</th>
-              <th scope="col">Rank</th>
-              <th scope="col">Status</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Paid</th>
+              <th scope="col">Approved</th>
+              <th scope="col">Dispatched</th>
+              <th scope="col">Sale Date</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -61,13 +64,25 @@ const Order = () => {
                     {order.orderId}
                   </td>
                   <td>
-                    {order.orderName}{" "}
+                    {order.productName}{" "}
                   </td>
                   <td>
-                    {order.productId}
+                    {order.productQantity}
                   </td>
                   <td>
-                    {order.orderRank}
+                    {order.price}
+                  </td>
+                  <td>
+                    {order.isPaid ? "Yes" : "No"}
+                  </td>
+                  <td>
+                    {order.isApproved ? "Yes" : "No"}
+                  </td>
+                  <td>
+                    {order.isDispatched ? "Yes" : "No"}
+                  </td>
+                  <td>
+                    {order.saleDate}
                   </td>
                   <td>
                     {order.isActive ? "Active" : "Inactive"}

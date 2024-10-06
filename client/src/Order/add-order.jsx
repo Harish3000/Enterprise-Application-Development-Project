@@ -7,10 +7,17 @@ import SideBarMenu from "../Components/SideBarMenu";
 
 const AddOrder = () => {
   const initialOrderState = {
-    orderName: "",
+    id: "",
     productId: "",
-    orderRank: "",
-    isActive: true
+    vendorId: "",
+    userId: "",
+    productName: "",
+    productQuantity:"" ,
+    price: "",
+    isPaid: true,
+    isApproved: false,
+    isDispatched: false,
+    saleDate: ""
   };
   const [order, setOrder] = useState(initialOrderState);
   const navigate = useNavigate();
