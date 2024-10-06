@@ -46,9 +46,9 @@ public class SuccessActivity extends AppCompatActivity {
 
         User user = SharedPrefManager.getInstance(this).getUser();
 
-        textViewWelcome.setText("Welcome To The App");
-        textViewUserId.setText("User ID: " + user.getUserId());
-        textViewRole.setText("Role: " + user.getRole());
+        textViewWelcome.setText("Happy Shopping");
+        textViewUserId.setText("Login ID : " + user.getUserId());
+        textViewRole.setText("Type : " + user.getRole());
 
         apiProducts = ApiProducts.getProducts().create(ApiService.class);
 

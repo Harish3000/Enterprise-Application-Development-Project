@@ -1,7 +1,7 @@
 package com.example.ead_mobile.model;
 
 
-public class ProductResponse {
+public class  ProductResponse {
     private String productId;
     private String productName;
     private String productImage;

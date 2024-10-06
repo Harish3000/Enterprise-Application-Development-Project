@@ -19,6 +19,13 @@ android:textColor="@color/black"
 android:maxLines="1"
 android:ellipsize="end" />
 
+    <TextView
+        android:id="@+id/textViewProductId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product ID"
+        android:visibility="gone" />
+
     <!-- Product description -->
 <TextView
 android:id="@+id/textViewProductDescription"
@@ -53,7 +60,7 @@ android:ellipsize="end" />
 
     <!-- Navigate to product detail button -->
 <Button
-android:id="@+id/buttonNavigateToProductDetail"
+android:id="@+id/buttonDetail"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:layout_marginTop="12dp"

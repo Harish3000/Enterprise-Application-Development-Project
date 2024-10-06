@@ -8,7 +8,8 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:gravity="center"
-    android:background="@color/material_grey_50">
+    android:background="@color/material_grey_50"
+    tools:context=".ProductListActivity">
 
     <!-- Welcome Text -->
     <com.google.android.material.textview.MaterialTextView
@@ -27,6 +28,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        tools:listitem="@layout/product" />
+
+    <!-- Floating Action Button for Cart -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/baseline_shopping_cart_24" />
 
 </LinearLayout>

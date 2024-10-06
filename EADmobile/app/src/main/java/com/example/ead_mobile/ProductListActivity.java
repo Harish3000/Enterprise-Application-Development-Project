@@ -22,6 +22,7 @@ import com.example.ead_mobile.model.User;
 import com.example.ead_mobile.util.SharedPrefManager;
 
 import com.example.ead_mobile.API.ApiProducts;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class ProductListActivity extends AppCompatActivity{
     private ApiService apiProducts;
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class ProductListActivity extends AppCompatActivity{
         // Listing product
         Call<List<Product>> call = apiProducts.getProducts(token);
 
-        System.out.println("callX" + call);
 
         call.enqueue(new Callback<List<Product>>() {
             @Override
@@ -59,8 +60,6 @@ public class ProductListActivity extends AppCompatActivity{
                 if (response.isSuccessful()) {
                     List<Product> productList = response.body();
                     // Save or use the productList here if needed
-
-                    System.out.println("productListXXXX" + productList);
 
                     updateProductList(productList);
                 } else {
@@ -74,12 +73,20 @@ public class ProductListActivity extends AppCompatActivity{
             }
         });
 
+         // Initialize the FloatingActionButton and set the click listener
+        FloatingActionButton fabCart = findViewById(R.id.fabCart);
+        fabCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductListActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
     private void updateProductList(List<Product> productList) {
-
-        System.out.println("inProdListX" + productList);
 
         recyclerView = findViewById(R.id.recyclerViewProducts); // Find RecyclerView
         productAdapter = new ProductAdapter(productList); // Initialize Adapter

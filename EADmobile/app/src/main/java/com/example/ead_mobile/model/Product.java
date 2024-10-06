@@ -2,7 +2,7 @@ package com.example.ead_mobile.model;
 
 
 public class Product {
-    private String productId;
+    private String id;
     private String productName;
     private String productImage;
     private String productDescription;
@@ -14,10 +14,10 @@ public class Product {
     private String vendorId;
 
     // Constructor
-    public Product(String productId, String productName, String productImage, String productDescription,
+    public Product(String id, String productName, String productImage, String productDescription,
                    double productPrice, double productRating, String categoryName, int productStock,
                    boolean isActive, String vendorId) {
-        this.productId = productId;
+        this.id = id;
         this.productName = productName;
         this.productImage = productImage;
         this.productDescription = productDescription;
@@ -30,7 +30,7 @@ public class Product {
     }
 
     // Getters
-    public String getProductId() { return productId; }
+    public String getProductId() { return id; }
     public String getProductName() { return productName; }
     public String getProductImage() { return productImage; }
     public String getProductDescription() { return productDescription; }

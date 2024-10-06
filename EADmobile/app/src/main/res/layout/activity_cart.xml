@@ -1,0 +1,211 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/background_light">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cart Details"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="12dp"
+        android:paddingTop="8dp"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Card View for Total Price & Order Details -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Total Price -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Price"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/textViewTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-light"
+                android:paddingTop="4dp" />
+
+            <!-- Delivery Status -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivery Status"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/textViewDeliveryStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:paddingTop="4dp" />
+
+            <!-- Payment Status Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Is Paid"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/textViewIsPaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorSecondary"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light" />
+            </LinearLayout>
+
+            <!-- Approval Status Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Is Approved"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/textViewIsApproved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorSecondary"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light" />
+            </LinearLayout>
+
+            <!-- Dispatch Status Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Is Dispatched"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/textViewIsDispatched"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorSecondary"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light" />
+            </LinearLayout>
+
+            <!-- Order Date -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Date"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:paddingTop="8dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/textViewOrderDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:paddingTop="4dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- RecyclerView for Cart Items -->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerViewCartItems"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:paddingTop="16dp"-->
+<!--        android:paddingBottom="16dp"-->
+<!--        android:clipToPadding="false"-->
+<!--        android:scrollbars="vertical"-->
+<!--        android:layout_marginTop="8dp" />-->
+
+
+    <!-- Pay Button -->
+    <Button
+        android:id="@+id/buttonPay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pay"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/purple1"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium" />
+
+    <ImageView
+        android:padding="12dp"
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="198dp"
+        app:srcCompat="@drawable/pay" />
+</LinearLayout>

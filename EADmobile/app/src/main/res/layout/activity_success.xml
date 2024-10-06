@@ -55,7 +55,7 @@
         android:textSize="16sp"
         android:textColor="@android:color/white"
         app:cornerRadius="16dp"
-        android:backgroundTint="@color/purple"
+        android:backgroundTint="@color/black"
         app:icon="@drawable/ic_logout"
         app:iconPadding="8dp"
         app:iconTint="@android:color/white" />
@@ -71,4 +71,11 @@
         app:cornerRadius="16dp"
         android:backgroundTint="@color/purple"
           />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="324dp"
+        android:layout_height="314dp"
+        android:padding="25dp"
+        app:srcCompat="@drawable/welcome" />
 </LinearLayout>
