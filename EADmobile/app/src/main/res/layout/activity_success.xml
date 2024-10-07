@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/material_grey_50">
+
+    <!-- Welcome Text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textViewWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+
+        android:textStyle="bold"
+        android:text="Welcome!"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="12dp" />
+
+    <!-- User ID -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textViewUserId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+
+        android:text="User ID: 1234" />
+
+    <!-- Role Text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textViewRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+
+        android:text="Role: Admin" />
+
+    <!-- Modern Logout Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Logout"
+
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        app:cornerRadius="16dp"
+        android:backgroundTint="@color/black"
+        app:icon="@drawable/ic_logout"
+        app:iconPadding="8dp"
+        app:iconTint="@android:color/white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonProductList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="View Products"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        app:cornerRadius="16dp"
+        android:backgroundTint="@color/purple"
+          />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="324dp"
+        android:layout_height="314dp"
+        android:padding="25dp"
+        app:srcCompat="@drawable/welcome" />
+</LinearLayout>
