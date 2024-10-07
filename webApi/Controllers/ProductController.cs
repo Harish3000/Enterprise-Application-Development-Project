@@ -23,7 +23,7 @@ namespace webApi.Controllers
             return Ok(products);
         }
 
-        [HttpGet("getById")]
+        [HttpPost("getById")]
         public async Task<IActionResult> GetProductById([FromBody] IdDto idDto)
         {
             var product = await _productService.GetProductById(idDto.Id);

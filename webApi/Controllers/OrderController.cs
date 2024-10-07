@@ -23,7 +23,7 @@ namespace webApi.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("getCartByUserId")]
+        [HttpPost("getCartByUserId")]
         public async Task<IActionResult> GetOrderByUserId(IdDto idDto)
         {
             try
