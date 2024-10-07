@@ -80,7 +80,7 @@ namespace webApi.Controllers
             var updatedProduct = await _productService.UpdateProduct(productDto);
             if (updatedProduct == null)
             {
-                return NotFound(new { error = "Product not found" }); 
+                return NotFound(new { error = "Product not found. recheck details" }); 
             }
             return Ok(updatedProduct);
         }
