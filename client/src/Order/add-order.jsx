@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../Styles/addorder.css";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
@@ -9,7 +8,7 @@ import { createAPIEndpoint, ENDPOINTS } from "../Api";
 const AddOrder = () => {
   const initialOrderState = {
     id: "",
-    productId: productId,
+    productIds: '',
     vendorId: "",
     userId: "",
     productName: "",

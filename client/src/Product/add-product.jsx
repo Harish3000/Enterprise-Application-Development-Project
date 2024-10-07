@@ -1,3 +1,6 @@
+//author: Harini chamathka
+// Path: client/src/Product/add-product.jsx
+
 import React, { useState } from "react";
 import "../Styles/addProduct.css";
 import { Link } from "react-router-dom";
@@ -16,14 +19,14 @@ const AddProduct = () => {
     productStock: "",
     isActive: false,
     vendorName: "",
-    productImage: "",
+    productImage: ""
   };
 
   const [product, setProduct] = useState(initialProductState);
   const [loading, setLoading] = useState(false);
 
   // Handling text inputs
-  const inputHandler = (e) => {
+  const inputHandler = e => {
     const { id, value } = e.target;
     setProduct({ ...product, [id]: value });
   };
@@ -42,7 +45,7 @@ const AddProduct = () => {
     return true;
   };
 
-  const submitForm = async (e) => {
+  const submitForm = async e => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -67,7 +70,7 @@ const AddProduct = () => {
 
       // If an error occurs, show an error message
       toast.error("Failed to add product. Please try again.", {
-        position: "top-right",
+        position: "top-right"
       });
 
       console.error(err); // Log the error for debugging

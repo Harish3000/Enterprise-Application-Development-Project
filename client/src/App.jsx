@@ -1,3 +1,6 @@
+// author : Harini chamathka
+// path : src / App.jsx
+
 import "./App.css";
 import {
   // BrowserRouter,
@@ -50,7 +53,7 @@ function App() {
       path: "/profile",
       element: <Profile />
     },
-    
+
     // inventory
     {
       path: "/inventory",
