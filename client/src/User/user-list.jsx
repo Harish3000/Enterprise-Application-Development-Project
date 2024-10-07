@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/user.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const User = () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("api/User");
+        const response = await createAPIEndpoint(ENDPOINTS.USER).fetchAll();
         setUsers(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);
@@ -19,26 +19,21 @@ const User = () => {
     fetchData();
   }, []);
 
-  const deleteUser = async userId => {
-    await axios
-      .delete(`api/User`)
-      .then(response => {
-        setUsers(prevUser => prevUser.filter(user => user._id !== userId));
-        toast.success(response.data.message, { position: "top-right" });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  const deleteUser = async (userId) => {
+    try {
+      const response = await createAPIEndpoint(ENDPOINTS.USER).delete(userId);
+      setUsers((prevUser) => prevUser.filter((user) => user._id !== userId));
+      toast.success(response.message || "User deleted successfully", { position: "top-right" });
+    } catch (error) {
+      console.log("Error while deleting user:", error);
+      toast.error("Failed to delete user.", { position: "top-right" });
+    }
   };
 
   return (
     <div>
       <SideBarMenu />
       <div className="userTable">
-        <Link to="/add" type="button" className="addBtn">
-          Add User <i class="bi bi-plus-circle-fill" />
-        </Link>
-
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -47,7 +42,7 @@ const User = () => {
               <th scope="col">Email</th>
               <th scope="col">Address</th>
               <th scope="col">Role</th>
-              <th scope="col">Password</th>
+              {/* <th scope="col">Password</th> */}
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -55,12 +50,24 @@ const User = () => {
             {users.map((user, index) => {
               return (
                 <tr>
-                  <td>{index + 1}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email} </td>
-                  <td>{user.address}</td>
-                  <td>{user.role}</td>
-                  <td />{user.password}
+                  <td>
+                    {index + 1}
+                  </td>
+                  <td>
+                    {user.userName}
+                  </td>
+                  <td>
+                    {user.email}{" "}
+                  </td>
+                  <td>
+                    {user.address}
+                  </td>
+                  <td>
+                    {user.role}
+                  </td>
+                  {/* <td>
+                    {user.password}
+                  </td> */}
                   <td className="actionButtons">
                     <Link
                       to={`/update/` + user._id}
@@ -73,9 +80,9 @@ const User = () => {
                     <button
                       onClick={() => deleteUser(user._id)}
                       type="button"
-                      class="btn btn-danger"
+                      className="btn btn-danger"
                     >
-                      <i class="bi bi-trash3-fill" />
+                      <i className="bi bi-trash3-fill" />
                     </button>
                   </td>
                 </tr>

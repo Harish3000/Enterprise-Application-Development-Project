@@ -64,8 +64,8 @@ const AddUser = () => {
               onChange={inputHandler}
               autoComplete="off"
               placeholder="Enter your Name"
-              value={user.name}
-              required // Optional: Make this field required
+              value={user.userName}
+              required 
             />
           </div>
           <div className="inputGroup">
@@ -77,7 +77,7 @@ const AddUser = () => {
               autoComplete="off"
               placeholder="Enter your Email"
               value={user.email}
-              required // Optional: Make this field required
+              required 
             />
           </div>
           <div className="inputGroup">
@@ -99,7 +99,7 @@ const AddUser = () => {
               value={user.role}
               onChange={inputHandler}
               id="role"
-              required // Optional: Make this field required
+              required 
             >
               <option value="" disabled>
                 Select the role
