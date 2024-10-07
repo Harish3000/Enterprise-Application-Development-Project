@@ -19,6 +19,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * Login Related Activity
+ * @author IT21272240
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword;
@@ -51,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    // Method to handle user login
     private void loginUser() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -61,7 +65,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Create a login request object
         LoginRequest loginRequest = new LoginRequest(email, password);
+        // Make API call to login user
         Call<LoginResponse> call = apiService.loginUser(loginRequest);
 
         call.enqueue(new Callback<LoginResponse>() {

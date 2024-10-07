@@ -15,6 +15,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import java.security.SecureRandom;
 
+/**
+ * ApiClient class for setting up a Retrofit instance with custom SSL handling and JWT token support.
+ * It allows making network requests securely with SSL configuration and attaches the JWT token to the header.
+ *
+ * @author IT21272240
+ */
 public class ApiClient {
     private static final String BASE_URL = "https://192.168.1.8:44381/";
     private static Retrofit retrofit = null;

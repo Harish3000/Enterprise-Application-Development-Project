@@ -16,14 +16,32 @@ import com.example.ead_mobile.model.Product;
 
 import java.util.List;
 
+/**
+ * Adapter class for managing product items in a RecyclerView
+ * It binds product data to the UI and handles user interactions
+ *
+ * @author IT21272240
+ */
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private final List<Product> productList;
 
+    /**
+     * Constructor to initialize the adapter with a list of products
+     * @param productList List of products to display
+     */
     public ProductAdapter(List<Product> productList) {
         this.productList = productList;
     }
 
+
+    /**
+     * Called when RecyclerView needs a new ViewHolder of the given type to represent an item
+     * parent   The ViewGroup into which the new View will be added after it is bound to an adapter position
+     * viewType The view type of the new View
+     * @return A new ProductViewHolder that holds the View for each product item
+     */
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,6 +50,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return new ProductViewHolder(view);
     }
 
+    /**
+     * Called by RecyclerView to display the data at the specified position
+     * This method updates the contents of the ViewHolder to reflect the product data
+     */
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
@@ -58,6 +80,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
+    /**
+     * ViewHolder class to hold and recycle views for product items in the RecyclerView.
+     */
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView textViewProductName;
         TextView textViewProductDescription;

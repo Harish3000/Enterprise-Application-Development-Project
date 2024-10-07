@@ -1,23 +1,24 @@
 package com.example.ead_mobile;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.ead_mobile.API.ApiClient;
 import com.example.ead_mobile.API.ApiService;
 import com.example.ead_mobile.model.RegisterRequest;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Register Activity
+ * This activity handles user registration by collecting user input and making a network call to register the user
+ *
+ * @author IT21272240
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText editTextUsername, editTextEmail, editTextPassword, editTextAddress; // Add Address field
@@ -36,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonRegister);
 
         apiService = ApiClient.getClient().create(ApiService.class);
-
+        // Set an OnClickListener on the register button
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
+    // Method to handle user registration
     private void registerUser() {
         String username = editTextUsername.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();

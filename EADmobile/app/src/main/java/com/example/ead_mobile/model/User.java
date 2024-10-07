@@ -1,4 +1,9 @@
 package com.example.ead_mobile.model;
+/**
+ *  User class
+ *  @author IT21272240
+ */
+
 public class User {
     private String email;
     private String role;

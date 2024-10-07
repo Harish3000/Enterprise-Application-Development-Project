@@ -1,5 +1,8 @@
 package com.example.ead_mobile.model;
-
+/**
+ *  RegisterRequest class
+ *  @author IT21272240
+ */
 public class RegisterRequest {
     private String username;
     private String email;

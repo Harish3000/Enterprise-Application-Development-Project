@@ -19,12 +19,14 @@ import com.example.ead_mobile.model.CartResponse;
 import com.example.ead_mobile.model.Product;
 import com.example.ead_mobile.model.ProductRequest;
 import com.example.ead_mobile.util.SharedPrefManager;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/**
+ * Product Detail Activity
+ * @author IT21272240
+ */
 public class ProductDetailActivity extends AppCompatActivity {
 
     private TextView textViewProductName, textViewProductDescription, textViewProductPrice;

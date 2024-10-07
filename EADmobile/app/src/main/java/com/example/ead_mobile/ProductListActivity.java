@@ -30,6 +30,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Product List Activity
+ * @author IT21272240
+ */
 public class ProductListActivity extends AppCompatActivity{
 
     private TextView textViewProductsList;

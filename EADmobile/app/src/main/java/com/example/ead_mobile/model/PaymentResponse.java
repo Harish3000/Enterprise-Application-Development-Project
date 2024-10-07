@@ -1,26 +1,29 @@
 package com.example.ead_mobile.model;
-/**
- *  AllCartResponse represents the response object returned when retrieving all cart information.
- *  This class encapsulates details about the cart's total price, delivery status, payment status, approval, dispatch status, and the order.
- *
- *  @author IT21272240
- */
 
-public class AllCartResponse
-{
-    private double totalPrice;
+public class PaymentResponse {
+    private int totalPrice;
     private String deliveryStatus;
     private boolean isPaid;
     private boolean isApproved;
     private boolean isDispatched;
     private String orderDate;
 
-    // Getters and setters
-    public double getTotalPrice() {
+    // Constructor
+    public PaymentResponse(int totalPrice, String deliveryStatus, boolean isPaid, boolean isApproved, boolean isDispatched, String orderDate) {
+        this.totalPrice = totalPrice;
+        this.deliveryStatus = deliveryStatus;
+        this.isPaid = isPaid;
+        this.isApproved = isApproved;
+        this.isDispatched = isDispatched;
+        this.orderDate = orderDate;
+    }
+
+    // Getters and Setters
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -36,24 +39,24 @@ public class AllCartResponse
         return isPaid;
     }
 
-    public void setPaid(boolean isPaid) {
-        this.isPaid = isPaid;
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
     public boolean isApproved() {
         return isApproved;
     }
 
-    public void setApproved(boolean isApproved) {
-        this.isApproved = isApproved;
+    public void setApproved(boolean approved) {
+        isApproved = approved;
     }
 
     public boolean isDispatched() {
         return isDispatched;
     }
 
-    public void setDispatched(boolean isDispatched) {
-        this.isDispatched = isDispatched;
+    public void setDispatched(boolean dispatched) {
+        isDispatched = dispatched;
     }
 
     public String getOrderDate() {

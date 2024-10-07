@@ -1,8 +1,10 @@
 package com.example.ead_mobile.model;
-
-import java.time.OffsetDateTime;
-
-public class CartResponse {
+/**
+ *  Cart CartResponse includes this params
+ *  @author IT21272240
+ */
+public class CartResponse
+{
     private String id;
     private String productId;
     private String vendorId;

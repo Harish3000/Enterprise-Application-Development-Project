@@ -87,7 +87,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is Paid"
+                    android:text="Paid"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
@@ -113,7 +113,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is Approved"
+                    android:text="Approved"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
@@ -139,7 +139,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Is Dispatched"
+                    android:text="Dispatched"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
@@ -175,19 +175,6 @@
                 android:paddingTop="4dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <!-- RecyclerView for Cart Items -->
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerViewCartItems"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:paddingTop="16dp"-->
-<!--        android:paddingBottom="16dp"-->
-<!--        android:clipToPadding="false"-->
-<!--        android:scrollbars="vertical"-->
-<!--        android:layout_marginTop="8dp" />-->
-
 
     <!-- Pay Button -->
     <Button

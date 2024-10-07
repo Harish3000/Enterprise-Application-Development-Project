@@ -1,4 +1,8 @@
 package com.example.ead_mobile.model;
+/**
+ *  ProductRequest class
+ *  @author IT21272240
+ */
 
 public class ProductRequest {
     private String id;

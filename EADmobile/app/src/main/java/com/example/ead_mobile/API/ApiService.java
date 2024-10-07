@@ -5,23 +5,27 @@ import com.example.ead_mobile.model.CartRequest;
 import com.example.ead_mobile.model.CartResponse;
 import com.example.ead_mobile.model.LoginRequest;
 import com.example.ead_mobile.model.LoginResponse;
+import com.example.ead_mobile.model.PaymentRequest;
+import com.example.ead_mobile.model.PaymentResponse;
 import com.example.ead_mobile.model.Product;
 import com.example.ead_mobile.model.ProductRequest;
 import com.example.ead_mobile.model.RegisterRequest;
-
 import java.util.List;
-
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+
+/**
+ * ApiService interface defines all the API endpoints for the application.
+ * This includes user authentication, product management, and cart management API calls
+ *
+ * @author IT21272240
+ */
 
 public interface ApiService {
+
     @POST("api/Auth/login")
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
 
@@ -39,4 +43,7 @@ public interface ApiService {
 
     @POST("api/Order/getCartByUserId")
     Call<AllCartResponse> getCartByUserId(@Header("Authorization") String token, @Body AllCartRequest allCartRequest);
+
+    @POST("api/Order/makePayment")
+    Call<PaymentResponse> makePayment(@Header("Authorization") String token, @Body PaymentRequest paymentRequest);
 }

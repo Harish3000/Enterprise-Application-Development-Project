@@ -1,5 +1,8 @@
 package com.example.ead_mobile.model;
-
+/**
+ *  Cart CartRequest includes this params
+ *  @author IT21272240
+ */
 public class CartRequest {
     private String id;
     private String productId;

@@ -16,6 +16,12 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * ApiProducts class for setting up Retrofit with SSL bypass and JWT token integration
+ * This class is used to make product-related API requests
+ *
+ * @author IT21272240
+ */
 public class ApiProducts {
     private static final String BASE_URL = "https://192.168.1.8:44381/";
     private static Retrofit retrofit = null;

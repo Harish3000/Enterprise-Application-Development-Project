@@ -1,25 +1,33 @@
 package com.example.ead_mobile.API;
-
 import com.example.ead_mobile.util.SharedPrefManager;
-
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * ApiCarts class for handling HTTP requests related to carts using Retrofit.
+ * handles SSL configuration and JWT token authentication
+ *
+ * @author IT21272240
+ */
+
 public class ApiCarts {
     private static final String BASE_URL = "https://192.168.1.8:44381/";
     private static Retrofit retrofit = null;
 
+    /**
+     * Creates and returns a Retrofit instance for making API calls to add items to the cart.
+     * sets up SSL configuration and adds the JWT token to requests if available.
+     * @return Retrofit instance for API calls.
+     */
     public static Retrofit addToCart() {
         if (retrofit == null) {
             try {
@@ -41,7 +49,7 @@ public class ApiCarts {
                         }
                 };
 
-                // Install the all-trusting trust manager
+                // Install the all trusting trust manager
                 SSLContext sslContext = SSLContext.getInstance("SSL");
                 sslContext.init(null, trustAllCerts, new SecureRandom());
 
@@ -77,6 +85,7 @@ public class ApiCarts {
 
                 OkHttpClient okHttpClient = builder.build();
 
+                //Initialize Retrofit with the base URL, Gson converter and custom OkHttpClient
                 retrofit = new Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())

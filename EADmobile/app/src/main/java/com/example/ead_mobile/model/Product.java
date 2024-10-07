@@ -1,5 +1,8 @@
 package com.example.ead_mobile.model;
-
+/**
+ *  Product Model class
+ *  @author IT21272240
+ */
 
 public class Product {
     private String id;

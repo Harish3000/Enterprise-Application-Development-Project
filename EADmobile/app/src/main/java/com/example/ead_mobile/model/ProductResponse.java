@@ -1,6 +1,8 @@
 package com.example.ead_mobile.model;
-
-
+/**
+ *  ProductResponse class
+ *  @author IT21272240
+ */
 public class  ProductResponse {
     private String productId;
     private String productName;
