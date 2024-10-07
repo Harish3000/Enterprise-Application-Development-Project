@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { SideBarData } from "../Components/SideBarData";
 import { CSRSideBar } from "../Components/CSRSideBar";
 import { VendorSideBar } from "../Components/VendorSideBar";
+import { CustomerSideBar } from "../Components/CustomerSideBar";
 
 // Function to get the correct sidebar data based on the role
 const getSidebarData = () => {
@@ -17,8 +18,10 @@ const getSidebarData = () => {
       return CSRSideBar;
     case "Vendor":
       return VendorSideBar;
+      case "Customer":
+        return CustomerSideBar;
     default:
-      return SideBarData; // Default to Admin if no role is found
+      return CustomerSideBar; // Default to Admin if no role is found
   }
 };
 

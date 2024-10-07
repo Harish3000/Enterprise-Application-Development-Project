@@ -66,7 +66,7 @@ function App() {
       element: <AddUser />
     },
     {
-      path: "/update/:id",
+      path: "/update",
       element: <Update />
     },
 
@@ -80,7 +80,7 @@ function App() {
       element: <AddVendor />
     },
     {
-      path: "/update-vendor/:id",
+      path: "/update-vendor",
       element: <UpdateVendor />
     },
 
@@ -94,7 +94,7 @@ function App() {
       element: <AddOrder />
     },
     {
-      path: "/update-order/:id",
+      path: "/update-order",
       element: <UpdateOrder />
     },
 
@@ -108,7 +108,7 @@ function App() {
       element: <AddProduct />
     },
     {
-      path: "/update-product/:id",
+      path: "/update-product",
       element: <UpdateProduct />
     }
   ]);

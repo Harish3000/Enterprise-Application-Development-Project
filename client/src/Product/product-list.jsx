@@ -94,7 +94,7 @@ const Product = () => {
                   </td>
                   <td className="actionButtons">
                     <Link
-                      to={`/update-product/` + product._id}
+                      to={`/update-product`}
                       type="button"
                       class="btn btn-info"
                     >

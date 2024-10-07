@@ -68,7 +68,7 @@ const Order = () => {
                   <td>{order.isDispatched ? "Yes" : "No"}</td>
                   <td>{order.saleDate}</td>
                   <td className="actionButtons">
-                    <Link to={`/update-order/${order._id}`} className="btn btn-info">
+                    <Link to={`/update-order`} className="btn btn-info">
                       <i className="bi bi-pencil-square" />
                     </Link>
 
