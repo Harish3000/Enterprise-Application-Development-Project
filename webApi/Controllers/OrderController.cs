@@ -43,7 +43,7 @@ namespace webApi.Controllers
             var (order, error) = await _orderService.CreateOrder(idDto.Id);
             if (order == null)
             {
-                return BadRequest(new { error = "Vendor already exists" });
+                return BadRequest(new { error = error });
             }
 
             return Ok(order);
