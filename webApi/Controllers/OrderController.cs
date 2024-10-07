@@ -23,7 +23,7 @@ namespace webApi.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("getCartByUserId")]
+        [HttpPost("getCartByUserId")]
         public async Task<IActionResult> GetOrderByUserId(IdDto idDto)
         {
             try
@@ -43,7 +43,7 @@ namespace webApi.Controllers
             var (order, error) = await _orderService.CreateOrder(idDto.Id);
             if (order == null)
             {
-                return BadRequest(new { error = "Vendor already exists" });
+                return BadRequest(new { error = error });
             }
 
             return Ok(order);
