@@ -1,3 +1,6 @@
+//Author: Harini Chamathka
+//Path: client/src/Home/welcome.jsx
+
 import React from "react";
 import homeVideo from "../Assets/homeVideo.mp4";
 import AdminVideo from "../Assets/Admin.mp4";

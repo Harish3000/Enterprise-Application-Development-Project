@@ -1,3 +1,5 @@
+//author :Harini Chamathka
+//path : client/src/Api/index.jsx
 import axios from "axios";
 
 export const ENDPOINTS = {

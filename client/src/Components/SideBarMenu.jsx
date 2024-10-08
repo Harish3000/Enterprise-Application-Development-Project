@@ -1,3 +1,6 @@
+//Author :Harini Chamathka
+//Path : client/src/Components/SideBarMenu.jsx
+
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Styles/sideBarMenu.css";
@@ -18,8 +21,8 @@ const getSidebarData = () => {
       return CSRSideBar;
     case "Vendor":
       return VendorSideBar;
-      case "Customer":
-        return CustomerSideBar;
+    case "Customer":
+      return CustomerSideBar;
     default:
       return CustomerSideBar; // Default to Admin if no role is found
   }
@@ -45,8 +48,12 @@ function SideBarMenu() {
                 window.location.pathname = val.link;
               }}
             >
-              <div id="icon">{val.icon}</div>
-              <div id="title">{val.title}</div>
+              <div id="icon">
+                {val.icon}
+              </div>
+              <div id="title">
+                {val.title}
+              </div>
             </li>
           );
         })}

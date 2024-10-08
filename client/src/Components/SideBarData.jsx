@@ -1,3 +1,5 @@
+//Author :Harini Chamathka
+//Path : client/src/Components/SideBarData.jsx
 // Desc: Data for the sidebar
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";

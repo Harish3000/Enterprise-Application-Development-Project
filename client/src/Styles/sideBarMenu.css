@@ -1,3 +1,5 @@
+/* author: Harini Chamathka */
+
 .Sidebar {
   position: fixed;
   top: 0;
@@ -7,7 +9,6 @@
   background-color: #2f4050;
   padding-top: 20px;
 }
-
 
 .SidebarList {
   width: 100%;
@@ -31,7 +32,7 @@
 }
 
 .SidebarList .row:hover {
-    cursor: pointer;
+  cursor: pointer;
   background-color: #425668;
 }
 
@@ -39,13 +40,13 @@
   background-color: #293846;
 }
 .row #icon {
-    flex:30%;
-  display:grid;
+  flex: 30%;
+  display: grid;
   place-items: center;
 }
 
 .row #title {
-    flex:70%;
-    display:grid;
-    place-items: left;
-  }
+  flex: 70%;
+  display: grid;
+  place-items: left;
+}

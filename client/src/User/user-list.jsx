@@ -1,3 +1,6 @@
+//author: Harini chamathka
+// Path: client/src/User/user-list.jsx
+
 import React, { useEffect, useState } from "react";
 import "../Styles/user.css";
 import { Link } from "react-router-dom";
@@ -19,11 +22,13 @@ const User = () => {
     fetchData();
   }, []);
 
-  const deleteUser = async (userId) => {
+  const deleteUser = async userId => {
     try {
       const response = await createAPIEndpoint(ENDPOINTS.USER).delete(userId);
-      setUsers((prevUser) => prevUser.filter((user) => user._id !== userId));
-      toast.success(response.message || "User deleted successfully", { position: "top-right" });
+      setUsers(prevUser => prevUser.filter(user => user._id !== userId));
+      toast.success(response.message || "User deleted successfully", {
+        position: "top-right"
+      });
     } catch (error) {
       console.log("Error while deleting user:", error);
       toast.error("Failed to delete user.", { position: "top-right" });

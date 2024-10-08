@@ -1,3 +1,6 @@
+//author: Harini chamathka
+// Path: client/src/User/add-user.jsx
+
 import React, { useState } from "react";
 import "../Styles/adduser.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,12 +20,12 @@ const AddUser = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const inputHandler = (e) => {
+  const inputHandler = e => {
     const { id, value } = e.target;
     setUser({ ...user, [id]: value });
   };
 
-  const submitForm = async (e) => {
+  const submitForm = async e => {
     e.preventDefault();
     setLoading(true);
 
@@ -65,7 +68,7 @@ const AddUser = () => {
               autoComplete="off"
               placeholder="Enter your Name"
               value={user.userName}
-              required 
+              required
             />
           </div>
           <div className="inputGroup">
@@ -77,7 +80,7 @@ const AddUser = () => {
               autoComplete="off"
               placeholder="Enter your Email"
               value={user.email}
-              required 
+              required
             />
           </div>
           <div className="inputGroup">
@@ -99,7 +102,7 @@ const AddUser = () => {
               value={user.role}
               onChange={inputHandler}
               id="role"
-              required 
+              required
             >
               <option value="" disabled>
                 Select the role

@@ -1,3 +1,6 @@
+//author: Harini chamathka
+// Path: client/src/Product/product-list.jsx
+
 import React, { useEffect, useState } from "react";
 import "../Styles/product.css";
 import axios from "axios";
@@ -11,7 +14,7 @@ const Product = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await createAPIEndpoint(ENDPOINTS.PRODUCT).fetchAll(); 
+        const response = await createAPIEndpoint(ENDPOINTS.PRODUCT).fetchAll();
         setProducts(response.data);
       } catch (error) {
         console.log("Error while fetching data", error);

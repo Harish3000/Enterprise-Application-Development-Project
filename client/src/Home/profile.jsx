@@ -1,3 +1,6 @@
+//Author: Harini Chamathka
+//Path: client/src/Home/profile.jsx
+
 import React, { useEffect, useState } from "react";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
@@ -81,4 +84,3 @@ function Profile() {
 }
 
 export default Profile;
-

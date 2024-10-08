@@ -1,3 +1,6 @@
+//author: Harini chamathka
+//path: src / Order / update-order.jsx
+
 import React, { useEffect, useState } from "react";
 import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -68,36 +71,88 @@ const UpdateOrder = () => {
         <h3>Update Order</h3>
         <form className="addOrderForm" onSubmit={submitForm}>
           <div className="inputGroup">
-            <label htmlFor="name">Order Name:</label>
+            <label htmlFor="productName">Product Name:</label>
             <input
               type="text"
-              id="name"
+              id="productName"
               onChange={inputHandler}
-              name="name"
+              name="productName"
               autoComplete="off"
-              placeholder="Enter Order Name"
+              placeholder="Enter product Name"
+              value={order.productName}
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productId">Product Id:</label>
+            <label htmlFor="productQuantity">Qunatity :</label>
             <input
-              type="text"
-              id="productId"
+              min={0}
+              type="number"
+              id="productQuantity"
               onChange={inputHandler}
-              name="productId"
+              name="productQuantity"
               autoComplete="off"
-              placeholder="Enter product List"
+              placeholder="Enter product quantity"
+              value={order.productQuantity}
+              required
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="rank">Order Rank:</label>
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              onChange={inputHandler}
+              name="price"
+              autoComplete="off"
+              placeholder="Enter product price"
+              value={order.price}
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="isPaid">Paid:</label>
+            <input
+              type="boolean"
+              id="isPaid"
+              onChange={inputHandler}
+              name="isPaid"
+              autoComplete="off"
+              placeholder="Payment Status"
+              value={order.isPaid}
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="isApproved">Approval:</label>
+            <input
+              type="boolean"
+              id="isApproved"
+              onChange={inputHandler}
+              name="isApproved"
+              autoComplete="off"
+              placeholder="Approval Status"
+              value={order.isApproved}
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="isDispatched">Dispatch:</label>
+            <input
+              type="boolean"
+              id="isDispatched"
+              onChange={inputHandler}
+              name="isDispatched"
+              autoComplete="off"
+              placeholder="Dispactch Status"
+              value={order.isDispatched}
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="saleDate">Sale Date:</label>
             <input
               type="text"
-              id="rank"
+              id="saleDate"
               onChange={inputHandler}
-              name="rank"
+              name="saleDate"
               autoComplete="off"
-              placeholder="Enter Order Rank"
+              placeholder="Sales Date"
             />
           </div>
           <div className="inputGroup">

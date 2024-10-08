@@ -1,3 +1,6 @@
+//author : Harini chamathka
+//path: src / Vendor / vendor-list.jsx
+
 import React, { useEffect, useState } from "react";
 import "../Styles/vendor.css";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
@@ -14,17 +17,23 @@ const Vendor = () => {
     const fetchData = async () => {
       try {
         // Fetch all vendors
-        const vendorResponse = await createAPIEndpoint(ENDPOINTS.VENDOR).fetchAll();
+        const vendorResponse = await createAPIEndpoint(
+          ENDPOINTS.VENDOR
+        ).fetchAll();
         setVendors(vendorResponse.data);
 
         // Fetch product details for each productId in each vendor
-        const productIds = vendorResponse.data.flatMap(vendor => vendor.productIds);
+        const productIds = vendorResponse.data.flatMap(
+          vendor => vendor.productIds
+        );
         const uniqueProductIds = [...new Set(productIds)]; // Remove duplicate product IDs
 
         const productNamesMap = {};
         for (let productId of uniqueProductIds) {
           try {
-            const productResponse = await createAPIEndpoint(ENDPOINTS.PRODUCT).fetchById(productId);
+            const productResponse = await createAPIEndpoint(
+              ENDPOINTS.PRODUCT
+            ).fetchById(productId);
             productNamesMap[productId] = productResponse.data.productName; // Map product ID to product name
           } catch (error) {
             console.error(error);
@@ -57,13 +66,15 @@ const Vendor = () => {
   };
 
   // Function to handle update click
-  const handleUpdateClick = async (vendor) => {
+  const handleUpdateClick = async vendor => {
     try {
       // Navigate to the update vendor form
-      navigate('/update-vendor', { state: { vendorId: vendor._id } }); // Pass vendor ID in the state
+      navigate("/update-vendor", { state: { vendorId: vendor._id } }); // Pass vendor ID in the state
     } catch (error) {
       console.error("Error navigating to update form", error);
-      toast.error("Error navigating to update form.", { position: "top-right" });
+      toast.error("Error navigating to update form.", {
+        position: "top-right"
+      });
     }
   };
 
@@ -87,19 +98,30 @@ const Vendor = () => {
             </tr>
           </thead>
           <tbody>
-            {vendors.map((vendor, index) => (
+            {vendors.map((vendor, index) =>
               <tr key={vendor._id}>
-                <td>{index + 1}</td>
-                <td>{vendor.vendorName}</td>
+                <td>
+                  {index + 1}
+                </td>
+                <td>
+                  {vendor.vendorName}
+                </td>
                 <td>
                   {vendor.productIds.length > 0
                     ? vendor.productIds
-                        .map(productId => productNamesMap[productId] || "Unknown Product") // Accessing product name by ID
+                        .map(
+                          productId =>
+                            productNamesMap[productId] || "Unknown Product"
+                        ) // Accessing product name by ID
                         .join(", ") // Join product names with a comma
                     : "No Products"}
                 </td>
-                <td>{vendor.vendorRank}</td>
-                <td>{vendor.isActive ? "Active" : "Inactive"}</td>
+                <td>
+                  {vendor.vendorRank}
+                </td>
+                <td>
+                  {vendor.isActive ? "Active" : "Inactive"}
+                </td>
                 <td className="actionButtons">
                   <button
                     onClick={() => handleUpdateClick(vendor)} // Call handleUpdateClick with vendor data
@@ -118,7 +140,7 @@ const Vendor = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

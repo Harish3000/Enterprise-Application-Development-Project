@@ -1,3 +1,6 @@
+//author: Harini chamathka
+// Path: client/src/Product/update-product.jsx
+
 import React, { useEffect, useState } from "react";
 import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -168,8 +171,9 @@ const UpdateProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <button type="submit" class="btn" disabled={loading}>
-              {loading ? "Submitting..." : "Submit"}
+            <button type="submit" class="btn">
+              {/* disabled={loading}> */}
+              {/* {loading ? "Submitting..." : "Submit"} */}
             </button>
           </div>
         </form>

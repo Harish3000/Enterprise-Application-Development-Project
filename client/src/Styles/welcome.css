@@ -1,3 +1,5 @@
+/* author: Harini Chamathka */
+
 /* * {
     margin: 0;
     padding: 0;
@@ -9,49 +11,49 @@
     width: 100%;
     overflow: hidden;
   } */
-  .welcomeScreen {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  .welcomeScreen .backgroundVideo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
-  }
-  .welcomeScreen .content {
-    z-index: 1;
-    color: black; /* Adjust text color */
-  }
-  .welcomeScreen .content span {
-    color: white; /* Adjust text color */
-  }
-  .welcomeScreen .col-md-6 {
-    padding: 20px;
-    block-size: 100%;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-  }
-  .welcomeScreen .btn {
-    background-color: #4caf50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  .btn :hover {
-    background-color: #45a049;
-  }
+.welcomeScreen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.welcomeScreen .backgroundVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+.welcomeScreen .content {
+  z-index: 1;
+  color: black; /* Adjust text color */
+}
+.welcomeScreen .content span {
+  color: white; /* Adjust text color */
+}
+.welcomeScreen .col-md-6 {
+  padding: 20px;
+  block-size: 100%;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+.welcomeScreen .btn {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.btn :hover {
+  background-color: #45a049;
+}

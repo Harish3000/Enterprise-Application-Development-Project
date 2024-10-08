@@ -1,3 +1,6 @@
+//Author: Harini Chamathka
+//Path: client/src/Home/home.jsx
+
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Styles/home.css";

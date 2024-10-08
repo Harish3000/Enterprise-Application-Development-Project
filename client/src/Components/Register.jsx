@@ -1,3 +1,6 @@
+//Author :Harini Chamathka
+//Path : client/src/Components/Register.jsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/login.css";

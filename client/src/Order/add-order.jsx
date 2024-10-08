@@ -1,3 +1,6 @@
+//author: Harini chamathka
+//path: src / Vendor / add- vendor.jsx
+
 import React, { useState } from "react";
 import "../Styles/addorder.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,7 +11,7 @@ import { createAPIEndpoint, ENDPOINTS } from "../Api";
 const AddOrder = () => {
   const initialOrderState = {
     id: "",
-    productIds: '',
+    productIds: "",
     vendorId: "",
     userId: "",
     productName: "",

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
-import Select from "react-select"; 
+import Select from "react-select";
 
 const AddVendor = () => {
   const initialVendors = {
@@ -42,12 +42,12 @@ const AddVendor = () => {
     fetchProducts();
   }, []);
 
-  const inputHandler = (e) => {
+  const inputHandler = e => {
     const { id, value } = e.target;
     setVendor({ ...vendor, [id]: value });
   };
 
-  const handleProductChange = (selectedOptions) => {
+  const handleProductChange = selectedOptions => {
     const productIds = selectedOptions.map(option => option.value); // Extract product IDs
     setVendor({ ...vendor, productIds }); // Update vendor state with selected product IDs
     setSelectedProducts(selectedOptions); // Update the displayed selected products
@@ -63,7 +63,7 @@ const AddVendor = () => {
     return true;
   };
 
-  const submitForm = async (e) => {
+  const submitForm = async e => {
     e.preventDefault();
     if (!validateForm()) return;
 
@@ -79,7 +79,7 @@ const AddVendor = () => {
     } catch (error) {
       toast.dismiss();
       toast.error("Failed to add vendor. Please try again.", {
-        position: "top-right",
+        position: "top-right"
       });
       console.error(error);
     } finally {
