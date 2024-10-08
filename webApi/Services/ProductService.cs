@@ -104,12 +104,6 @@ namespace webApi.Services
                 return null;
             }
 
-            var existingVendor = await _vendorService.GetVendorByName(productDto.VendorName);
-            if (existingVendor == null)
-            {
-                return null;
-            }
-
             var updatedProduct = _mapper.Map<Product>(productDto);
             updatedProduct.Id = existingProduct.Id;
             await _productRepository.UpdateProduct(updatedProduct);
