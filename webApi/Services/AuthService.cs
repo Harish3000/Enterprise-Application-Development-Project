@@ -1,4 +1,11 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿// -----------------------------------------------------------------------------
+// Author: Harish.B - IT21289316
+// Description: AuthService for handling authentication operations, including
+// user registration, login, JWT token generation, and fetching user data 
+// from the JWT token.
+// -----------------------------------------------------------------------------
+
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
@@ -6,15 +13,20 @@ using webApi.DTOs;
 using webApi.Models;
 using webApi.Repositories;
 
-
 namespace webApi.Services
 {
     public interface IAuthService
     {
+        // Logs in a user and returns a JWT response
         Task<JwtResponseDto> Login(LoginDto loginDto);
+
+        // Registers a new user and returns the created user
         Task<User> Register(RegisterDto registerDto);
+
+        // Creates a default admin account if it doesn't exist
         Task CreateDefaultAdminAccount();
 
+        // Retrieves the user associated with the JWT token
         Task<User> GetUserFromJwt();
     }
 
@@ -23,22 +35,21 @@ namespace webApi.Services
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        
 
         public AuthService(IUserRepository userRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
-    
         }
 
+        // Logs in a user and returns a JWT response
         public async Task<JwtResponseDto> Login(LoginDto loginDto)
         {
             var user = await _userRepository.GetUserByEmail(loginDto.Email);
             if (user == null || !VerifyPassword(loginDto.Password, user.Password))
             {
-                return null;
+                return null; // Invalid login attempt
             }
 
             // Generate JWT Token
@@ -55,19 +66,19 @@ namespace webApi.Services
             return jwtResponse;
         }
 
-
+        // Registers a new user and returns the created user
         public async Task<User> Register(RegisterDto registerDto)
         {
             var existingEmail = await _userRepository.GetUserByEmail(registerDto.Email);
             if (existingEmail != null)
             {
-                return null;
+                return null; // Email already exists
             }
 
             var existingUserName = await _userRepository.GetUserByUserName(registerDto.UserName);
             if (existingUserName != null)
             {
-                return null;
+                return null; // Username already exists
             }
 
             var newUser = new User
@@ -76,13 +87,14 @@ namespace webApi.Services
                 Email = registerDto.Email,
                 Password = HashPassword(registerDto.Password),
                 Address = registerDto.Address,
-                Role = "Customer"
+                Role = "Customer" // Default role
             };
 
             await _userRepository.CreateUser(newUser);
-            return newUser;
+            return newUser; // Return the created user
         }
 
+        // Creates a default admin account if it doesn't exist
         public async Task CreateDefaultAdminAccount()
         {
             var adminEmail = "admin@example.com";
@@ -93,7 +105,7 @@ namespace webApi.Services
                 {
                     UserName = "Admin",
                     Email = adminEmail,
-                    Password = HashPassword("AdminPassword123!"),
+                    Password = HashPassword("AdminPassword123!"), // Default password
                     Address = "Admin Address",
                     Role = "Admin"
                 };
@@ -102,6 +114,7 @@ namespace webApi.Services
             }
         }
 
+        // Generates a JWT token for the specified user
         private string GenerateJwtToken(User user)
         {
             var claims = new[]
@@ -124,17 +137,19 @@ namespace webApi.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        // Hashes the given password
         private string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
+        // Verifies the given password against the hashed password
         private bool VerifyPassword(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
-
+        // Retrieves the user associated with the JWT token
         public async Task<User> GetUserFromJwt()
         {
             var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
@@ -163,7 +178,5 @@ namespace webApi.Services
 
             return user; // Return the user or null if not found
         }
-
-
     }
 }

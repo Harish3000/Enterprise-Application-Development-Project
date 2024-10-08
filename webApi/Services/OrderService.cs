@@ -1,4 +1,11 @@
-﻿using MongoDB.Bson;
+﻿// -----------------------------------------------------------------------------
+// Author: Harish.B - IT21289316
+// Description: OrderService for handling operations related to orders,
+// including fetching, creating, updating, and deleting orders, as well as
+// retrieving orders by user ID.
+// -----------------------------------------------------------------------------
+
+using MongoDB.Bson;
 using webApi.DTOs;
 using webApi.Models;
 using webApi.Repositories;
@@ -7,12 +14,22 @@ namespace webApi.Services
 {
     public interface IOrderService
     {
+        // Retrieves all orders
         Task<List<Order>> GetAllOrders();
+
+        // Retrieves an order by its ID
         Task<Order> GetOrderById(string id);
 
+        // Retrieves an order for a specific user by user ID
         Task<Order> GetOrderByUserId(string id);
-        Task<(Order order, string error)> CreateOrder(string id);
+
+        // Creates a new order for a user and returns the order along with any error message
+        Task<(Order order, string error)> CreateOrder(string userId);
+
+        // Updates an existing order and returns the updated order
         Task<Order> UpdateOrder(OrderDto orderDto);
+
+        // Deletes an order by its ID and returns an error message if not found
         Task<string> DeleteOrder(string id);
     }
 
@@ -29,36 +46,37 @@ namespace webApi.Services
             _productService = productService;
         }
 
-        //View all orders by all users
+        // Retrieves all orders
         public async Task<List<Order>> GetAllOrders()
         {
-            return await _orderRepository.GetAllOrders();
+            return await _orderRepository.GetAllOrders(); // Fetch all orders
         }
 
-        //View order by Order Id
+        // Retrieves an order by its ID
         public async Task<Order> GetOrderById(string id)
         {
             var order = await _orderRepository.GetOrderById(id);
             if (order == null)
             {
-                throw new Exception($"Order with id '{id}' not found.");
+                throw new Exception($"Order with id '{id}' not found."); // Throw if not found
             }
-            return order;
+            return order; // Return the found order
         }
 
-        //Cart
+        // Retrieves the order associated with the user's unpaid sales
         public async Task<Order> GetOrderByUserId(string id)
         {
             // Get all unpaid sales for the user
             var unpaidSales = await _saleRepository.GetUnpaidSalesByUserId(id);
             if (unpaidSales == null || unpaidSales.Count == 0)
             {
-                throw new Exception($"Order with id '{id}' not found.");
+                throw new Exception($"Order with user ID '{id}' not found."); // Throw if no unpaid sales
             }
 
             // Calculate total price from sales
             var totalPrice = unpaidSales.Sum(s => s.Price * s.ProductQuantity);
 
+            // Create a new Order object with unpaid sales
             var newOrder = new Order
             {
                 Id = id,
@@ -69,18 +87,17 @@ namespace webApi.Services
                 IsApproved = false,
                 IsDispatched = false
             };
-            return newOrder;
-
+            return newOrder; // Return the new order
         }
 
-        //Make the purchase
+        // Creates a new order for the user
         public async Task<(Order order, string error)> CreateOrder(string userId)
         {
             // Get all unpaid sales for the user
             var unpaidSales = await _saleRepository.GetUnpaidSalesByUserId(userId);
             if (unpaidSales == null || unpaidSales.Count == 0)
             {
-                return (null, "No unpaid sales found for the user.");
+                return (null, "No unpaid sales found for the user."); // Return error if no sales
             }
 
             // Calculate total price from sales
@@ -101,10 +118,10 @@ namespace webApi.Services
             // Ensure all sales have IsPaid set to true
             foreach (var sale in unpaidSales)
             {
-                sale.IsPaid = true;
+                sale.IsPaid = true; // Mark each sale as paid
             }
 
-            // Create the new order if all stock reductions succeeded
+            // Create the new order
             var newOrder = new Order
             {
                 SaleList = unpaidSales,
@@ -115,43 +132,44 @@ namespace webApi.Services
                 IsDispatched = false
             };
 
-            await _orderRepository.CreateOrder(newOrder);
+            await _orderRepository.CreateOrder(newOrder); // Save the new order to the repository
 
             // Mark all sales as paid in the database
             await _saleRepository.ToggleIsPaidByUserId(userId, true);
 
-            return (newOrder, null);
+            return (newOrder, null); // Return the new order
         }
 
-
-
+        // Updates an existing order
         public async Task<Order> UpdateOrder(OrderDto orderDto)
         {
             var existingOrder = await _orderRepository.GetOrderById(orderDto.Id);
             if (existingOrder == null)
             {
-                throw new Exception($"Order with id '{orderDto.Id}' not found.");
+                throw new Exception($"Order with id '{orderDto.Id}' not found."); // Throw if not found
             }
 
+            // Update order properties based on the DTO
             existingOrder.IsPaid = orderDto.IsPaid;
             existingOrder.IsApproved = orderDto.IsApproved;
             existingOrder.IsDispatched = orderDto.IsDispatched;
             existingOrder.DeliveryStatus = orderDto.DeliveryStatus;
 
-            await _orderRepository.UpdateOrder(existingOrder);
-            return existingOrder;
+            await _orderRepository.UpdateOrder(existingOrder); // Save changes to the repository
+            return existingOrder; // Return the updated order
         }
 
+        // Deletes an order by its ID
         public async Task<string> DeleteOrder(string id)
         {
             var existingOrder = await _orderRepository.GetOrderById(id);
             if (existingOrder == null)
             {
-                return $"Order with id '{id}' does not exist.";
+                return $"Order with id '{id}' does not exist."; // Return error if not found
             }
 
-            await _orderRepository.DeleteOrder(id);
-            return null;
+            await _orderRepository.DeleteOrder(id); // Delete the order from the repository
+            return null; // Return null if deletion is successful
         }
     }
 }
