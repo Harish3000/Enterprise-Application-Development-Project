@@ -25,6 +25,9 @@ import Register from "./Components/Register";
 import AppHome from "./Home/home";
 import Profile from "./Home/profile";
 import Welcome from "./Home/welcome";
+import SaleList from "./Sale/sale-list";
+import AddSale from "./Sale/add-sale";
+import UpdateSale from "./Sale/update-sale";
 
 function App() {
   const routes = createBrowserRouter([
@@ -113,6 +116,20 @@ function App() {
     {
       path: "/update-product",
       element: <UpdateProduct />
+    },
+
+    //sales
+    {
+      path: "/sale",
+      element: <SaleList />
+    },
+    {
+      path: "/add-sale",
+      element: <AddSale />
+    },
+    {
+      path: "/update-sale",
+      element: <UpdateSale />
     }
   ]);
 
