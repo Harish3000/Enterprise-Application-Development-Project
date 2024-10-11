@@ -1,6 +1,3 @@
-//author: Harini chamathka
-// Path: client/src/User/user-list.jsx
-
 import React, { useEffect, useState } from "react";
 import "../Styles/user.css";
 import { Link } from "react-router-dom";
@@ -10,6 +7,7 @@ import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const User = () => {
   const [users, setUsers] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,12 +20,12 @@ const User = () => {
     fetchData();
   }, []);
 
-  const deleteUser = async userId => {
+  const deleteUser = async (userId) => {
     try {
-      const response = await createAPIEndpoint(ENDPOINTS.USER).delete(userId);
-      setUsers(prevUser => prevUser.filter(user => user._id !== userId));
+      const response = await createAPIEndpoint(ENDPOINTS.USER).delete(userId); // Sending userId in request body
+      setUsers((prevUser) => prevUser.filter((user) => user.id !== userId));
       toast.success(response.message || "User deleted successfully", {
-        position: "top-right"
+        position: "top-right",
       });
     } catch (error) {
       console.log("Error while deleting user:", error);
@@ -47,43 +45,29 @@ const User = () => {
               <th scope="col">Email</th>
               <th scope="col">Address</th>
               <th scope="col">Role</th>
-              {/* <th scope="col">Password</th> */}
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => {
               return (
-                <tr>
-                  <td>
-                    {index + 1}
-                  </td>
-                  <td>
-                    {user.userName}
-                  </td>
-                  <td>
-                    {user.email}{" "}
-                  </td>
-                  <td>
-                    {user.address}
-                  </td>
-                  <td>
-                    {user.role}
-                  </td>
-                  {/* <td>
-                    {user.password}
-                  </td> */}
+                <tr key={user.id}>
+                  <td>{index + 1}</td>
+                  <td>{user.userName}</td>
+                  <td>{user.email}</td>
+                  <td>{user.address}</td>
+                  <td>{user.role}</td>
                   <td className="actionButtons">
                     <Link
-                      to={`/update/` + user._id}
+                      to={`/update-user/${user.id}`}
                       type="button"
-                      class="btn btn-info"
+                      className="btn btn-info"
                     >
-                      <i class="bi bi-pencil-square" />
+                      <i className="bi bi-pencil-square" />
                     </Link>
 
                     <button
-                      onClick={() => deleteUser(user._id)}
+                      onClick={() => deleteUser(user.id)}
                       type="button"
                       className="btn btn-danger"
                     >

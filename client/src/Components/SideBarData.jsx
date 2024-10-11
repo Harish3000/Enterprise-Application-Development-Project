@@ -6,11 +6,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 export const SideBarData = [
-  {
-    title: "Inventory",
-    icon: <i className="bi bi-house-door-fill"></i>,
-    link: "/inventory",
-  },
+  // {
+  //   title: "Inventory",
+  //   icon: <i className="bi bi-house-door-fill"></i>,
+  //   link: "/inventory",
+  // },
   {
     title: "Vendors",
     icon: <i className="bi bi-person-vcard"></i>,

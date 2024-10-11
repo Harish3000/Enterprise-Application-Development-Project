@@ -69,7 +69,7 @@ function App() {
       element: <AddUser />
     },
     {
-      path: "/update",
+      path: "/update-user/:id",
       element: <Update />
     },
 
