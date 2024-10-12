@@ -25,6 +25,10 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const statusHandler = e => {
+    setProduct({ ...product, isActive: e.target.value === "true" });
+  };
+
   const inputHandler = e => {
     const { id, value } = e.target;
     console.log(id, value);
@@ -176,6 +180,19 @@ const UpdateProduct = () => {
               placeholder="Enter product Image Url"
               value={product.productImage}
             />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="isActive">Status :</label>
+            <select
+              id="isActive"
+              name="isActive"
+              value={product.isActive}
+              onChange={statusHandler}
+              required
+            >
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
           </div>
           <div className="inputGroup">
             <button type="submit" class="btn">
