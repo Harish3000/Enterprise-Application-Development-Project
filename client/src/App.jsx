@@ -114,7 +114,7 @@ function App() {
       element: <AddProduct />
     },
     {
-      path: "/update-product",
+      path: "/update-product/:id",
       element: <UpdateProduct />
     },
 

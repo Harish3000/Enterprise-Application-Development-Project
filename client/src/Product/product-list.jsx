@@ -23,18 +23,16 @@ const Product = () => {
     fetchData();
   }, []);
 
-  const deleteProduct = async Id => {
-    await axios
-      .delete(`api/Product`)
-      .then(response => {
-        setProducts(prevProduct =>
-          prevProduct.filter(product => product._id !== Id)
-        );
-        toast.success(response.data.message, { position: "top-right" });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  const deleteProduct = async id => {
+    try {
+      const response = await createAPIEndpoint(ENDPOINTS.PRODUCT).delete(id);
+      setProducts(prevProducts =>
+        prevProducts.filter(product => product.id !== id)
+      );
+      toast.success("Product deleted successfully!", { position: "top-right" });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (
@@ -97,15 +95,16 @@ const Product = () => {
                   </td>
                   <td className="actionButtons">
                     <Link
-                      to={`/update-product`}
+                      key={product.id}
+                      to={`/update-product/${product.id}`}
                       type="button"
-                      class="btn btn-info"
+                      className="btn btn-info"
                     >
-                      <i class="bi bi-pencil-square" />
+                      <i className="bi bi-pencil-square" />
                     </Link>
 
                     <button
-                      onClick={() => deleteProduct(product._id)}
+                      onClick={() => deleteProduct(product.id)}
                       type="button"
                       class="btn btn-danger"
                     >

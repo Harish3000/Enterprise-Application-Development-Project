@@ -1,45 +1,47 @@
-//author: Harini chamathka
-// Path: client/src/Product/update-product.jsx
-
 import React, { useEffect, useState } from "react";
 import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
+
+// Declare the default product template before using it
+const defaultProduct = {
+  id: "",
+  productName: "",
+  productImage: "",
+  productDescription: "",
+  productPrice: 0,
+  productRating: 0,
+  categoryName: "",
+  productStock: 0,
+  isActive: false,
+  vendorName: ""
+};
 
 const UpdateProduct = () => {
-  const products = {
-    productName: product.productName,
-    productImage: product.productImage,
-    productDescription: product.productDescription,
-    productPrice: product.productPrice,
-    productRating: product.productRating,
-    categoryName: product.categoryName,
-    productStock: product.productStock,
-    isActive: product.isActive,
-    vendorName: product.vendorName
-  };
-  const [product, setProduct] = useState(products);
+  const [product, setProduct] = useState(defaultProduct);
   const navigate = useNavigate();
   const { id } = useParams();
 
   const inputHandler = e => {
-    const { name, value } = e.target;
-    console.log(name, value);
+    const { id, value } = e.target;
+    console.log(id, value);
 
-    setProduct({ ...product, [name]: value });
+    setProduct({ ...product, [id]: value });
   };
 
   useEffect(
     () => {
-      axios
-        .get(`api/Product`)
+      // Use the API helper to send the POST request with the dynamic IDs
+      createAPIEndpoint(ENDPOINTS.PRODUCT)
+        .fetchByPost({ id })
         .then(response => {
           setProduct(response.data);
         })
         .catch(error => {
-          console.log(error);
+          console.log("id:", id);
         });
     },
     [id]
@@ -47,14 +49,19 @@ const UpdateProduct = () => {
 
   const submitForm = async e => {
     e.preventDefault();
-    await axios
-      .put(`api/Product`, product)
+    createAPIEndpoint(ENDPOINTS.PRODUCT)
+      .put(product)
       .then(response => {
-        toast.success(response.data.message, { position: "top-right" });
+        setProduct(response.data);
+        if (response.data != null) {
+          toast.success("Product updated successfully!", {
+            position: "top-right"
+          });
+        }
         navigate("/product");
       })
       .catch(error => {
-        console.log(error);
+        console.log("id:", id);
       });
   };
 
@@ -172,8 +179,7 @@ const UpdateProduct = () => {
           </div>
           <div className="inputGroup">
             <button type="submit" class="btn">
-              {/* disabled={loading}> */}
-              {/* {loading ? "Submitting..." : "Submit"} */}
+              Submit
             </button>
           </div>
         </form>
