@@ -25,7 +25,7 @@ const Product = () => {
 
   const deleteProduct = async id => {
     try {
-      const response = await createAPIEndpoint(ENDPOINTS.PRODUCT).delete(id);
+      await createAPIEndpoint(ENDPOINTS.PRODUCT).delete(id);
       setProducts(prevProducts =>
         prevProducts.filter(product => product.id !== id)
       );

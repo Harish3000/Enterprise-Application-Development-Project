@@ -50,18 +50,15 @@ const Vendor = () => {
     fetchData();
   }, []);
 
-  const deleteVendor = async vendorId => {
+  const deleteVendor = async id => {
     try {
-      await createAPIEndpoint(ENDPOINTS.VENDOR).delete(vendorId);
+      await createAPIEndpoint(ENDPOINTS.VENDOR).delete(id);
       setVendors(prevVendors =>
-        prevVendors.filter(vendor => vendor._id !== vendorId)
+        prevVendors.filter(vendors => vendors.id !== id)
       );
       toast.success("Vendor deleted successfully!", { position: "top-right" });
     } catch (error) {
-      console.log(error);
-      toast.error("Error deleting vendor. Please try again.", {
-        position: "top-right"
-      });
+      console.error("Error deleting vendor:", error);
     }
   };
 
@@ -132,7 +129,7 @@ const Vendor = () => {
                   </button>
 
                   <button
-                    onClick={() => deleteVendor(vendor._id)}
+                    onClick={() => deleteVendor(vendor.id)}
                     type="button"
                     className="btn btn-danger"
                   >

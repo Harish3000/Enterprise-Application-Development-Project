@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 const AddVendor = () => {
   const initialVendors = {
@@ -22,6 +23,7 @@ const AddVendor = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]); // List of products fetched from API
   const [selectedProducts, setSelectedProducts] = useState([]); // Products selected from dropdown
+  const navigate = useNavigate();
 
   // Fetch products when the component mounts
   useEffect(() => {
@@ -34,7 +36,7 @@ const AddVendor = () => {
         }));
         setProducts(productList);
       } catch (error) {
-        toast.error("Failed to load products.");
+        toast.error("Failed to load vendor.");
         console.error(error);
       }
     };
@@ -54,18 +56,18 @@ const AddVendor = () => {
   };
 
   // Validation logic
-  const validateForm = () => {
-    const { vendorName, vendorRank } = vendor;
-    if (!vendorName || !vendorRank || vendor.productIds.length === 0) {
-      toast.error("Please fill in all the required fields.");
-      return false;
-    }
-    return true;
-  };
+  // const validateForm = () => {
+  //   const { vendorName, vendorRank } = vendor;
+  //   if (!vendorName || !vendorRank || vendor.productIds.length === 0) {
+  //     toast.error("Please fill in all the required fields.");
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const submitForm = async e => {
     e.preventDefault();
-    if (!validateForm()) return;
+    // if (!validateForm()) return;
 
     try {
       setLoading(true);
@@ -76,6 +78,7 @@ const AddVendor = () => {
       toast.success("Vendor added successfully!", { position: "top-right" });
       setVendor(initialVendors);
       setSelectedProducts([]); // Clear selected products
+      navigate("/vendor");
     } catch (error) {
       toast.dismiss();
       toast.error("Failed to add vendor. Please try again.", {

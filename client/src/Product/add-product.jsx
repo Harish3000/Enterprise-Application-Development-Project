@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const initialProductState = {
@@ -24,6 +25,7 @@ const AddProduct = () => {
 
   const [product, setProduct] = useState(initialProductState);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Handling text inputs
   const inputHandler = e => {
@@ -64,6 +66,7 @@ const AddProduct = () => {
 
       // Reset form after successful submission
       setProduct(initialProductState);
+      navigate("/product");
     } catch (err) {
       // Dismiss the loading toast on error
       toast.dismiss();
