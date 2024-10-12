@@ -30,7 +30,8 @@ export const createAPIEndpoint = endpoint => {
     post: newDetails => axiosInstance.post("/", newDetails).catch(handleError),
     put: updatedDetails =>
       axiosInstance.put("/", updatedDetails).catch(handleError),
-    delete: id => axiosInstance.delete("/", { data: { id } }).catch(handleError)
+    delete: id =>
+      axiosInstance.delete("/delete", { data: { id } }).catch(handleError)
   };
 };
 
