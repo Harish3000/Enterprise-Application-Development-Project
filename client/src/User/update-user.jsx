@@ -7,26 +7,32 @@ import SideBarMenu from "../Components/SideBarMenu";
 
 const UpdateUser = () => {
   const [user, setUser] = useState({
-    userName: user.userName, 
-    email: user.email,
-    address: user.address,
-    role:user
+    userName: "",
+    email: "",
+    address: "",
+    role: ""
   });
 
+  const [loading, setLoading] = useState(true); // Add loading state
   const navigate = useNavigate();
   const { id } = useParams(); // Get user ID from the URL
 
   // Fetch the existing user details using the userId
-  useEffect(() => {
-    axios
-      .post(`/api/User/getById`, { id }) // Fetch by userId (POST with id in body)
-      .then(response => {
-        setUser(response.data); // Populate form with existing user data
-      })
-      .catch(error => {
-        console.log("Error fetching user details:", error);
-      });
-  }, [id]);
+  useEffect(
+    () => {
+      axios
+        .post(`/api/User/getById`, { id }) // Fetch by userId (POST with id in body)
+        .then(response => {
+          setUser(response.data); // Populate form with existing user data
+          setLoading(false); // Set loading to false once data is fetched
+        })
+        .catch(error => {
+          console.log("Error fetching user details:", error);
+          setLoading(false);
+        });
+    },
+    [id]
+  );
 
   // Handle input changes
   const inputHandler = e => {
@@ -49,6 +55,10 @@ const UpdateUser = () => {
       });
   };
 
+  if (loading) {
+    return <p>Loading...</p>; // Display loading message while fetching data
+  }
+
   return (
     <div>
       <SideBarMenu />
@@ -64,7 +74,7 @@ const UpdateUser = () => {
             <input
               type="text"
               id="userName"
-              name="userName" // Changed to match the DTO property
+              name="userName"
               value={user.userName}
               onChange={inputHandler}
               autoComplete="off"
@@ -110,7 +120,9 @@ const UpdateUser = () => {
               onChange={inputHandler}
               required
             >
-              <option value="" disabled>Select a role</option>
+              <option value="" disabled>
+                Select a role
+              </option>
               <option value="Admin">Admin</option>
               <option value="Vendor">Vendor</option>
               <option value="CSR">CSR</option>

@@ -20,12 +20,12 @@ const User = () => {
     fetchData();
   }, []);
 
-  const deleteUser = async (userId) => {
+  const deleteUser = async userId => {
     try {
       const response = await createAPIEndpoint(ENDPOINTS.USER).delete(userId); // Sending userId in request body
-      setUsers((prevUser) => prevUser.filter((user) => user.id !== userId));
+      setUsers(prevUser => prevUser.filter(user => user.id !== userId));
       toast.success(response.message || "User deleted successfully", {
-        position: "top-right",
+        position: "top-right"
       });
     } catch (error) {
       console.log("Error while deleting user:", error);
@@ -52,11 +52,21 @@ const User = () => {
             {users.map((user, index) => {
               return (
                 <tr key={user.id}>
-                  <td>{index + 1}</td>
-                  <td>{user.userName}</td>
-                  <td>{user.email}</td>
-                  <td>{user.address}</td>
-                  <td>{user.role}</td>
+                  <td>
+                    {index + 1}
+                  </td>
+                  <td>
+                    {user.userName}
+                  </td>
+                  <td>
+                    {user.email}
+                  </td>
+                  <td>
+                    {user.address}
+                  </td>
+                  <td>
+                    {user.role}
+                  </td>
                   <td className="actionButtons">
                     <Link
                       to={`/update-user/${user.id}`}
