@@ -64,6 +64,9 @@ const UpdateProduct = () => {
         navigate("/product");
       })
       .catch(error => {
+        toast.error("Failed to update product.", {
+          position: "top-right"
+        });
         console.log(error);
       });
   };

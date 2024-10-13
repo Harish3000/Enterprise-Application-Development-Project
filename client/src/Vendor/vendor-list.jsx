@@ -10,7 +10,6 @@ const Vendor = () => {
   const [filteredVendors, setFilteredVendors] = useState([]); // State for filtered vendors
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const [productNamesMap, setProductNamesMap] = useState({}); // To store product names by product ID
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,12 +27,12 @@ const Vendor = () => {
 
         // Fetch product names and map them to product IDs
         const productNamesMap = {};
-        for (let productId of uniqueProductIds) {
+        for (let productIds of uniqueProductIds) {
           try {
             const productResponse = await createAPIEndpoint(
               ENDPOINTS.PRODUCT
-            ).getById(productId);
-            productNamesMap[productId] = productResponse.data.productName;
+            ).fetchById(productIds);
+            productNamesMap[productIds] = productResponse.data.productName;
           } catch (error) {
             console.error(error);
           }
@@ -82,17 +81,6 @@ const Vendor = () => {
     }
   };
 
-  const handleUpdateClick = async vendor => {
-    try {
-      navigate("/update-vendor", { state: { vendorId: vendor._id } });
-    } catch (error) {
-      console.error("Error navigating to update form", error);
-      toast.error("Error navigating to update form.", {
-        position: "top-right"
-      });
-    }
-  };
-
   return (
     <div>
       <SideBarMenu />
@@ -115,7 +103,7 @@ const Vendor = () => {
             <tr>
               <th scope="col">No.</th>
               <th scope="col">Name</th>
-
+              <th scope="col">Products</th>
               <th scope="col">Rank</th>
               <th scope="col">Status</th>
               <th scope="col">Actions</th>
@@ -129,6 +117,11 @@ const Vendor = () => {
                 </td>
                 <td>
                   {vendor.vendorName}
+                </td>
+                <td>
+                  {vendor.productIds
+                    .map(productId => productNamesMap[productId])
+                    .join(", ")}
                 </td>
                 <td>
                   {vendor.vendorRank}

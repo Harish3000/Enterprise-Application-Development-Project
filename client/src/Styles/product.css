@@ -1,7 +1,7 @@
 /* author: Harini Chamathka */
 
 .productTable {
-  width: 75%;
+  width: 100%;
   margin: auto;
   background-color: white;
   padding: 50px;
@@ -10,12 +10,56 @@
   margin-left: 300px;
 }
 .productTable table {
-  width: 100%;
+  width: 75%;
   margin-top: 20px;
 }
 .productTable table thead th {
   background-color: rgb(74, 75, 153);
   color: white;
+}
+
+.productTable .colNo {
+  width: 2%; /* Adjust width according to needs */
+}
+
+.productTable .colName {
+  width: 10%;
+}
+
+.productTable .colDescription {
+  width: 25%;
+}
+
+.productTable .colPrice {
+  width: 10%;
+}
+
+.productTable .colRating {
+  width: 10%;
+}
+
+.productTable .colCategory {
+  width: 10%;
+}
+
+.productTable .colStock {
+  width: 5%;
+}
+
+.productTable .colVendor {
+  width: 10%;
+}
+
+.productTable .colStatus {
+  width: 5%;
+}
+
+.productTable .colImage {
+  width: 5%;
+}
+
+.productTable .colActions {
+  width: 10%;
 }
 
 .productTable table tbody td {
@@ -41,8 +85,7 @@
   width: 200px;
   padding: 10px;
   margin-top: 20px;
-  margin-left: 650px;
+  margin-left: 850px;
   border-radius: 5px;
   border: 1px solid rgb(74, 75, 153);
 }
-

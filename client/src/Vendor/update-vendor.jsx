@@ -43,18 +43,17 @@ const UpdateVendor = () => {
     () => {
       // Fetch vendor details by ID
       createAPIEndpoint(ENDPOINTS.VENDOR)
-        .fetchById(id)
+        .fetchById({ id })
         .then(response => {
           setVendor(response.data); // Ensure data exists before setting
         })
         .catch(error => {
           console.error("Error fetching vendor:", error);
-          toast.error("Failed to load vendor details.");
         });
 
       // Fetch all products for the product selection dropdown
       createAPIEndpoint(ENDPOINTS.PRODUCT)
-        .fetchAll()
+        .fetchByPost()
         .then(response => {
           setProducts(
             response.data.map(product => ({
@@ -74,7 +73,7 @@ const UpdateVendor = () => {
   const submitForm = async e => {
     e.preventDefault();
     createAPIEndpoint(ENDPOINTS.VENDOR)
-      .put(vendor.id, vendor) // Pass vendor ID with the updated details
+      .put(vendor)
       .then(response => {
         setVendor(response.data);
         if (response.data != null) {
@@ -148,7 +147,7 @@ const UpdateVendor = () => {
             <select
               id="isActive"
               name="isActive"
-              value={vendor.isActive.toString()}
+              value={vendor.isActive}
               onChange={statusHandler}
               required
             >

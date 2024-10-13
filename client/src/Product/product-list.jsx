@@ -107,63 +107,83 @@ const Product = () => {
         <table className="table table-bordered">
           <thead>
             <tr>
-              <th scope="col">No.</th>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Price</th>
-              <th scope="col">Rating</th>
-              <th scope="col">Category</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Vendor</th>
-              <th scope="col">Status</th>
-              <th scope="col">Image</th>
-              <th scope="col">Actions</th>
+              <th scope="col" className="colNo">
+                No.
+              </th>
+              <th scope="col" className="colName">
+                Name
+              </th>
+              <th scope="col" className="colDescription">
+                Description
+              </th>
+              <th scope="col" className="colPrice">
+                Price
+              </th>
+              <th scope="col" className="colRating">
+                Rating
+              </th>
+              <th scope="col" className="colCategory">
+                Category
+              </th>
+              <th scope="col" className="colStock">
+                Stock
+              </th>
+              <th scope="col" className="colVendor">
+                Vendor
+              </th>
+              <th scope="col" className="colStatus">
+                Status
+              </th>
+              <th scope="col" className="colImage">
+                Image
+              </th>
+              <th scope="col" className="colActions">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {filteredProducts.map((product, index) => {
               return (
                 <tr key={product.id}>
-                  <td>
+                  <td className="colNo">
                     {index + 1}
                   </td>
-                  <td>
+                  <td className="colName">
                     {product.productName}
                   </td>
-                  <td>
+                  <td className="colDescription">
                     {product.productDescription}
                   </td>
-                  <td>
+                  <td className="colPrice">
                     {product.productPrice}
                   </td>
-                  <td>
+                  <td className="colRating">
                     {product.productRating}
                   </td>
-                  <td>
+                  <td className="colCategory">
                     {product.categoryName}
                   </td>
-                  <td>
+                  <td className="colStock">
                     {product.productStock}
                   </td>
-                  <td>
+                  <td className="colVendor">
                     {product.vendorName}
                   </td>
-                  <td>
+                  <td className="colStatus">
                     {product.isActive ? "Active" : "Inactive"}
                   </td>
-                  <td>
+                  <td className="colImage">
                     {product.productImage}
                   </td>
-                  <td className="actionButtons">
+                  <td className="colActions">
                     <Link
-                      key={product.id}
                       to={`/update-product/${product.id}`}
                       type="button"
                       className="btn btn-info"
                     >
                       <i className="bi bi-pencil-square" />
                     </Link>
-
                     <button
                       onClick={() => confirmDelete(product.id)}
                       type="button"

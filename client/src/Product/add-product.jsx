@@ -38,9 +38,27 @@ const AddProduct = () => {
 
   // Validation logic
   const validateForm = () => {
-    const { productName, productPrice, productStock, vendorName } = product;
+    const {
+      productName,
+      productPrice,
+      productStock,
+      vendorName,
+      productImage,
+      productDescription,
+      productRating,
+      categoryName
+    } = product;
 
-    if (!productName || !productPrice || !productStock) {
+    if (
+      !productName ||
+      !productPrice ||
+      !productStock ||
+      !vendorName ||
+      !productImage ||
+      !categoryName ||
+      !productRating ||
+      !productDescription
+    ) {
       toast.error("Please fill in all the required fields.");
       return false;
     }
@@ -49,12 +67,8 @@ const AddProduct = () => {
       toast.error("Please enter valid values for price and stock.");
       return false;
     }
-
-    // Custom validation for vendor name
-    if (!vendorName) {
-      toast.error(
-        "Vendor name is required. Please select or enter a valid vendor."
-      );
+    if (productRating > 10 || productRating < 0) {
+      toast.error("Rating should be 0-10.");
       return false;
     }
 
@@ -112,7 +126,7 @@ const AddProduct = () => {
         <h3>Add New Product</h3>
         <form className="addProductForm" onSubmit={submitForm}>
           <div className="inputGroup">
-            <label htmlFor="productName">Product Name :</label>
+            <label htmlFor="productName">Product Name* :</label>
             <input
               type="text"
               id="productName"
@@ -125,7 +139,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productDescription">Description :</label>
+            <label htmlFor="productDescription">Description* :</label>
             <input
               type="text"
               id="productDescription"
@@ -137,7 +151,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productPrice">Price :</label>
+            <label htmlFor="productPrice">Price* :</label>
             <input
               min={0}
               type="number"
@@ -151,9 +165,10 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productRating">Rating :</label>
+            <label htmlFor="productRating">Rating (out of 10)* :</label>
             <input
               min={0}
+              max={10}
               type="number"
               id="productRating"
               onChange={inputHandler}
@@ -164,7 +179,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="categoryName">Category :</label>
+            <label htmlFor="categoryName">Category* :</label>
             <input
               type="text"
               id="categoryName"
@@ -176,7 +191,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productStock">Stock :</label>
+            <label htmlFor="productStock">Stock* :</label>
             <input
               min={0}
               type="number"
@@ -190,7 +205,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="vendorName">Vendor :</label>
+            <label htmlFor="vendorName">Vendor* :</label>
             <input
               type="text"
               id="vendorName"
@@ -202,7 +217,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="inputGroup">
-            <label htmlFor="productImage">Product Image :</label>
+            <label htmlFor="productImage">Product Image* :</label>
             <input
               type="text"
               id="productImage"
