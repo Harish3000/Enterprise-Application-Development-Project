@@ -4,7 +4,8 @@ export const ENDPOINTS = {
   PRODUCT: "Product",
   VENDOR: "Vendor",
   ORDER: "Order",
-  USER: "User"
+  USER: "User",
+  SALE: "Sale"
 };
 
 // Get token from localStorage or wherever it's stored
@@ -23,10 +24,10 @@ export const createAPIEndpoint = endpoint => {
 
   return {
     fetchAll: () => axiosInstance.get("/").catch(handleError),
-    fetchById: id => axiosInstance.get(`/getById/${id}`).catch(handleError), // Correct the URL
+    fetchById: id => axiosInstance.get(`/getById`, id).catch(handleError), // Correct the URL
     fetchCompletedOrders: () =>
       axiosInstance.get("/ordersCompleted").catch(handleError),
-    fetchByPost: id => axiosInstance.post("/getById", id).catch(handleError),
+    fetchByPost: id => axiosInstance.post(`/getById`, id).catch(handleError),
     post: newDetails => axiosInstance.post("/", newDetails).catch(handleError),
     put: updatedDetails =>
       axiosInstance.put("/", updatedDetails).catch(handleError),

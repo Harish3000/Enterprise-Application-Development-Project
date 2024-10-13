@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
@@ -12,8 +11,8 @@ const defaultProduct = {
   productName: "",
   productImage: "",
   productDescription: "",
-  productPrice: 0,
-  productRating: 0,
+  productPrice: 0.0,
+  productRating: 0.0,
   categoryName: "",
   productStock: 0,
   isActive: false,
@@ -45,7 +44,7 @@ const UpdateProduct = () => {
           setProduct(response.data);
         })
         .catch(error => {
-          console.log("id:", id);
+          console.log(error);
         });
     },
     [id]
@@ -65,7 +64,7 @@ const UpdateProduct = () => {
         navigate("/product");
       })
       .catch(error => {
-        console.log("id:", id);
+        console.log(error);
       });
   };
 

@@ -26,8 +26,8 @@ import AppHome from "./Home/home";
 import Profile from "./Home/profile";
 import Welcome from "./Home/welcome";
 import SaleList from "./Sale/sale-list";
-import AddSale from "./Sale/add-sale";
-import UpdateSale from "./Sale/update-sale";
+// import AddSale from "./Sale/add-sale";
+// import UpdateSale from "./Sale/update-sale";
 
 function App() {
   const routes = createBrowserRouter([
@@ -86,7 +86,7 @@ function App() {
       element: <AddVendor />
     },
     {
-      path: "/update-vendor",
+      path: "/update-vendor/:id",
       element: <UpdateVendor />
     },
 
@@ -122,15 +122,15 @@ function App() {
     {
       path: "/sale",
       element: <SaleList />
-    },
-    {
-      path: "/add-sale",
-      element: <AddSale />
-    },
-    {
-      path: "/update-sale",
-      element: <UpdateSale />
     }
+    // {
+    //   path: "/add-sale",
+    //   element: <AddSale />
+    // },
+    // {
+    //   path: "/update-sale",
+    //   element: <UpdateSale />
+    // }
   ]);
 
   return (

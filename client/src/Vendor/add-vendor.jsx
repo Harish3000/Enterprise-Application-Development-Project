@@ -14,7 +14,7 @@ const AddVendor = () => {
   const initialVendors = {
     id: "",
     vendorName: "",
-    productIds: [], // Product IDs will be stored here
+    productIds: [],
     vendorRank: 0.0,
     isActive: true
   };
@@ -118,9 +118,13 @@ const AddVendor = () => {
             <label htmlFor="productIds">Products:</label>
             <Select
               isMulti
-              options={products} // Dropdown options (products)
-              value={selectedProducts} // Currently selected products
-              onChange={handleProductChange} // Handler for product selection
+              options={products}
+              value={
+                selectedProducts // The product options
+              }
+              onChange={
+                handleProductChange // Selected products
+              }
               placeholder="Select Products"
             />
           </div>

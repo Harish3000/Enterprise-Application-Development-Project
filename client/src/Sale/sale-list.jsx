@@ -1,123 +1,127 @@
-// //author: Harini chamathka
-// // Path: client/src/Sale/sale-list.jsx
+//author: Harini chamathka
+// Path: client/src/Sale/sale-list.jsx
 
-// import React, { useEffect, useState } from "react";
-// import "../Styles/sale.css";
-// import axios from "axios";
-// import { Link } from "react-router-dom";
-// import toast from "react-hot-toast";
-// import SideBarMenu from "../Components/SideBarMenu";
-// import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
+import React, { useEffect, useState } from "react";
+import "../Styles/sale.css";
+import toast from "react-hot-toast";
+import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { confirmAlert } from "react-confirm-alert";
 
-// const Sale = () => {
-//   const [sales, setSales] = useState([]);
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await createAPIEndpoint(ENDPOINTS.PRODUCT).fetchAll();
-//         setSales(response.data);
-//       } catch (error) {
-//         console.log("Error while fetching data", error);
-//       }
-//     };
-//     fetchData();
-//   }, []);
+const Sale = () => {
+  const [sales, setSales] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await createAPIEndpoint(ENDPOINTS.SALE).fetchAll();
+        setSales(response.data);
+      } catch (error) {
+        console.log("Error while fetching data", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-//   const deleteSale = async Id => {
-//     await axios
-//       .delete(`api/Sale`)
-//       .then(response => {
-//         setSales(prevSale => prevSale.filter(sale => sale._id !== Id));
-//         toast.success(response.data.message, { position: "top-right" });
-//       })
-//       .catch(error => {
-//         console.log(error);
-//       });
-//   };
+  const deleteSale = async Id => {
+    try {
+      await createAPIEndpoint(ENDPOINTS.SALE).delete(Id);
+      setSales(prevSales => prevSales.filter(sale => sale.id !== Id));
+      toast.success("Sale deleted successfully!", { position: "top-right" });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
 
-//   return (
-//     <div>
-//       <SideBarMenu />
-//       <div className="saleTable">
-//         <Link to="/add-sale" type="button" className="addBtn">
-//           Add Sale <i class="bi bi-plus-circle-fill" />
-//         </Link>
+  // Function to confirm and delete product
+  const confirmDelete = id => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this sale?",
+      closeOnClickOutside: true,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => deleteSale(id)
+        },
+        {
+          label: "No",
+          onClick: () =>
+            toast.error("Sale deletion canceled", {
+              position: "top-right"
+            })
+        }
+      ]
+    });
+  };
 
-//         <table className="table table-bordered">
-//           <thead>
-//             <tr>
-//               <th scope="col">No.</th>
-//               <th scope="col">Name</th>
-//               <th scope="col">Description</th>
-//               <th scope="col">Price</th>
-//               <th scope="col">Rating</th>
-//               <th scope="col">Category</th>
-//               <th scope="col">Stock</th>
-//               <th scope="col">Vendor</th>
-//               <th scope="col">Status</th>
-//               <th scope="col">Image</th>
-//               <th scope="col">Actions</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {sales.map((sale, index) => {
-//               return (
-//                 <tr>
-//                   <td>
-//                     {index + 1}
-//                   </td>
-//                   <td>
-//                     {sale.saleName}
-//                   </td>
-//                   <td>
-//                     {sale.saleDescription}
-//                   </td>
-//                   <td>
-//                     {sale.salePrice}
-//                   </td>
-//                   <td>
-//                     {sale.saleRating}
-//                   </td>
-//                   <td>
-//                     {sale.categoryName}
-//                   </td>
-//                   <td>
-//                     {sale.saleStock}
-//                   </td>
-//                   <td>
-//                     {sale.vendorName}
-//                   </td>
-//                   <td>
-//                     {sale.isActive ? "Active" : "Inactive"}
-//                   </td>
-//                   <td>
-//                     {sale.saleImage}
-//                   </td>
-//                   <td className="actionButtons">
-//                     <Link
-//                       to={`/update-sale`}
-//                       type="button"
-//                       class="btn btn-info"
-//                     >
-//                       <i class="bi bi-pencil-square" />
-//                     </Link>
+  return (
+    <div>
+      <SideBarMenu />
+      <div className="saleTable">
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">Product</th>
+              <th scope="col">Vendor</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Paid</th>
+              <th scope="col">Approval</th>
+              <th scope="col">Dispatch</th>
+              <th scope="col">Sale Date</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sales.map((sale, index) => {
+              return (
+                <tr>
+                  <td>
+                    {index + 1}
+                  </td>
+                  <td>
+                    {sale.productName}
+                  </td>
+                  <td>
+                    {sale.vendorId}
+                  </td>
+                  <td>
+                    {sale.productQuantity}
+                  </td>
+                  <td>
+                    {sale.price}
+                  </td>
+                  <td>
+                    {sale.isPaid ? "Paid" : "Not Paid"}
+                  </td>
+                  <td>
+                    {sale.isApproved ? "Approved" : "Not Approved"}
+                  </td>
+                  <td>
+                    {sale.isDispatched ? "Dispatched" : "Not Dispatched"}
+                  </td>
+                  <td>
+                    {sale.saleDate}
+                  </td>
+                  <td className="actionButtons">
+                    <button
+                      onClick={() => confirmDelete(sale.id)}
+                      type="button"
+                      className="btn btn-danger"
+                    >
+                      <i className="bi bi-trash3-fill" />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
-//                     <button
-//                       onClick={() => deleteSale(sale._id)}
-//                       type="button"
-//                       class="btn btn-danger"
-//                     >
-//                       <i class="bi bi-trash3-fill" />
-//                     </button>
-//                   </td>
-//                 </tr>
-//               );
-//             })}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Sale;
+export default Sale;

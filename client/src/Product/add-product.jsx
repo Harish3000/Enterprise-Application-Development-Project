@@ -30,20 +30,34 @@ const AddProduct = () => {
   // Handling text inputs
   const inputHandler = e => {
     const { id, value } = e.target;
-    setProduct({ ...product, [id]: value });
+    setProduct({
+      ...product,
+      [id]: value
+    });
   };
 
   // Validation logic
   const validateForm = () => {
-    const { productName, productPrice, productStock } = product;
+    const { productName, productPrice, productStock, vendorName } = product;
+
     if (!productName || !productPrice || !productStock) {
       toast.error("Please fill in all the required fields.");
       return false;
     }
+
     if (productPrice <= 0 || productStock < 0) {
       toast.error("Please enter valid values for price and stock.");
       return false;
     }
+
+    // Custom validation for vendor name
+    if (!vendorName) {
+      toast.error(
+        "Vendor name is required. Please select or enter a valid vendor."
+      );
+      return false;
+    }
+
     return true;
   };
 
@@ -54,13 +68,17 @@ const AddProduct = () => {
 
     try {
       // Show a loading toast while the request is in progress
-      toast.loading("Adding product...", { position: "top-right" });
+      toast.loading("Adding product...", {
+        position: "top-right"
+      });
 
       const res = await createAPIEndpoint(ENDPOINTS.PRODUCT).post(product);
 
       // If successful, show a success message
       toast.dismiss(); // Dismiss the loading toast
-      toast.success("Product added successfully!", { position: "top-right" });
+      toast.success("Product added successfully!", {
+        position: "top-right"
+      });
 
       console.log(res); // Optional: Log the response
 
