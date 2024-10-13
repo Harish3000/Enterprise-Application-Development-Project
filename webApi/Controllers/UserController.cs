@@ -14,7 +14,7 @@ namespace webApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Customer")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -36,7 +36,7 @@ namespace webApi.Controllers
 
         // GET: api/user/getById
         // Retrieves a user by their unique identifier.
-        [HttpGet("getById")]
+        [HttpPost("getById")]
         public async Task<IActionResult> GetUserById([FromBody] IdDto idDto)
         {
             var user = await _userService.GetUserById(idDto.Id);

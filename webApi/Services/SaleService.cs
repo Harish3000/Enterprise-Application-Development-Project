@@ -47,14 +47,16 @@ namespace webApi.Services
         private readonly IVendorService _vendorService;
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
+        private readonly IOrderRepository _orderRepository;
 
-        public SaleService(ISaleRepository saleRepository, IProductService productService, IVendorService vendorService, IAuthService authService, IUserService userService)
+        public SaleService(ISaleRepository saleRepository, IProductService productService, IVendorService vendorService, IAuthService authService, IUserService userService,IOrderRepository orderRepository)
         {
             _saleRepository = saleRepository;
             _productService = productService;
             _vendorService = vendorService;
             _authService = authService;
             _userService = userService;
+            _orderRepository = orderRepository;
         }
 
         // Retrieves all sales
@@ -140,9 +142,27 @@ namespace webApi.Services
             existingSale.IsApproved = saleDto.IsApproved;
             existingSale.IsDispatched = saleDto.IsDispatched;
 
-            await _saleRepository.UpdateSale(existingSale); // Save changes to repository
+            await _saleRepository.UpdateSale(existingSale); // Save changes to the repository
+
+            // Update relevant orders in the Order collection
+            var orders = await _orderRepository.GetAllOrders(); // Fetch all orders
+            foreach (var order in orders)
+            {
+                // Check if the sale exists in the order's SaleList
+                var saleInOrder = order.SaleList.FirstOrDefault(sale => sale.Id == existingSale.Id);
+                if (saleInOrder != null)
+                {
+                    // Replace the old sale entry with the updated sale
+                    order.SaleList.Remove(saleInOrder); // Remove the old sale
+                    order.SaleList.Add(existingSale); // Add the updated sale
+
+                    await _orderRepository.UpdateOrder(order); // Save the updated order
+                }
+            }
+
             return existingSale; // Return the updated sale
         }
+
 
         // Deletes a sale by its ID
         public async Task<string> DeleteSale(string id)

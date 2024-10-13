@@ -1,63 +1,52 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const UpdateUser = () => {
   const [user, setUser] = useState({
     userName: "",
     email: "",
     address: "",
-    role: ""
+    role: "",
   });
 
-  const [loading, setLoading] = useState(true); // Add loading state
   const navigate = useNavigate();
-  const { id } = useParams(); // Get user ID from the URL
+  const { id } = useParams();
 
   // Fetch the existing user details using the userId
-  useEffect(
-    () => {
-      axios
-        .post(`/api/User/getById`, { id }) // Fetch by userId (POST with id in body)
-        .then(response => {
-          setUser(response.data); // Populate form with existing user data
-          setLoading(false); // Set loading to false once data is fetched
-        })
-        .catch(error => {
-          console.log("Error fetching user details:", error);
-          setLoading(false);
-        });
-    },
-    [id]
-  );
+  useEffect(() => {
+    createAPIEndpoint(ENDPOINTS.USER)
+      .fetchByPost({ id })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.log("ppppppppppppppppppppppppp");
+        console.log("Error fetching user details:", error);
+      });
+  }, [id]);
 
-  // Handle input changes
-  const inputHandler = e => {
+  const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  // Handle form submission
-  const submitForm = async e => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    await axios
-      .put(`/api/User`, { id, ...user }) // Update user details by ID
-      .then(response => {
+    createAPIEndpoint(ENDPOINTS.USER)
+      .put(user)
+      .then(() => {
         toast.success("User updated successfully!", { position: "top-right" });
         navigate("/user");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Error updating user:", error);
         toast.error("Failed to update user.", { position: "top-right" });
       });
   };
-
-  if (loading) {
-    return <p>Loading...</p>; // Display loading message while fetching data
-  }
 
   return (
     <div>
@@ -82,7 +71,6 @@ const UpdateUser = () => {
               required
             />
           </div>
-
           <div className="inputGroup">
             <label htmlFor="email">Email:</label>
             <input
@@ -96,7 +84,6 @@ const UpdateUser = () => {
               required
             />
           </div>
-
           <div className="inputGroup">
             <label htmlFor="address">Address:</label>
             <input
@@ -109,7 +96,6 @@ const UpdateUser = () => {
               placeholder="Enter user address"
             />
           </div>
-
           <div className="inputGroup">
             <label htmlFor="role">Role:</label>
             <select
@@ -129,7 +115,6 @@ const UpdateUser = () => {
               <option value="Customer">Customer</option>
             </select>
           </div>
-
           <div className="inputGroup">
             <button type="submit" className="btn">
               Submit

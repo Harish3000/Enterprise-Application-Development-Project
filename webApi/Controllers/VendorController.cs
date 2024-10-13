@@ -36,7 +36,7 @@ namespace webApi.Controllers
 
         // GET: api/vendor/getById
         // Retrieves a vendor by their unique identifier.
-        [HttpGet("getById")]
+        [HttpPost("getById")]
         public async Task<IActionResult> GetVendorById([FromBody] IdDto idDto)
         {
             var vendor = await _vendorService.GetVendorById(idDto.Id);

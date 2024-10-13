@@ -1,163 +1,198 @@
-//author: Harini chamathka
-//path: src / Order / update-order.jsx
-
 import React, { useEffect, useState } from "react";
 import "../Styles/update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
+import { createAPIEndpoint, ENDPOINTS } from "../Api";
 
 const UpdateOrder = () => {
-  const orders = {
+  const initialOrderState = {
     id: "",
-    productId: "",
-    vendorId: "",
-    userId: "",
-    productName: "",
-    productQuantity: "",
-    price: "",
-    isPaid: true,
-    isApproved: false,
-    isDispatched: false,
-    saleDate: ""
+    saleList: [
+      {
+        id: "",
+        productId: "",
+        vendorId: "",
+        userId: "",
+        productName: "",
+        productQuantity: "",
+        price: "",
+        isPaid: false, // Initialize as false; will be replaced by fetched data
+        isApproved: false, // Initialize as false; will be replaced by fetched data
+        isDispatched: false, // Initialize as false; will be replaced by fetched data
+        saleDate: "",
+      },
+    ],
+    totalPrice: 0,
+    deliveryStatus: "",
+    isPaid: false, // Initialize as false; will be replaced by fetched data
+    isApproved: false, // Initialize as false; will be replaced by fetched data
+    isDispatched: false, // Initialize as false; will be replaced by fetched data
+    orderDate: "",
   };
-  const [order, setOrder] = useState(orders);
+
+  const [order, setOrder] = useState(initialOrderState);
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const inputHandler = e => {
-    const { name, value } = e.target;
-    console.log(name, value);
-
-    setOrder({ ...order, [name]: value });
-  };
-
-  useEffect(
-    () => {
-      axios
-        .get(`api/order/${id}`)
-        .then(response => {
-          setOrder(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    [id]
-  );
-
-  const submitForm = async e => {
-    e.preventDefault();
-    await axios
-      .put(`api/Order`, order)
-      .then(response => {
-        toast.success(response.data.message, { position: "top-right" });
-        navigate("/order");
+  useEffect(() => {
+    createAPIEndpoint(ENDPOINTS.ORDER)
+      .fetchByPost({ id })
+      .then((response) => {
+        setOrder(response.data);
       })
-      .catch(error => {
-        console.log(error);
+      .catch((error) => {
+        console.error("Error fetching order details:", error);
       });
+  }, [id]);
+
+  const inputHandler = (e, index) => {
+    const { name, value, type, checked } = e.target;
+    const updatedSaleList = [...order.saleList];
+
+    // Update the state based on whether the input is a checkbox
+    updatedSaleList[index] = {
+      ...updatedSaleList[index],
+      [name]: type === "checkbox" ? checked : value,
+    };
+
+    setOrder((prevOrder) => ({ ...prevOrder, saleList: updatedSaleList }));
   };
+
+  const updateSale = async (sale) => {
+    try {
+      await createAPIEndpoint(ENDPOINTS.SALE).put(sale);
+      console.log("--------", sale);
+      toast.success("Sale updated successfully!", { position: "top-right" });
+    } catch (error) {
+      console.error("Error updating sale:", error);
+    }
+  };
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+
+    const orderData = {
+      id: order.id,
+      isPaid: isComplete,
+      isApproved: isComplete,
+      isDispatched: isComplete,
+      deliveryStatus: "completed",
+    };
+
+    try {
+      await createAPIEndpoint(ENDPOINTS.ORDER).put(orderData);
+      toast.success("Order updated successfully!", { position: "top-right" });
+      navigate("/order");
+    } catch (error) {
+      console.error("Error updating order:", error);
+      toast.error("Failed to update order.", { position: "top-right" });
+    }
+  };
+
+  // Check if all sales are paid, approved, and dispatched
+  const isComplete = order.saleList.every(
+    (sale) => sale.isPaid && sale.isApproved && sale.isDispatched
+  );
 
   return (
     <div>
       <SideBarMenu />
       <div className="addOrder">
-        <Link to="/order" type="button" class="btn btn-secondary">
-          <i class="bi bi-skip-backward-fill" />
+        <Link to="/order" className="btn btn-secondary">
+          <i className="bi bi-skip-backward-fill" /> Go Back
         </Link>
 
         <h3>Update Order</h3>
         <form className="addOrderForm" onSubmit={submitForm}>
+          {order.saleList.map((saleItem, index) => (
+            <div key={saleItem.id} className="saleItemForm">
+              <h4>Product {index + 1}</h4>
+              <div className="inputGroup">
+                <label>Product Name:</label>
+                <input
+                  type="text"
+                  name="productName"
+                  value={saleItem.productName}
+                  onChange={(e) => inputHandler(e, index)}
+                  placeholder="Enter product name"
+                  disabled
+                />
+              </div>
+              <div className="inputGroup">
+                <label>Quantity:</label>
+                <input
+                  type="number"
+                  name="productQuantity"
+                  min="0"
+                  value={saleItem.productQuantity}
+                  onChange={(e) => inputHandler(e, index)}
+                  placeholder="Enter quantity"
+                  disabled
+                />
+              </div>
+              <div className="inputGroup">
+                <label>Price:</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={saleItem.price}
+                  onChange={(e) => inputHandler(e, index)}
+                  placeholder="Enter price"
+                  disabled
+                />
+              </div>
+              <div className="inputGroup form-check form-switch">
+                <input
+                  type="checkbox"
+                  name="isPaid"
+                  className="form-check-input"
+                  checked={saleItem.isPaid}
+                  onChange={(e) => inputHandler(e, index)}
+                />
+                <label className="form-check-label">Paid</label>
+              </div>
+              <div className="inputGroup form-check form-switch">
+                <input
+                  type="checkbox"
+                  name="isApproved"
+                  className="form-check-input"
+                  checked={saleItem.isApproved}
+                  onChange={(e) => inputHandler(e, index)}
+                />
+                <label className="form-check-label">Approval</label>
+              </div>
+              <div className="inputGroup form-check form-switch">
+                <input
+                  type="checkbox"
+                  name="isDispatched"
+                  className="form-check-input"
+                  checked={saleItem.isDispatched}
+                  onChange={(e) => inputHandler(e, index)}
+                />
+                <label className="form-check-label">Dispatch</label>
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() =>
+                  updateSale({
+                    Id: saleItem.id,
+                    ProductId: saleItem.productId,
+                    ProductQuantity: saleItem.productQuantity,
+                    IsPaid: saleItem.isPaid,
+                    IsApproved: saleItem.isApproved,
+                    IsDispatched: saleItem.isDispatched,
+                  })
+                }
+              >
+                Update
+              </button>
+            </div>
+          ))}
           <div className="inputGroup">
-            <label htmlFor="productName">Product Name:</label>
-            <input
-              type="text"
-              id="productName"
-              onChange={inputHandler}
-              name="productName"
-              autoComplete="off"
-              placeholder="Enter product Name"
-              value={order.productName}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="productQuantity">Qunatity :</label>
-            <input
-              min={0}
-              type="number"
-              id="productQuantity"
-              onChange={inputHandler}
-              name="productQuantity"
-              autoComplete="off"
-              placeholder="Enter product quantity"
-              value={order.productQuantity}
-              required
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              id="price"
-              onChange={inputHandler}
-              name="price"
-              autoComplete="off"
-              placeholder="Enter product price"
-              value={order.price}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="isPaid">Paid:</label>
-            <input
-              type="boolean"
-              id="isPaid"
-              onChange={inputHandler}
-              name="isPaid"
-              autoComplete="off"
-              placeholder="Payment Status"
-              value={order.isPaid}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="isApproved">Approval:</label>
-            <input
-              type="boolean"
-              id="isApproved"
-              onChange={inputHandler}
-              name="isApproved"
-              autoComplete="off"
-              placeholder="Approval Status"
-              value={order.isApproved}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="isDispatched">Dispatch:</label>
-            <input
-              type="boolean"
-              id="isDispatched"
-              onChange={inputHandler}
-              name="isDispatched"
-              autoComplete="off"
-              placeholder="Dispactch Status"
-              value={order.isDispatched}
-            />
-          </div>
-          <div className="inputGroup">
-            <label htmlFor="saleDate">Sale Date:</label>
-            <input
-              type="text"
-              id="saleDate"
-              onChange={inputHandler}
-              name="saleDate"
-              autoComplete="off"
-              placeholder="Sales Date"
-            />
-          </div>
-          <div className="inputGroup">
-            <button type="submit" class="btn">
-              Submit
+            <button type="submit" className="btn" disabled={!isComplete}>
+              Complete Order
             </button>
           </div>
         </form>

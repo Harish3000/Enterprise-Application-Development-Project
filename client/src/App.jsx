@@ -5,7 +5,7 @@ import "./App.css";
 import {
   // BrowserRouter,
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
 } from "react-router-dom";
 import User from "./User/user-list";
 import AddUser from "./User/add-user";
@@ -33,104 +33,104 @@ function App() {
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <AppHome />
+      element: <AppHome />,
     },
     {
       path: "/login",
-      element: <Login />
+      element: <Login />,
     },
     {
       path: "/welcome",
-      element: <Welcome />
+      element: <Welcome />,
     },
     {
       path: "/register",
-      element: <Register />
+      element: <Register />,
     },
     {
       path: "/dashboard",
-      element: <SideBarMenu />
+      element: <SideBarMenu />,
     },
 
     {
       path: "/profile",
-      element: <Profile />
+      element: <Profile />,
     },
 
     // inventory
     {
       path: "/inventory",
-      element: <SideBarMenu />
+      element: <SideBarMenu />,
     },
     // users
     {
       path: "/user",
-      element: <User />
+      element: <User />,
     },
     {
       path: "/add",
-      element: <AddUser />
+      element: <AddUser />,
     },
     {
       path: "/update-user/:id",
-      element: <Update />
+      element: <Update />,
     },
 
     // vendors
     {
       path: "/vendor",
-      element: <Vendor />
+      element: <Vendor />,
     },
     {
       path: "/add-vendor",
-      element: <AddVendor />
+      element: <AddVendor />,
     },
     {
-      path: "/update-vendor",
-      element: <UpdateVendor />
+      path: "/update-vendor/:id",
+      element: <UpdateVendor />,
     },
 
     // orders
     {
       path: "/order",
-      element: <Order />
+      element: <Order />,
     },
     {
       path: "/add-order",
-      element: <AddOrder />
+      element: <AddOrder />,
     },
     {
-      path: "/update-order",
-      element: <UpdateOrder />
+      path: "/update-order/:id",
+      element: <UpdateOrder />,
     },
 
     // products
     {
       path: "/product",
-      element: <ProductList />
+      element: <ProductList />,
     },
     {
       path: "/add-product",
-      element: <AddProduct />
+      element: <AddProduct />,
     },
     {
       path: "/update-product/:id",
-      element: <UpdateProduct />
+      element: <UpdateProduct />,
     },
 
     //sales
     {
       path: "/sale",
-      element: <SaleList />
+      element: <SaleList />,
     },
     {
       path: "/add-sale",
-      element: <AddSale />
+      element: <AddSale />,
     },
     {
       path: "/update-sale",
-      element: <UpdateSale />
-    }
+      element: <UpdateSale />,
+    },
   ]);
 
   return (

@@ -48,7 +48,7 @@ namespace webApi.Controllers
 
         // GET: api/product/getByVendorId
         // Retrieves all products associated with a specific vendor ID.
-        [HttpGet("getByVendorId")]
+        [HttpPost("getByVendorId")]
         public async Task<IActionResult> GetProductsByVendorId(IdDto idDto)
         {
             var products = await _productService.GetProductsByVendorId(idDto.Id);

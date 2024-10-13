@@ -20,13 +20,11 @@ const User = () => {
     fetchData();
   }, []);
 
-  const deleteUser = async userId => {
+  const deleteUser = async (userId) => {
     try {
-      const response = await createAPIEndpoint(ENDPOINTS.USER).delete(userId); // Sending userId in request body
-      setUsers(prevUser => prevUser.filter(user => user.id !== userId));
-      toast.success(response.message || "User deleted successfully", {
-        position: "top-right"
-      });
+      await createAPIEndpoint(ENDPOINTS.USER).delete(userId);
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      toast.success("User deleted successfully", { position: "top-right" });
     } catch (error) {
       console.log("Error while deleting user:", error);
       toast.error("Failed to delete user.", { position: "top-right" });
@@ -49,44 +47,26 @@ const User = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => {
-              return (
-                <tr key={user.id}>
-                  <td>
-                    {index + 1}
-                  </td>
-                  <td>
-                    {user.userName}
-                  </td>
-                  <td>
-                    {user.email}
-                  </td>
-                  <td>
-                    {user.address}
-                  </td>
-                  <td>
-                    {user.role}
-                  </td>
-                  <td className="actionButtons">
-                    <Link
-                      to={`/update-user/${user.id}`}
-                      type="button"
-                      className="btn btn-info"
-                    >
-                      <i className="bi bi-pencil-square" />
-                    </Link>
-
-                    <button
-                      onClick={() => deleteUser(user.id)}
-                      type="button"
-                      className="btn btn-danger"
-                    >
-                      <i className="bi bi-trash3-fill" />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {users.map((user, index) => (
+              <tr key={user.id}>
+                <td>{index + 1}</td>
+                <td>{user.userName}</td>
+                <td>{user.email}</td>
+                <td>{user.address}</td>
+                <td>{user.role}</td>
+                <td className="actionButtons">
+                  <Link to={`/update-user/${user.id}`} className="btn btn-info">
+                    <i className="bi bi-pencil-square" />
+                  </Link>
+                  <button
+                    onClick={() => deleteUser(user.id)}
+                    className="btn btn-danger"
+                  >
+                    <i className="bi bi-trash3-fill" />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

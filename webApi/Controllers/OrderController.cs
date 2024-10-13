@@ -64,7 +64,7 @@ namespace webApi.Controllers
 
         // GET: api/order/getByOrderId
         // Retrieves an order by its unique order ID.
-        [HttpGet("getByOrderId")]
+        [HttpPost("getById")]
         public async Task<IActionResult> GetOrderById(IdDto idDto)
         {
             try
@@ -80,7 +80,7 @@ namespace webApi.Controllers
 
         // PUT: api/order/updateOrderDetails
         // Updates an existing order's details.
-        [HttpPut("updateOrderDetails")]
+        [HttpPut]
         public async Task<IActionResult> UpdateOrder([FromBody] OrderDto orderDto)
         {
             try

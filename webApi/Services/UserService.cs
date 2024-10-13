@@ -118,7 +118,7 @@ namespace webApi.Services
                         VendorName = user.UserName,
                         ProductIds = new List<string>(), // Initialize empty product IDs
                         VendorRank = 0,
-                        IsActive = false
+                        IsActive = true
                     };
                     await _vendorRepository.CreateVendor(vendor); // Create vendor
                     return true; // Role assigned successfully
