@@ -6,88 +6,85 @@ import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import Select from "react-select";
 
-// Initial vendor state template
-const initialStateVendors = {
+// Default vendor state template
+const defaultVendor = {
   id: "",
   vendorName: "",
-  productIds: [], // Product IDs will be stored here as an array
-  vendorRank: 0.0,
-  isActive: true
+  productIds: [],
+  vendorRank: 0,
+  isActive: true,
 };
 
 const UpdateVendor = () => {
-  const [vendor, setVendor] = useState(initialStateVendors);
-  const [products, setProducts] = useState([]); // Store products for dropdown
+  const [vendor, setVendor] = useState(defaultVendor);
+  const [products, setProducts] = useState([]); // List of products fetched from API
+  const [selectedProducts, setSelectedProducts] = useState([]); // Selected products
+  const [loading, setLoading] = useState(true); // Add a loading state
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Handle status change for the vendor
-  const statusHandler = e => {
-    setVendor({ ...vendor, isActive: e.target.value === "true" });
-  };
+  // Fetch available products
+  useEffect(() => {
+    createAPIEndpoint(ENDPOINTS.PRODUCT)
+      .fetchVendorProductsByPost({ id })
+      .then((response) => {
+        const productList = response.data.map((product) => ({
+          label: product.productName,
+          value: product.id,
+        }));
+        setProducts(productList);
+      })
+      .catch((error) => {
+        toast.error("Failed to load products.");
+        console.error(error);
+      });
+  }, [id]);
 
-  // Handle vendor input changes
-  const inputHandler = e => {
+  // Fetch vendor details
+  useEffect(() => {
+    createAPIEndpoint(ENDPOINTS.VENDOR)
+      .fetchByPost({ id })
+      .then((response) => {
+        setVendor(response.data);
+        // Map product IDs to Select component format
+        const selected = response.data.productIds.map((prodId) => ({
+          label: products.find((p) => p.value === prodId)?.label,
+          value: prodId,
+        }));
+        setSelectedProducts(selected);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch((error) => {
+        toast.error("Failed to load vendor details.");
+        console.error(error);
+        setLoading(false); // Ensure loading is stopped in case of error
+      });
+  }, [id, products]);
+
+  const inputHandler = (e) => {
     const { id, value } = e.target;
     setVendor({ ...vendor, [id]: value });
   };
 
-  // Handle product selection changes
-  const handleProductChange = selectedProducts => {
-    const selectedProductIds = selectedProducts.map(product => product.value);
-    setVendor({ ...vendor, productIds: selectedProductIds });
+  const handleProductChange = (selectedOptions) => {
+    const productIds = selectedOptions.map((option) => option.value);
+    setVendor({ ...vendor, productIds });
+    setSelectedProducts(selectedOptions);
   };
 
-  // Fetch vendor details and product list on component mount
-  useEffect(
-    () => {
-      // Fetch vendor details by ID
-      createAPIEndpoint(ENDPOINTS.VENDOR)
-        .fetchById({ id })
-        .then(response => {
-          setVendor(response.data); // Ensure data exists before setting
-        })
-        .catch(error => {
-          console.error("Error fetching vendor:", error);
-        });
-
-      // Fetch all products for the product selection dropdown
-      createAPIEndpoint(ENDPOINTS.PRODUCT)
-        .fetchByPost()
-        .then(response => {
-          setProducts(
-            response.data.map(product => ({
-              value: product.id,
-              label: product.productName
-            }))
-          );
-        })
-        .catch(error => {
-          console.error("Error fetching products:", error);
-          toast.error("Failed to load products.");
-        });
-    },
-    [id]
-  );
-
-  const submitForm = async e => {
+  const submitForm = (e) => {
     e.preventDefault();
     createAPIEndpoint(ENDPOINTS.VENDOR)
       .put(vendor)
-      .then(response => {
-        setVendor(response.data);
-        if (response.data != null) {
-          toast.success("Vendor updated successfully!", {
-            position: "top-right"
-          });
-        }
+      .then(() => {
+        toast.success("Vendor updated successfully!", {
+          position: "top-right",
+        });
         navigate("/vendor");
       })
-      .catch(error => {
-        toast.error("Failed to update vendor. Please try again.", {
-          position: "top-right"
-        });
-        console.error("Error updating vendor:", error);
+      .catch((error) => {
+        toast.error("Failed to update vendor.");
+        console.error(error);
       });
   };
 
@@ -95,73 +92,87 @@ const UpdateVendor = () => {
     <div>
       <SideBarMenu />
       <div className="addVendor">
-        <Link to="/vendor" type="button" className="btn btn-secondary">
-          <i className="bi bi-skip-backward-fill" />
-        </Link>
-
-        <h3>Update Vendor</h3>
-        <form className="addVendorForm" onSubmit={submitForm}>
-          <div className="inputGroup">
-            <label htmlFor="vendorName">Vendor Name:</label>
-            <input
-              type="text"
-              id="vendorName"
-              onChange={inputHandler}
-              name="vendorName"
-              autoComplete="off"
-              placeholder="Enter Vendor Name"
-              value={vendor.vendorName}
-              required
-            />
+        {loading ? (
+          // Center the spinner on the entire screen
+          <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
           </div>
+        ) : (
+          <>
+            <Link to="/vendor" type="button" className="btn btn-secondary">
+              <i className="bi bi-skip-backward-fill" />
+            </Link>
 
-          <div className="inputGroup">
-            <label htmlFor="productIds">Products:</label>
-            <Select
-              isMulti
-              options={products} // Dropdown options for products
-              value={products.filter(product =>
-                vendor.productIds.includes(product.value)
-              )} // Currently selected products
-              onChange={handleProductChange} // Handler for product selection
-              placeholder="Select Products"
-            />
-          </div>
+            <h3>Update Vendor</h3>
+            <form className="addVendorForm" onSubmit={submitForm}>
+              <div className="inputGroup">
+                <label htmlFor="vendorName">Vendor Name:</label>
+                <input
+                  type="text"
+                  id="vendorName"
+                  onChange={inputHandler}
+                  autoComplete="off"
+                  placeholder="Enter Vendor Name"
+                  value={vendor.vendorName}
+                  required
+                  disabled
+                />
+              </div>
 
-          <div className="inputGroup">
-            <label htmlFor="vendorRank">Vendor Rank:</label>
-            <input
-              type="number"
-              id="vendorRank"
-              onChange={inputHandler}
-              name="vendorRank"
-              autoComplete="off"
-              placeholder="Enter Vendor Rank"
-              value={vendor.vendorRank}
-              required
-            />
-          </div>
+              <div className="inputGroup">
+                <label htmlFor="productIds">Products:</label>
+                <Select
+                  isMulti
+                  options={products}
+                  value={selectedProducts}
+                  onChange={handleProductChange}
+                  placeholder="Select Products"
+                  isDisabled={true}
+                />
+              </div>
 
-          <div className="inputGroup">
-            <label htmlFor="isActive">Status:</label>
-            <select
-              id="isActive"
-              name="isActive"
-              value={vendor.isActive}
-              onChange={statusHandler}
-              required
-            >
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
-            </select>
-          </div>
+              <div className="inputGroup">
+                <label htmlFor="vendorRank">Vendor Rank:</label>
+                <input
+                  type="number"
+                  id="vendorRank"
+                  onChange={inputHandler}
+                  autoComplete="off"
+                  placeholder="Enter Vendor Rank"
+                  value={vendor.vendorRank}
+                  required
+                />
+              </div>
 
-          <div className="inputGroup">
-            <button type="submit" className="btn">
-              Submit
-            </button>
-          </div>
-        </form>
+              <div className="inputGroup">
+                <label htmlFor="isActive">Status:</label>
+                <select
+                  id="isActive"
+                  name="isActive"
+                  value={vendor.isActive}
+                  onChange={(e) =>
+                    setVendor({
+                      ...vendor,
+                      isActive: e.target.value === "true",
+                    })
+                  }
+                  required
+                >
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+
+              <div className="inputGroup">
+                <button type="submit" className="btn">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );

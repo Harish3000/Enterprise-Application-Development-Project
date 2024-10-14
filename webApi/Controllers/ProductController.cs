@@ -35,7 +35,7 @@ namespace webApi.Controllers
         }
 
 
-        [HttpGet("getByVendorId")]
+        [HttpPost("getByVendorId")]
         public async Task<IActionResult> GetProductsByVendorId(IdDto idDto)
         {
             var products = await _productService.GetProductsByVendorId(idDto.Id);

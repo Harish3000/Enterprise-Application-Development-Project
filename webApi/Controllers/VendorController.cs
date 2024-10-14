@@ -24,7 +24,7 @@ namespace webApi.Controllers
             return Ok(vendors);
         }
 
-        [HttpGet("getById")]
+        [HttpPost("getById")]
         public async Task<IActionResult> GetVendorById([FromBody] IdDto idDto)
         {
             var vendor = await _vendorService.GetVendorById(idDto.Id);
