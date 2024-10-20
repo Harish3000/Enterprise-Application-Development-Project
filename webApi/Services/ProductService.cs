@@ -16,6 +16,7 @@ namespace webApi.Services
     {
         // Retrieves all products and maps them to ProductDto
         Task<List<ProductDto>> GetAllProducts();
+        Task<List<ProductDto>> GetAllActiveProducts();
 
         // Retrieves a product by its ID and maps it to ProductDto
         Task<ProductDto> GetProductById(string id);
@@ -60,6 +61,16 @@ namespace webApi.Services
         {
             var products = await _productRepository.GetAllProducts(); // Fetch all products
             return _mapper.Map<List<ProductDto>>(products); // Map to ProductDto
+        }
+
+        public async Task<List<ProductDto>> GetAllActiveProducts()
+        {
+            var products = await _productRepository.GetAllProducts(); // Fetch all products
+
+            // Filter the products where isActive = true
+            var activeProducts = products.Where(p => p.IsActive).ToList();
+
+            return _mapper.Map<List<ProductDto>>(activeProducts); // Map to ProductDto
         }
 
         // Retrieves a product by its ID and maps it to ProductDto

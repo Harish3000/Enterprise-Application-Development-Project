@@ -1,4 +1,4 @@
-//author: Harini chamathka
+//author: Harini Chamathka
 //path: src/Order/Order.jsx
 
 import React, { useEffect, useState } from "react";
@@ -7,9 +7,13 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api";
+import { confirmAlert } from "react-confirm-alert"; // Import react-confirm-alert
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]); // For filtered orders
+  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,12 +22,44 @@ const Order = () => {
           ENDPOINTS.ORDER
         ).fetchCompletedOrders();
         setOrders(response.data);
+        setFilteredOrders(response.data); // Initialize filteredOrders with full list
       } catch (error) {
         console.error("Error while fetching orders", error);
       }
     };
     fetchData();
   }, []);
+
+  // Filter orders based on search term across all columns
+  useEffect(() => {
+    const filtered = orders.filter((order) => {
+      return order.saleList.some((saleItem) => {
+        return (
+          order.id.toString().includes(searchTerm.toLowerCase()) ||
+          saleItem.productName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          saleItem.productQuantity
+            .toString()
+            .includes(searchTerm.toLowerCase()) ||
+          saleItem.price.toString().includes(searchTerm.toLowerCase()) ||
+          (saleItem.isPaid ? "yes" : "no").includes(searchTerm.toLowerCase()) ||
+          (saleItem.isApproved ? "yes" : "no").includes(
+            searchTerm.toLowerCase()
+          ) ||
+          (saleItem.isDispatched ? "yes" : "no").includes(
+            searchTerm.toLowerCase()
+          ) ||
+          new Date(saleItem.saleDate)
+            .toLocaleDateString()
+            .includes(searchTerm.toLowerCase()) ||
+          order.totalPrice.toString().includes(searchTerm.toLowerCase()) ||
+          order.deliveryStatus.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+    });
+    setFilteredOrders(filtered);
+  }, [searchTerm, orders]);
 
   const deleteOrder = async (orderId) => {
     try {
@@ -38,13 +74,40 @@ const Order = () => {
     }
   };
 
+  // Show confirmation dialog before deletion
+  const handleDelete = (orderId) => {
+    confirmAlert({
+      title: "Confirm Delete",
+      message: "Are you sure you want to delete this order?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => deleteOrder(orderId),
+        },
+        {
+          label: "No",
+          onClick: () =>
+            toast.info("Order not deleted.", { position: "top-right" }),
+        },
+      ],
+    });
+  };
+
   return (
     <div>
       <SideBarMenu />
       <div className="orderTable">
-        <Link to="/add-order" className="addBtn">
+        <input
+          type="text"
+          className="form-control mb-3"
+          placeholder="Search orders..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        {/* <Link to="/add-order" className="addBtn">
           Add Order <i className="bi bi-plus-circle-fill" />
-        </Link>
+        </Link> */}
 
         <table className="table table-bordered">
           <thead>
@@ -63,10 +126,10 @@ const Order = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <React.Fragment key={order.id}>
                 {order.saleList.map((saleItem, index) =>
-                  index === 0 ? ( // Only show the order ID and details for the first sale item
+                  index === 0 ? (
                     <tr key={saleItem.id}>
                       <td rowSpan={order.saleList.length}>{order.id}</td>
                       <td>{saleItem.productName}</td>
@@ -91,7 +154,7 @@ const Order = () => {
                           <i className="bi bi-pencil-square" />
                         </Link>
                         <button
-                          onClick={() => deleteOrder(order.id)}
+                          onClick={() => handleDelete(order.id)} // Use handleDelete for confirmation
                           className="btn btn-danger"
                         >
                           <i className="bi bi-trash3-fill" />

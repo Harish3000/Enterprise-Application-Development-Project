@@ -40,6 +40,18 @@ const UpdateUser = () => {
       .put(user)
       .then(() => {
         toast.success("User updated successfully!", { position: "top-right" });
+      })
+      .catch((error) => {
+        console.log("Error updating user:", error);
+        toast.error("Failed to update user.", { position: "top-right" });
+      });
+    var roleInfo = {
+      userId: id,
+      role: user.role,
+    };
+    createAPIEndpoint(ENDPOINTS.USER)
+      .updateRole(roleInfo)
+      .then(() => {
         navigate("/user");
       })
       .catch((error) => {

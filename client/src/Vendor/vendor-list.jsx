@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/vendor.css";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import SideBarMenu from "../Components/SideBarMenu";
 import { createAPIEndpoint, ENDPOINTS } from "../Api/index";
+import { confirmAlert } from "react-confirm-alert"; // Import react-confirm-alert
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 const Vendor = () => {
   const [vendors, setVendors] = useState([]);
-  const [productNamesMap, setProductNamesMap] = useState({}); // To store product names by product ID
-  const [loading, setLoading] = useState(true); // Add a loading state
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [filteredVendors, setFilteredVendors] = useState([]); // For filtering vendors
+  const [productNamesMap, setProductNamesMap] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all vendors
         const vendorResponse = await createAPIEndpoint(
           ENDPOINTS.VENDOR
         ).fetchAll();
         setVendors(vendorResponse.data);
+        setFilteredVendors(vendorResponse.data); // Initialize filteredVendors with full list
 
-        // Fetch product details for each productId in each vendor using fetchByPost
         const productIds = vendorResponse.data.flatMap(
           (vendor) => vendor.productIds
         );
-        const uniqueProductIds = [...new Set(productIds)]; // Remove duplicate product IDs
+        const uniqueProductIds = [...new Set(productIds)];
 
         const productNamesMap = {};
         for (let productId of uniqueProductIds) {
@@ -39,17 +42,25 @@ const Vendor = () => {
           }
         }
         setProductNamesMap(productNamesMap);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (error) {
         console.log(error);
         toast.error("Error fetching vendors and products.", {
           position: "top-right",
         });
-        setLoading(false); // Ensure loading is stopped in case of error
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
+
+  // Filter vendors when searchTerm changes
+  useEffect(() => {
+    const filtered = vendors.filter((vendor) =>
+      vendor.vendorName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredVendors(filtered);
+  }, [searchTerm, vendors]);
 
   const deleteVendor = async (id) => {
     try {
@@ -63,10 +74,37 @@ const Vendor = () => {
     }
   };
 
+  // Show confirmation dialog before deletion
+  const handleDelete = (id) => {
+    confirmAlert({
+      title: "Confirm Delete",
+      message: "Are you sure you want to delete this vendor?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => deleteVendor(id),
+        },
+        {
+          label: "No",
+          onClick: () =>
+            toast.info("Vendor not deleted.", { position: "top-right" }),
+        },
+      ],
+    });
+  };
+
   return (
     <div>
       <SideBarMenu />
       <div className="vendorTable">
+        <input
+          type="text"
+          className="form-control mb-3"
+          placeholder="Search vendor..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
         {loading ? (
           <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="spinner-border" role="status">
@@ -75,10 +113,6 @@ const Vendor = () => {
           </div>
         ) : (
           <>
-            <Link to="/add-vendor" type="button" className="addBtn">
-              Add Vendor <i className="bi bi-plus-circle-fill" />
-            </Link>
-
             <table className="table table-bordered">
               <thead>
                 <tr>
@@ -91,7 +125,7 @@ const Vendor = () => {
                 </tr>
               </thead>
               <tbody>
-                {vendors.map((vendor, index) => (
+                {filteredVendors.map((vendor, index) => (
                   <tr key={vendor._id}>
                     <td>{index + 1}</td>
                     <td>{vendor.vendorName}</td>
@@ -101,8 +135,8 @@ const Vendor = () => {
                             .map(
                               (productId) =>
                                 productNamesMap[productId] || "Unknown Product"
-                            ) // Accessing product name by ID
-                            .join(", ") // Join product names with a comma
+                            )
+                            .join(", ")
                         : "No Products"}
                     </td>
                     <td>{vendor.vendorRank}</td>
@@ -118,7 +152,7 @@ const Vendor = () => {
                       </Link>
 
                       <button
-                        onClick={() => deleteVendor(vendor.id)}
+                        onClick={() => handleDelete(vendor.id)} // Use handleDelete here
                         type="button"
                         className="btn btn-danger"
                       >

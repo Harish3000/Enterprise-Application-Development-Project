@@ -14,7 +14,7 @@ namespace webApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin,Customer")]
+    [Authorize(Roles = "Admin,Customer,CSR")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

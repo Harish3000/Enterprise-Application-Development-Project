@@ -11,23 +11,18 @@ function Profile() {
   const userId = localStorage.getItem("userId");
   const role = localStorage.getItem("role");
 
-  useEffect(
-    () => {
-      const fetchUserDetails = async () => {
-        try {
-          const response = await createAPIEndpoint(ENDPOINTS.USER).fetchById(
-            userId
-          );
-          setUser(response.data);
-        } catch (error) {
-          console.error("Error fetching user details:", error);
-        }
-      };
-
-      fetchUserDetails();
-    },
-    [userId]
-  );
+  useEffect(() => {
+    // Use the API helper to send the POST request with the dynamic IDs
+    createAPIEndpoint(ENDPOINTS.USER)
+      .fetchByPost({ id: userId })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("--------------------------------------");
+      });
+  }, [userId]);
 
   return (
     <div>
@@ -46,33 +41,23 @@ function Profile() {
               <tbody>
                 <tr>
                   <td>User ID</td>
-                  <td>
-                    {userId}
-                  </td>
+                  <td>{userId}</td>
                 </tr>
                 <tr>
                   <td>Role</td>
-                  <td>
-                    {role}
-                  </td>
+                  <td>{role}</td>
                 </tr>
                 <tr>
                   <td>User Name</td>
-                  <td>
-                    {user.userName}
-                  </td>
+                  <td>{user.userName}</td>
                 </tr>
                 <tr>
                   <td>Email</td>
-                  <td>
-                    {user.email}
-                  </td>
+                  <td>{user.email}</td>
                 </tr>
                 <tr>
                   <td>Address</td>
-                  <td>
-                    {user.address}
-                  </td>
+                  <td>{user.address}</td>
                 </tr>
               </tbody>
             </table>

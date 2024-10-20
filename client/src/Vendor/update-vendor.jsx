@@ -23,22 +23,22 @@ const UpdateVendor = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Fetch available products
-  useEffect(() => {
-    createAPIEndpoint(ENDPOINTS.PRODUCT)
-      .fetchVendorProductsByPost({ id })
-      .then((response) => {
-        const productList = response.data.map((product) => ({
-          label: product.productName,
-          value: product.id,
-        }));
-        setProducts(productList);
-      })
-      .catch((error) => {
-        toast.error("Failed to load products.");
-        console.error(error);
-      });
-  }, [id]);
+  // // Fetch available products
+  // useEffect(() => {
+  //   createAPIEndpoint(ENDPOINTS.PRODUCT)
+  //     .fetchVendorProductsByPost(id)
+  //     .then((response) => {
+  //       const productList = response.data.map((product) => ({
+  //         label: product.productName,
+  //         value: product.id,
+  //       }));
+  //       setProducts(productList);
+  //     })
+  //     .catch((error) => {
+  //       toast.error("Failed to load products.");
+  //       console.error(error);
+  //     });
+  // }, [id]);
 
   // Fetch vendor details
   useEffect(() => {
@@ -118,18 +118,6 @@ const UpdateVendor = () => {
                   value={vendor.vendorName}
                   required
                   disabled
-                />
-              </div>
-
-              <div className="inputGroup">
-                <label htmlFor="productIds">Products:</label>
-                <Select
-                  isMulti
-                  options={products}
-                  value={selectedProducts}
-                  onChange={handleProductChange}
-                  placeholder="Select Products"
-                  isDisabled={true}
                 />
               </div>
 

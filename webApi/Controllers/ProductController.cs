@@ -33,6 +33,15 @@ namespace webApi.Controllers
             return Ok(products); // Return 200 OK with the list of products.
         }
 
+        // GET: api/product
+        // Retrieves all products available.
+        [HttpGet("active")]
+        public async Task<IActionResult> GetAllActiveProducts()
+        {
+            var products = await _productService.GetAllActiveProducts();
+            return Ok(products); // Return 200 OK with the list of Active products.
+        }
+
         // POST: api/product/getById
         // Retrieves a specific product based on its ID.
         [HttpPost("getById")]
